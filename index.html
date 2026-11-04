@@ -99,7 +99,12 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 /* ---------- login ---------- */
 .login{min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;align-items:center;padding:24px 16px;color:#fff;
   background:radial-gradient(1200px 600px at 80% -10%,#3b82f6 0,transparent 60%),radial-gradient(900px 500px at -10% 110%,#1d4ed8 0,transparent 55%),linear-gradient(160deg,#0a3a8c,#06215a 60%,#041638)}
-.login-in{width:100%;max-width:440px;min-width:0}
+.login{position:relative;isolation:isolate;overflow:hidden}
+.login-in{width:100%;max-width:440px;min-width:0;position:relative;z-index:1}
+.lbg{position:absolute;inset:0;z-index:0;pointer-events:none;background:#0a3a8e url(login-bg.jpg) center top/cover no-repeat}
+.lwave{position:absolute;left:0;right:0;bottom:0;width:100%;height:clamp(70px,14vh,140px);display:none}
+.lbg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,30,80,.15),rgba(6,30,80,0) 30%,rgba(6,30,80,.1) 100%)}
+@media (min-aspect-ratio:3/4){.lbg{background-position:center 28%}.lwave{display:block}}
 .lfoot div{min-width:0}.lfoot{gap:0}
 .brandline{display:flex;align-items:center;gap:16px}
 .brandline img,.brandline .logo-fb{width:72px;height:72px;object-fit:contain}
@@ -125,7 +130,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 
 /* ---------- shell ---------- */
 .shell{display:flex;min-height:100dvh}
-@media(min-width:1000px){.shell{background:linear-gradient(90deg,#061a45 var(--sbw),transparent var(--sbw))}}
+@media (min-width:1000px), (min-width:700px) and (min-height:500px){.shell{background:linear-gradient(90deg,#061a45 var(--sbw),transparent var(--sbw))}}
 .sb{width:var(--sbw);flex:none;background:linear-gradient(180deg,var(--navy),#061a45);color:#dbe6ff;position:sticky;top:0;height:100dvh;display:flex;flex-direction:column}
 .sb .brandline{padding:18px 16px 14px;gap:12px}
 .sb .brandline img,.sb .brandline .logo-fb{width:44px;height:44px}
@@ -233,7 +238,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .payslip .tot td{border-top:1px solid #ccc;font-weight:600}
 
 /* ---------- responsive (mobile) ---------- */
-@media (max-width:999px){
+@media (max-width:699px), (max-width:999px) and (max-height:499px){
   .sb{display:none}
   .top{display:none}
   .mtop{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(135deg,#0b4fc0,#082c72);color:#fff;min-height:58px}
@@ -337,7 +342,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .qacts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
 .qa{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;text-align:center;color:var(--ink)}
 .qa svg{width:34px;height:34px;stroke-width:1.6}.qa b{font-weight:600;font-size:14px}
-@media (max-width:999px){
+@media (max-width:699px), (max-width:999px) and (max-height:499px){
   .main{background:linear-gradient(180deg,#0a49b8 0,#2a6fd8 130px,#7fb2ef 380px,#cfe2fa 640px,var(--bg) 900px)}
   :root[data-theme=dark] .main{background:linear-gradient(180deg,#0a2a66 0,#0d2452 260px,var(--bg) 640px)}
   .mtop{background:transparent}
@@ -382,8 +387,8 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .btn.gold:hover{filter:brightness(1.05)}
 .btn.full{width:100%;justify-content:center}
 .sblogo,.sbver,.ttl,.tdate,.umenu{display:none}
-@media (min-width:1000px) and (prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f6f3ec;--brand:#132c5e;--brand-2:#1f4386;--brand-3:#eef1f7;--line:#e9e3d7;--panel-2:#faf8f3;--ink:#13213c}}
-@media (min-width:1000px){
+@media (min-width:1000px) and (prefers-color-scheme:light), (min-width:700px) and (min-height:500px) and (prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f6f3ec;--brand:#132c5e;--brand-2:#1f4386;--brand-3:#eef1f7;--line:#e9e3d7;--panel-2:#faf8f3;--ink:#13213c}}
+@media (min-width:1000px), (min-width:700px) and (min-height:500px){
   :root[data-theme=light]{--bg:#f6f3ec;--brand:#132c5e;--brand-2:#1f4386;--brand-3:#eef1f7;--line:#e9e3d7;--panel-2:#faf8f3;--ink:#13213c}
   :root{--sbw:232px;--gold:#c9964f}
   .shell{background:linear-gradient(90deg,#0f2347 var(--sbw),transparent var(--sbw))}
@@ -475,6 +480,87 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .pillbtn svg{width:16px;height:16px}
 @media (max-width:1560px){.dgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.dgrid>.panel:first-child{grid-column:1/-1}.kwm{opacity:.55}.kwm svg{width:46px;height:46px}.kl{font-size:15px}.kv{font-size:30px}}
 .panel>header h3,.gseg button{white-space:nowrap}
+
+/* ===================== TABLET (v1.3) — 700–1199px: แถบเมนูแบบไอคอน + แดชบอร์ดกราฟ ===================== */
+@media (min-width:700px) and (max-width:1199px) and (min-height:500px){
+  :root{--sbw:100px}
+  .sblogo{padding:16px 6px 10px;gap:4px}
+  .sblogo img,.sblogo .logo-fb{width:52px;height:52px}
+  .sblogo span{font-size:10.5px;letter-spacing:1.2px}
+  .sb nav{padding:4px 8px;scrollbar-width:none}
+  .sb nav::-webkit-scrollbar{display:none}
+  .sb a.nav{position:relative;flex-direction:column;justify-content:center;gap:4px;padding:9px 2px 8px;font-size:11.5px;line-height:1.2;text-align:center;border-radius:12px;margin-bottom:4px;min-height:60px}
+  .sb a.nav span:not(.cnt){display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sb a.nav svg{width:24px;height:24px}
+  .sb a.nav .cnt{position:absolute;top:5px;right:12px;margin:0;font-size:10px;padding:0 5px;min-width:17px}
+  .sb a.nav.on{box-shadow:0 3px 10px rgba(169,116,47,.35)}
+  .sbver{font-size:10.5px;padding:8px 6px 12px;text-align:center}
+  .sb::after{display:none}
+  .top{min-height:68px;padding:10px 20px;gap:12px}
+  .ttl b{font-size:20px}.ttl>span{font-size:13.5px}
+  .search{max-width:220px}
+  .content{padding:18px 20px 36px}
+  .btn,.inp,select.inp{min-height:42px}
+  .tab{padding-top:11px;padding-bottom:11px}
+  .kgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .kcard{padding:18px 16px;gap:14px}
+  .kic{width:52px;height:52px}.kic svg{width:26px;height:26px}
+  .kv{font-size:28px}.kl{font-size:15px}
+  .kwm{display:none}
+  .dgrid,.dgrid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
+  .dgrid>.panel:first-child{grid-column:1/-1}
+  .tblwrap,.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+/* แท็บเล็ตแนวตั้ง / จอแคบ */
+@media (min-width:700px) and (max-width:999px) and (min-height:500px){
+  .tdate{display:none}
+  .search{max-width:180px}
+  .ttl b{font-size:18px}.ttl>span{font-size:12.5px}
+  .dgrid,.dgrid2{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .modal.wide{width:calc(100vw - 32px)}
+}
+/* ตัวอย่างมุมมองอุปกรณ์ */
+.vpbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.vpstage{display:grid;place-items:start center;background:repeating-linear-gradient(45deg,var(--panel-2),var(--panel-2) 10px,var(--bg) 10px,var(--bg) 20px);border-radius:14px;padding:14px;overflow:hidden}
+.vpdev{position:relative;background:#0b1220;border-radius:34px;padding:12px;box-shadow:0 18px 50px rgba(0,0,0,.35);transform-origin:top center}
+.vpdev.tab{border-radius:26px;padding:16px}
+.vpdev iframe{display:block;border:0;border-radius:24px;background:#fff}
+.vpdev.tab iframe{border-radius:12px}
+.modal.vpm{width:min(1280px,calc(100vw - 24px));max-width:none}
+/* แท็บเล็ตแนวนอน */
+@media (min-width:1000px) and (max-width:1199px) and (min-height:500px){.kgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.kcard{flex-direction:column;gap:10px}}
+@media (min-width:700px) and (max-width:1199px) and (min-height:500px) and (max-height:899px){.sbver{display:none}}
+/* มือถือแนวนอน: แถบล่างกะทัดรัด */
+@media (max-width:999px) and (max-height:499px){
+  .bnav{padding:3px 4px calc(3px + env(safe-area-inset-bottom));border-radius:14px 14px 0 0}
+  .bnav a{flex-direction:row;justify-content:center;gap:6px;padding:6px 0}
+  .bnav a svg{width:21px;height:21px}
+  .content{padding-bottom:70px}
+}
+
+/* ===== Login ตามต้นแบบ (v1.3.1) ===== */
+.login{align-items:start;padding:clamp(28px,6vh,60px) 0 clamp(70px,10vh,110px)}
+.login-in{max-width:420px;padding:0 24px}
+.lbrand{justify-content:center;gap:14px;margin:0 0 4px}
+.lbrand img,.lbrand .logo-fb{width:64px;height:64px}
+.lbrand .sep{height:54px;width:1.5px;background:rgba(255,255,255,.7)}
+.lbrand .t1{font-size:20px;font-weight:600;letter-spacing:.6px;line-height:1.08}
+.lbrand .t2{font-size:11.5px;opacity:.92;margin-top:4px}
+.login h1{font-size:44px;line-height:1.02;margin:40px 0 14px 20px;letter-spacing:-.5px}
+.login .bar{width:46px;height:5px;margin-left:22px;background:linear-gradient(90deg,#1fb6ff,#22d3ee)}
+.login .tag{margin:16px 0 40px 20px;font-size:15.5px;opacity:.95}
+.login .glass{padding:26px 18px 20px;border-radius:24px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.login .lfield{border-radius:14px;padding:0 16px;gap:16px;margin-bottom:14px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.45)}
+.login .lfield>svg{width:22px;height:22px;fill:#fff;stroke:#fff}
+.login .lfield input{padding:11px 0;font-size:16.5px}
+.login .lbtn{margin-top:6px;padding:12px;border-radius:16px;font-size:20px;background:linear-gradient(180deg,#0b5ed8,#0a3fae 60%,#06318f);box-shadow:0 6px 18px rgba(4,36,110,.5),inset 0 1px 0 rgba(255,255,255,.25)}
+.login .linkbtn{margin-top:16px;font-size:15px}
+.login .lfoot{margin-top:44px;font-size:13px;font-weight:500}
+.login .lfoot svg{width:38px;height:38px;stroke-width:1.6}
+.login .lfoot div{gap:8px;padding:2px 0}
+.login .lfoot div+div{border-left:1px solid rgba(255,255,255,.55)}
+@media (min-width:700px) and (min-height:700px){.login{align-items:center;padding:40px 0}.login-in{max-width:460px}.login h1{font-size:52px}.lbrand .t1{font-size:22px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -735,6 +821,9 @@ const safeName = n => n.replace(/[^\w.\-]+/g, '_').slice(-80);
 
 /* ===================== exports ===================== */
 let xlsxP;
+const MQ_PHONE = '(max-width:699px), (max-width:999px) and (max-height:499px)';
+const isPhone = () => window.matchMedia(MQ_PHONE).matches;
+const viewKind = () => isPhone() ? 'phone' : window.innerWidth < 1200 ? 'tablet' : 'desktop';
 function loadXLSX() { return xlsxP || (xlsxP = new Promise((res, rej) => { if (window.XLSX) return res(window.XLSX); const s = document.createElement('script'); s.src = CFG.xlsxUrl; s.onload = () => res(window.XLSX); s.onerror = () => { xlsxP = null; rej(new Error('โหลดไลบรารี Excel ไม่สำเร็จ')); }; document.head.appendChild(s); })); }
 async function exportXLSX(rows, name, sheet = 'Data') {
   const X = await loadXLSX(); const ws = X.utils.json_to_sheet(rows); const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, sheet.slice(0, 30)); X.writeFile(wb, name + '.xlsx');
@@ -801,9 +890,13 @@ const SIDE = [['dashboard', 'แดชบอร์ด', 'dash'], ['employees', '
   ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
 
 /* ===================== LOGIN ===================== */
+/* พื้นหลังตามต้นแบบ: ภาพสำนักงานเบลอ (login-bg.jpg สกัดจากไฟล์ต้นแบบ) + เส้นคลื่นด้านล่าง */
+const LOGIN_BG = `<div class="lbg" aria-hidden="true">
+<svg class="lwave" viewBox="0 0 400 120" preserveAspectRatio="none"><defs><linearGradient id="lwv" x1="0" x2="1"><stop offset="0" stop-color="#3b82f6" stop-opacity="0"/><stop offset=".5" stop-color="#60a5fa" stop-opacity=".55"/><stop offset="1" stop-color="#93c5fd" stop-opacity=".9"/></linearGradient><linearGradient id="lwf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e5ad0" stop-opacity=".45"/><stop offset="1" stop-color="#0a2f80" stop-opacity=".9"/></linearGradient></defs>
+<path d="M0 82 C110 112 230 40 400 28 L400 120 L0 120 Z" fill="url(#lwf)"/><path d="M0 82 C110 112 230 40 400 28" fill="none" stroke="url(#lwv)" stroke-width="2.4"/><path d="M0 96 C130 118 250 64 400 50" fill="none" stroke="url(#lwv)" stroke-width="1.2" opacity=".6"/></svg></div>`;
 function renderLogin(err) {
-  document.body.innerHTML = `<div class="login"><div class="login-in">
-    ${brandLine()}
+  document.body.innerHTML = `<div class="login">${LOGIN_BG}<div class="login-in">
+    <div class="brandline lbrand">${logoImg()}<span class="sep"></span><div><div class="t1">SMART TERMINAL<br>CORPORATION</div><div class="t2">${esc(S.company.company_name || 'บริษัท สมาร์ทเทอร์มินอล คอร์ปอเรชั่น จำกัด')}</div></div></div>
     <h1>HR<br>Application</h1><div class="bar"></div>
     <div class="tag">Work Smarter with Our HR System</div>
     <form class="glass" id="lf" autocomplete="on">
@@ -848,7 +941,7 @@ async function boot() {
   } catch (e) { console.error(e); return renderLogin(errMsg(e)); }
   renderShell();
   const um = data.session.user?.user_metadata || {};
-  if (um.must_change_password) setTimeout(() => weakPwPrompt(true), 400); else if (um.weak_password) setTimeout(() => weakPwPrompt(false), 400);
+  if (um.must_change_password) setTimeout(() => weakPwPrompt(true), 400); else if (um.weak_password && window.self === window.top) setTimeout(() => weakPwPrompt(false), 400);
   window.onhashchange = route;
   route();
   refreshCounters();
@@ -862,7 +955,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.2.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.3.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -872,14 +965,14 @@ function renderShell() {
         <div class="tdate">${ic('cal')}<span>${fDL(todayStr())}</span></div>
         <div class="umenu" style="position:relative"><button class="ubtn" id="ubtn">${avatar(e)}<span class="chev">${ic('down')}</span></button>
           <div class="drop hidden" id="udrop" style="width:250px"><div style="padding:12px 14px;border-bottom:1px solid var(--line)"><b>${esc(e.first_name)} ${esc(e.last_name || '')}</b><div class="tiny muted">${esc(e.employee_code)} · ${esc((S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
-          <a class="it" href="#/profile">${ic('user')} ข้อมูลของฉัน</a><a class="it" href="#/payroll">${ic('money')} สลิปเงินเดือน</a><a class="it" data-act="theme">${ic('moon')} โหมดสี</a><a class="it" data-act="logout" style="color:var(--bad)">${ic('logout')} ออกจากระบบ</a></div></div></header>
+          <a class="it" href="#/profile">${ic('user')} ข้อมูลของฉัน</a><a class="it" href="#/payroll">${ic('money')} สลิปเงินเดือน</a><a class="it" data-act="theme">${ic('moon')} โหมดสี</a><a class="it" data-act="viewprev">${ic('dash')} ดูตัวอย่างมุมมอง มือถือ/แท็บเล็ต</a><a class="it" data-act="logout" style="color:var(--bad)">${ic('logout')} ออกจากระบบ</a></div></div></header>
       <header class="mtop">${brandLine()}<span class="grow"></span><div class="bell" style="position:relative"><button class="btn ghost icon" data-act="notif" aria-label="การแจ้งเตือน">${ic('bell')}</button><span class="dot hidden" id="ndot2"></span></div><a class="btn ghost icon" href="#/profile" aria-label="โปรไฟล์">${ic('user')}</a></header>
       <main class="content" id="page"></main>
     </div></div>
     <nav class="bnav" id="bnav"></nav>`;
   on(document.body, 'click', '[data-act]', (ev, b) => {
     const a = b.dataset.act;
-    if (a === 'logout') logout(); else if (a === 'theme') cycleTheme(); else if (a === 'notif') openNotif(b);
+    if (a === 'logout') logout(); else if (a === 'theme') cycleTheme(); else if (a === 'viewprev') viewPreview(); else if (a === 'notif') openNotif(b);
   });
   const gs = $('#gsearch'), gr = $('#gres');
   gs.oninput = debounce(() => {
@@ -998,6 +1091,25 @@ function weakPwPrompt(force) {
     const x = $('[data-x]', ov); if (x) x.remove();
     ov.addEventListener('mousedown', e => { if (e.target === ov) e.stopImmediatePropagation(); }, true);
   } else { const c = $('[data-c]', ov); if (c) c.textContent = 'ภายหลัง'; }
+}
+
+/* ===================== ตัวอย่างมุมมองอุปกรณ์ (เปิดแอปเดียวกันใน iframe ขนาดเครื่องจริง) ===================== */
+const VP_DEV = { phone: { l: 'มือถือ', w: 390, h: 844 }, tabp: { l: 'แท็บเล็ต แนวตั้ง', w: 820, h: 1180, tab: 1 }, tabl: { l: 'แท็บเล็ต แนวนอน', w: 1180, h: 820, tab: 1 } };
+function viewPreview(kind = 'phone') {
+  $('#udrop') && $('#udrop').classList.add('hidden');
+  const m = modal({ title: 'ตัวอย่างมุมมองอุปกรณ์', wide: true, body: `<div class="vpbar"><div class="seg" id="vpseg">${Object.entries(VP_DEV).map(([k, d]) => `<button data-k="${k}" class="${k === kind ? 'on' : ''}">${d.l}</button>`).join('')}</div><span class="tiny muted" id="vpinfo"></span><span class="grow"></span><span class="tiny muted">ใช้งานได้จริงในกรอบ (บัญชีเดียวกัน)</span></div><div class="vpstage" id="vpst"></div>` });
+  $('.modal', m.el).classList.add('vpm');
+  const draw = k => {
+    const d = VP_DEV[k], st = $('#vpst', m.el), pad = d.tab ? 32 : 24;
+    const availW = st.clientWidth - 28, availH = Math.max(420, window.innerHeight - 230);
+    const sc = Math.min(1, availW / (d.w + pad), availH / (d.h + pad));
+    st.style.height = Math.ceil((d.h + pad) * sc + 28) + 'px';
+    st.innerHTML = `<div class="vpdev ${d.tab ? 'tab' : ''}" style="transform:scale(${sc})"><iframe title="${esc(d.l)}" src="${location.pathname}${location.hash || '#/dashboard'}" width="${d.w}" height="${d.h}"></iframe></div>`;
+    $('#vpinfo', m.el).textContent = `${d.w} × ${d.h} px · ย่อ ${Math.round(sc * 100)}%`;
+    $$('#vpseg button', m.el).forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  };
+  on($('#vpseg', m.el), 'click', 'button', (e, b) => draw(b.dataset.k));
+  requestAnimationFrame(() => draw(kind));
 }
 
 /* ===================== M01 DASHBOARD ===================== */
@@ -1154,7 +1266,7 @@ const REPORT_FN = {
 };
 
 /* ===================== DESKTOP DASHBOARD (navy/gold) ===================== */
-const isDesk = () => window.innerWidth >= 1000;
+const isDesk = () => !isPhone();
 let _deskMode = isDesk();
 window.addEventListener('resize', debounce(() => { const d = isDesk(); if (d !== _deskMode) { _deskMode = d; if (S.ctx && S.route.split('/')[0] === 'dashboard') route(); } }, 250));
 const DCOL = ['#132c5e', '#c9964f', '#d6dbe3', '#ecd8b2', '#5b7bb5', '#8a6a3a'];
