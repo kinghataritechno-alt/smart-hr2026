@@ -579,6 +579,8 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .os-node.sc{margin-left:12px;border-left:4px solid #22a37a;background:var(--panel-2)}
 .os-node.pj{border-left:4px solid #e68a1f}
 .os-node.old{border-left-color:var(--muted);opacity:.85}
+
+.asg-code{grid-column:1/-1}.asg-code .notice{margin:0}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -973,7 +975,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.3.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.3.3</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1401,18 +1403,56 @@ const sensFields = [
   { k: 'social_security_no', label: 'เลขประจำตัวประกันสังคม' }, { k: 'payment_channel', label: 'ช่องทางการชำระเงิน', type: 'select', opts: [['BANK', 'โอนเข้าบัญชี'], ['CASH', 'เงินสด'], ['CHEQUE', 'เช็ค']] },
   { k: 'bank_name', label: 'ธนาคาร' }, { k: 'bank_account', label: 'เลขที่บัญชี' }
 ];
-const asgFields = (cur = {}) => [
-  { k: 'branch_id', label: 'สำนักงาน/สาขา/โครงการ', type: 'select', req: true, opts: opts('branches', 'id', 'branch_name') },
-  { k: 'department_id', label: 'ฝ่าย/แผนก', type: 'select', opts: opts('departments', 'id', r => `${r.department_code} · ${r.department_name}`) },
-  { k: 'organizational_unit_id', label: 'ส่วนงาน/หน่วยงาน', type: 'select', opts: opts('units', 'id', r => `${r.unit_code} · ${r.unit_name}`) },
-  { k: 'position_id', label: 'ตำแหน่ง', type: 'select', opts: opts('positions', 'id', r => /^[A-Z]{3}$/.test(r.position_code) ? `${r.position_code} · ${r.position_name}` : r.position_name) },
+/* ---------- สังกัดตามโครงสร้างองค์กร: ฝ่าย (DIV) › แผนก (DEP) › ส่วนงาน (SEC) · โครงการ (PRJ) · ตำแหน่ง (POS) ---------- */
+const ORG_OLD = '__old';
+const orgDivs = () => S.L.departments.filter(d => d.dept_level === 'DIVISION' && !d.parent_department_id && d.status === 'ACTIVE');
+const orgDivOf = depId => { const d = S.L.departments.find(x => x.id === depId); if (!d) return ''; if (d.dept_level === 'DIVISION') return d.id; return d.parent_department_id || ORG_OLD; };
+const asgFields = () => [
+  { k: 'div_id', label: 'ฝ่าย (DIV)', type: 'select', opts: [...orgDivs().map(d => [d.id, `${d.department_code} · ${d.department_name}`]), [ORG_OLD, '— โครงสร้างเดิม (ยังไม่สังกัดฝ่าย) —']] },
+  { k: 'department_id', label: 'แผนก (DEP)', type: 'select', opts: [] },
+  { k: 'organizational_unit_id', label: 'ส่วนงาน (SEC)', type: 'select', opts: [] },
+  { k: 'branch_id', label: 'สำนักงาน/โครงการ (PRJ)', type: 'select', req: true, opts: S.L.branches.filter(b => b.status === 'ACTIVE').map(b => [b.id, /^[A-Z0-9]{2,7}$/.test(b.branch_code) && !b.branch_name.startsWith(b.branch_code) ? `${b.branch_code} · ${b.branch_name}` : b.branch_name]) },
+  { k: 'position_id', label: 'ตำแหน่ง (POS)', type: 'select', opts: [] },
   { k: 'supervisor_employee_id', label: 'ผู้บังคับบัญชา (หัวหน้างาน)', type: 'emp', activeOnly: true },
   { k: 'effective_from', label: 'วันที่มีผล', type: 'date', req: true, def: todayStr() },
   { k: 'reason', label: 'เหตุผล', full: true }
 ];
+const asgValues = (r = {}) => ({ ...r, div_id: orgDivOf(r.department_id) });
+/* ปรับตัวเลือกให้สัมพันธ์กันตามโครงสร้าง + แสดงรหัสตำแหน่งงานตัวอย่าง */
+function wireAsg(root, cur = {}) {
+  root = root || $$('.ov').pop(); if (!root) return;
+  const $f = k => $('#f_' + k, root), sel = (el, list, val, empty) => { el.innerHTML = (empty ? `<option value="">${esc(empty)}</option>` : '') + list.map(([v, l, g]) => `<option value="${esc(v)}" ${String(v) === String(val ?? '') ? 'selected' : ''}>${esc(l)}</option>`).join(''); };
+  const D = S.L.departments.filter(d => d.status === 'ACTIVE' || d.id === cur.department_id), U = S.L.units.filter(u => u.status === 'ACTIVE' || u.id === cur.organizational_unit_id);
+  const posStd = S.L.positions.filter(p => /^[A-Z]{3}$/.test(p.position_code) && p.position_level === p.position_code), posOld = S.L.positions.filter(p => !posStd.includes(p));
+  const pos = $f('position_id');
+  pos.innerHTML = `<option value="">– เลือก –</option><optgroup label="รหัสตำแหน่งตามโครงสร้างองค์กร">${posStd.map(p => `<option value="${p.id}">${esc(p.position_code)} · ${esc(p.position_name)}</option>`).join('')}</optgroup>${posOld.length ? `<optgroup label="ชื่อตำแหน่งงาน">${posOld.map(p => `<option value="${p.id}">${esc(p.position_name)}${p.position_level ? ` (${esc(p.position_level)})` : ''}</option>`).join('')}</optgroup>` : ''}`;
+  pos.value = cur.position_id || '';
+  const box = document.createElement('div'); box.className = 'full asg-code'; $f('div_id').closest('label').before(box);
+  const fillDep = keep => {
+    const dv = $f('div_id').value, list = dv === ORG_OLD ? D.filter(d => !d.parent_department_id && d.dept_level !== 'DIVISION') : D.filter(d => d.parent_department_id === dv);
+    sel($f('department_id'), list.map(d => [d.id, `${d.department_code} · ${d.department_name}`]), keep, dv && dv !== ORG_OLD ? '— สังกัดฝ่ายโดยตรง —' : '– เลือก –');
+  };
+  const fillSec = keep => {
+    const dp = $f('department_id').value || ($f('div_id').value !== ORG_OLD ? $f('div_id').value : '');
+    sel($f('organizational_unit_id'), U.filter(u => dp && u.department_id === dp).map(u => [u.id, `${u.unit_code} · ${u.unit_name}`]), keep, '— ไม่มีส่วนงาน —');
+  };
+  const preview = () => {
+    const dv = S.L.departments.find(d => d.id === $f('div_id').value), dp = S.L.departments.find(d => d.id === $f('department_id').value), u = S.L.units.find(x => x.id === $f('organizational_unit_id').value);
+    const b = S.L.branches.find(x => x.id === $f('branch_id').value), p = S.L.positions.find(x => x.id === pos.value);
+    const parts = [p && /^[A-Z]{3}$/.test(p.position_level || '') ? p.position_level : '???', dv ? dv.department_code : '', dp && dp.dept_level === 'DEPARTMENT' ? dp.department_code : '', u && u.unit_type === 'SECTION' ? u.unit_code : '', b && /^[A-Z0-9]{2,7}$/.test(b.branch_code) ? b.branch_code : ''].filter(Boolean);
+    const old = $f('div_id').value === ORG_OLD || !$f('div_id').value;
+    box.innerHTML = `<div class="notice ${old ? '' : 'info'}">${ic('org')}<div>รหัสตำแหน่งงาน <b class="mono" style="font-size:16px;letter-spacing:.5px">${esc(parts.join('/'))}</b>${old ? '<br><span class="small">ยังใช้โครงสร้างเดิม — เลือกฝ่าย/แผนก/ส่วนงานตามโครงสร้างองค์กร 2027</span>' : ''}${p && !/^[A-Z]{3}$/.test(p.position_level || '') ? '<br><span class="small">ตำแหน่งนี้ยังไม่ผูกรหัส POS — เลือกจากกลุ่ม “รหัสตำแหน่งตามโครงสร้างองค์กร” หรือกำหนดที่ โครงสร้างองค์กร › ตำแหน่ง</span>' : ''}</div></div>`;
+  };
+  const dep0 = S.L.departments.find(d => d.id === cur.department_id);
+  fillDep(dep0 && dep0.dept_level === 'DIVISION' ? '' : cur.department_id); fillSec(cur.organizational_unit_id); preview();
+  $f('div_id').onchange = () => { fillDep(''); fillSec(''); preview(); };
+  $f('department_id').onchange = () => { fillSec(''); preview(); };
+  ['organizational_unit_id', 'branch_id', 'position_id'].forEach(k => $f(k).addEventListener('change', preview));
+}
+const asgSave = v => { const o = { ...v }; if (!o.department_id && o.div_id && o.div_id !== ORG_OLD) o.department_id = o.div_id; delete o.div_id; return o; };
 async function addEmployee() {
   const f = [...empFields(true), { type: 'section', label: 'สังกัด' }, ...asgFields()];
-  await formModal({ title: 'เพิ่มพนักงาน', wide: true, fields: f, onSubmit: async v => {
+  const fm = formModal({ title: 'เพิ่มพนักงาน', wide: true, fields: f, onSubmit: async v => { v = asgSave(v);
     const pat = S.settings.employee_code_pattern; if (pat && !(new RegExp(pat)).test(v.employee_code)) throw new Error('รหัสพนักงานไม่ตรงรูปแบบที่กำหนด');
     const ef = ['employee_code', 'title_th', 'first_name', 'last_name', 'first_name_en', 'last_name_en', 'nickname', 'gender', 'nationality', 'birth_date', 'phone', 'email', 'employee_type', 'employee_status', 'hire_date', 'regularization_date', 'advance_limit', 'sso_status', 'tax_status'];
     const row = Object.fromEntries(ef.map(k => [k, v[k]]));
@@ -1421,6 +1461,7 @@ async function addEmployee() {
     await q(sb.from('employee_status_histories').insert({ employee_id: e.id, new_status: v.employee_status, effective_date: v.hire_date || v.effective_from, reason: 'พนักงานใหม่' }));
     await loadDir(); toast('เพิ่มพนักงานแล้ว', 'good'); location.hash = '#/employee/' + e.id;
   } });
+  wireAsg(); await fm;
 }
 /* ---------- Excel import ---------- */
 function parseHireDate(v) {
@@ -1547,12 +1588,12 @@ const ETAB_FN = {
      <div class="card"><div class="row" style="margin-bottom:8px"><h3 style="margin:0">ประวัติสถานะพนักงาน</h3><span class="grow"></span>${can.hr() ? `<button class="btn sm" id="astat">${ic('edit')} เปลี่ยนสถานะ</button>` : ''}</div>
      ${table(sh, [{ label: 'วันที่มีผล', fmt: r => fD(r.effective_date) }, { label: 'จาก', fmt: r => r.old_status ? badge(EMP_STATUS, r.old_status) : '–' }, { label: 'เป็น', fmt: r => badge(EMP_STATUS, r.new_status) }, { label: 'เหตุผล', fmt: r => esc(r.reason || '') }, { label: 'บันทึกเมื่อ', fmt: r => fDT(r.created_at) }])}</div>`;
     const cur = as.find(r => !r.effective_to);
-    if ($('#amove')) $('#amove').onclick = () => formModal({ title: 'ย้าย/เปลี่ยนตำแหน่ง', wide: true, fields: asgFields(), values: cur ? { ...cur, effective_from: todayStr(), reason: '' } : {}, intro: '<div class="notice info">ระบบจะปิดรายการเดิมในวันก่อนวันที่มีผล และสร้างรายการใหม่ (เก็บประวัติครบ)</div>',
+    if ($('#amove')) $('#amove').onclick = () => { formModal({ title: 'ย้าย/เปลี่ยนตำแหน่ง', wide: true, fields: asgFields(), values: cur ? asgValues({ ...cur, effective_from: todayStr(), reason: '' }) : {}, intro: '<div class="notice info">ระบบจะปิดรายการเดิมในวันก่อนวันที่มีผล และสร้างรายการใหม่ (เก็บประวัติครบ)</div>',
       onSubmit: async v => {
         if (cur) { if (v.effective_from <= cur.effective_from) throw new Error('วันที่มีผลต้องหลังจากวันที่เริ่มของรายการเดิม (' + fD(cur.effective_from) + ')'); await q(sb.from('employee_assignments').update({ effective_to: addDays(v.effective_from, -1) }).eq('id', cur.id)); }
-        await q(sb.from('employee_assignments').insert({ employee_id: e.id, ...v })); await loadDir(); toast('บันทึกแล้ว', 'good'); route();
-      } });
-    on(b, 'click', '[data-fix]', (ev, bt) => { const r = as.find(x => x.id === bt.dataset.fix); formModal({ title: 'แก้ไขรายการปัจจุบัน (กรณีบันทึกผิด)', wide: true, fields: asgFields(), values: r, intro: '<div class="notice">ใช้เฉพาะแก้ไขข้อมูลที่บันทึกผิด — การย้ายจริงให้ใช้ “ย้าย/เปลี่ยนตำแหน่ง”</div>', onSubmit: async v => { await q(sb.from('employee_assignments').update(v).eq('id', r.id)); await loadDir(); toast('บันทึกแล้ว', 'good'); route(); } }); });
+        await q(sb.from('employee_assignments').insert({ employee_id: e.id, ...asgSave(v) })); await loadDir(); toast('บันทึกแล้ว', 'good'); route();
+      } }); wireAsg(null, cur || {}); };
+    on(b, 'click', '[data-fix]', (ev, bt) => { const r = as.find(x => x.id === bt.dataset.fix); formModal({ title: 'แก้ไขรายการปัจจุบัน (กรณีบันทึกผิด)', wide: true, fields: asgFields(), values: asgValues(r), intro: '<div class="notice">ใช้เฉพาะแก้ไขข้อมูลที่บันทึกผิด — การย้ายจริงให้ใช้ “ย้าย/เปลี่ยนตำแหน่ง”</div>', onSubmit: async v => { await q(sb.from('employee_assignments').update(asgSave(v)).eq('id', r.id)); await loadDir(); toast('บันทึกแล้ว', 'good'); route(); } }); wireAsg(null, r); });
     if ($('#astat')) $('#astat').onclick = () => formModal({ title: 'เปลี่ยนสถานะพนักงาน', fields: [{ k: 'new_status', label: 'สถานะใหม่', type: 'select', req: true, opts: Object.entries(EMP_STATUS).map(([k, v]) => [k, v[0]]) }, { k: 'effective_date', label: 'วันที่มีผล', type: 'date', req: true, def: todayStr() }, { k: 'reason', label: 'เหตุผล', req: true, full: true }],
       onSubmit: async v => {
         const upd = { employee_status: v.new_status }; if (v.new_status === 'RESIGNED' || v.new_status === 'TERMINATED') upd.resign_date = v.effective_date; if (v.new_status === 'ACTIVE' && e.employee_status === 'PROBATION' && !e.regularization_date) upd.regularization_date = v.effective_date;
