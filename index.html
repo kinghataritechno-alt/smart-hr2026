@@ -561,6 +561,24 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .login .lfoot div{gap:8px;padding:2px 0}
 .login .lfoot div+div{border-left:1px solid rgba(255,255,255,.55)}
 @media (min-width:700px) and (min-height:700px){.login{align-items:center;padding:40px 0}.login-in{max-width:460px}.login h1{font-size:52px}.lbrand .t1{font-size:22px}}
+
+/* โครงสร้างหน่วยงาน */
+.os-top{display:flex;justify-content:center;margin:6px 0 14px}
+.os-divs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.os-div{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--panel-2)}
+.os-deps{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
+.os-dep{display:flex;flex-direction:column;gap:6px}
+.os-prj{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.os-node{display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);font-size:13px;line-height:1.3}
+.os-node .mono{font-size:11.5px;font-weight:700;letter-spacing:.5px;opacity:.75}
+.os-node small{font-size:11.5px;color:var(--muted)}
+.os-node.co{align-items:center;text-align:center;background:var(--navy,#0b2a5b);color:#fff;border:0;padding:10px 18px}
+.os-node.co .mono{display:none}
+.os-node.dv{background:#0b4fa8;color:#fff;border:0}.os-node.dv small{color:#dbe8ff}
+.os-node.dp{border-left:4px solid #2f7de1}
+.os-node.sc{margin-left:12px;border-left:4px solid #22a37a;background:var(--panel-2)}
+.os-node.pj{border-left:4px solid #e68a1f}
+.os-node.old{border-left-color:var(--muted);opacity:.85}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -955,7 +973,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.3.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.3.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1385,9 +1403,9 @@ const sensFields = [
 ];
 const asgFields = (cur = {}) => [
   { k: 'branch_id', label: 'สำนักงาน/สาขา/โครงการ', type: 'select', req: true, opts: opts('branches', 'id', 'branch_name') },
-  { k: 'department_id', label: 'ฝ่าย/แผนก', type: 'select', opts: opts('departments', 'id', r => (r.dept_level === 'DIVISION' ? 'ฝ่าย ' : '') + r.department_name) },
-  { k: 'organizational_unit_id', label: 'หน่วยงาน/โครงการย่อย', type: 'select', opts: opts('units', 'id', 'unit_name') },
-  { k: 'position_id', label: 'ตำแหน่ง', type: 'select', opts: opts('positions', 'id', 'position_name') },
+  { k: 'department_id', label: 'ฝ่าย/แผนก', type: 'select', opts: opts('departments', 'id', r => `${r.department_code} · ${r.department_name}`) },
+  { k: 'organizational_unit_id', label: 'ส่วนงาน/หน่วยงาน', type: 'select', opts: opts('units', 'id', r => `${r.unit_code} · ${r.unit_name}`) },
+  { k: 'position_id', label: 'ตำแหน่ง', type: 'select', opts: opts('positions', 'id', r => /^[A-Z]{3}$/.test(r.position_code) ? `${r.position_code} · ${r.position_name}` : r.position_name) },
   { k: 'supervisor_employee_id', label: 'ผู้บังคับบัญชา (หัวหน้างาน)', type: 'emp', activeOnly: true },
   { k: 'effective_from', label: 'วันที่มีผล', type: 'date', req: true, def: todayStr() },
   { k: 'reason', label: 'เหตุผล', full: true }
@@ -1521,8 +1539,8 @@ const ETAB_FN = {
     if ($('#sedit')) $('#sedit').onclick = () => formModal({ title: 'แก้ไขข้อมูลอ่อนไหว', wide: true, fields: sensFields, values: sv, onSubmit: async v => { await q(sb.from('employee_sensitive').upsert({ employee_id: e.id, ...v })); toast('บันทึกแล้ว', 'good'); ETAB_FN.basic(b, e, d, self); } });
   },
   async work(b, e) {
-    const [as, sh] = await Promise.all([q(sb.from('employee_assignments').select('*').eq('employee_id', e.id).order('effective_from', { ascending: false })), q(sb.from('employee_status_histories').select('*').eq('employee_id', e.id).order('created_at', { ascending: false }))]);
-    b.innerHTML = `<div class="card" style="margin-bottom:12px"><div class="row" style="margin-bottom:8px"><h3 style="margin:0">ประวัติการมอบหมายงาน (สาขา/แผนก/ตำแหน่ง)</h3><span class="grow"></span>${can.hr() ? `<button class="btn sm pri" id="amove">${ic('swap')} ย้าย/เปลี่ยนตำแหน่ง</button>` : ''}</div>
+    const [as, sh, pc] = await Promise.all([q(sb.from('employee_assignments').select('*').eq('employee_id', e.id).order('effective_from', { ascending: false })), q(sb.from('employee_status_histories').select('*').eq('employee_id', e.id).order('created_at', { ascending: false })), rpc('emp_position_code', { p_emp: e.id }).catch(() => null)]);
+    b.innerHTML = `<div class="card" style="margin-bottom:12px"><div class="row"><span class="muted small">รหัสตำแหน่งงาน (POS/DIV/DEP/SEC/PRJ)</span><b class="mono" style="font-size:17px;letter-spacing:.5px">${esc(pc || '–')}</b></div></div><div class="card" style="margin-bottom:12px"><div class="row" style="margin-bottom:8px"><h3 style="margin:0">ประวัติการมอบหมายงาน (สาขา/แผนก/ตำแหน่ง)</h3><span class="grow"></span>${can.hr() ? `<button class="btn sm pri" id="amove">${ic('swap')} ย้าย/เปลี่ยนตำแหน่ง</button>` : ''}</div>
      ${table(as, [{ label: 'มีผล', fmt: r => `${fD(r.effective_from)} – ${r.effective_to ? fD(r.effective_to) : 'ปัจจุบัน'}` }, { label: 'สาขา/โครงการ', fmt: r => esc(nameOf('branches', r.branch_id, 'branch_name')) }, { label: 'แผนก', fmt: r => esc(nameOf('departments', r.department_id, 'department_name')) },
        { label: 'หน่วยงาน', fmt: r => esc(nameOf('units', r.organizational_unit_id, 'unit_name')) }, { label: 'ตำแหน่ง', fmt: r => esc(nameOf('positions', r.position_id, 'position_name')) }, { label: 'หัวหน้า', fmt: r => r.supervisor_employee_id ? esc(empName(r.supervisor_employee_id)) : '–' }, { label: 'เหตุผล', fmt: r => esc(r.reason || '') }],
        { empty: 'ยังไม่มีการมอบหมายงาน', acts: can.hr() ? (r => !r.effective_to ? `<button class="btn sm ghost" data-fix="${r.id}">${ic('edit')} แก้ไข</button>` : '') : null })}</div>
@@ -1671,7 +1689,18 @@ const ORG = {
     const roots = (kids.root || []).filter(x => kids[x.id]); const loose = (kids.root || []).filter(x => !kids[x.id]);
     const node = (x, d) => `<li><div class="org-node">${kids[x.id] ? `<button class="org-toggle" data-tg aria-label="ย่อ/ขยาย">${ic('down')}</button>` : '<span style="width:22px"></span>'}${avatar(x)}<div><a href="#/employee/${x.id}" style="color:var(--ink);font-weight:500">${esc(x.first_name)} ${esc(x.last_name || '')}</a><div class="p">${esc(x.position_name || '–')} · ${esc(x.branch_name || '')}${kids[x.id] ? ` · ทีม ${kids[x.id].length}` : ''}</div></div></div>${kids[x.id] ? `<ul ${d > 1 ? 'class="hidden"' : ''}>${kids[x.id].map(c => node(c, d + 1)).join('')}</ul>` : ''}</li>`;
     const byBranch = {}; loose.forEach(x => { (byBranch[x.branch_name || 'ไม่ระบุสาขา'] = byBranch[x.branch_name || 'ไม่ระบุสาขา'] || []).push(x); });
-    b.innerHTML = `<div class="card"><h3>${ic('org')} สายการบังคับบัญชา</h3>${roots.length ? `<div class="org-tree"><ul>${roots.map(r => node(r, 1)).join('')}</ul></div>` : `<div class="notice">${ic('alert')}<div>ยังไม่มีการกำหนดผู้บังคับบัญชา — กำหนดได้ที่ ข้อมูลพนักงาน → แท็บการทำงาน → ย้าย/เปลี่ยนตำแหน่ง (ช่อง “ผู้บังคับบัญชา”) จำเป็นสำหรับสายอนุมัติขั้นที่ 1</div></div>`}</div>
+    const D = S.L.departments.filter(x => x.status === 'ACTIVE'), U = S.L.units.filter(x => x.status === 'ACTIVE'), cD = countBy('department_id'), cU = countBy('unit_id');
+    const sub = id => D.filter(x => x.parent_department_id === id), secs = id => U.filter(x => x.department_id === id);
+    const chip = (code, name, n, cls) => `<div class="os-node ${cls}"><span class="mono">${esc(code)}</span><b>${esc(name)}</b>${n ? `<small>${n} คน</small>` : ''}</div>`;
+    const divs = D.filter(x => x.dept_level === 'DIVISION' && !x.parent_department_id);
+    const others = D.filter(x => x.dept_level !== 'DIVISION' && !x.parent_department_id);
+    const prj = S.L.branches.filter(x => x.status === 'ACTIVE'), cB = countBy('branch_id');
+    const structure = `<div class="card" style="margin-bottom:14px"><h3>${ic('org')} โครงสร้างหน่วยงาน <span class="tiny muted">ฝ่าย (DIV) › แผนก (DEP) › ส่วนงาน (SEC)</span></h3>
+      <div class="os-top">${chip(S.company.company_code || 'CO', S.company.company_name, 0, 'co')}</div>
+      <div class="os-divs">${divs.map(dv => `<div class="os-div">${chip(dv.department_code, dv.department_name, cD[dv.id], 'dv')}<div class="os-deps">${sub(dv.id).map(dp => `<div class="os-dep">${chip(dp.department_code, dp.department_name, cD[dp.id], 'dp')}${secs(dp.id).map(u => chip(u.unit_code, u.unit_name, cU[u.id], 'sc')).join('')}</div>`).join('')}${secs(dv.id).map(u => chip(u.unit_code, u.unit_name, cU[u.id], 'sc')).join('')}</div></div>`).join('')}</div>
+      ${others.length ? `<div class="tiny muted" style="margin:12px 0 6px">หน่วยงานเดิมที่ยังไม่สังกัดฝ่าย</div><div class="os-deps">${others.map(dp => `<div class="os-dep">${chip(dp.department_code, dp.department_name, cD[dp.id], 'dp old')}${secs(dp.id).map(u => chip(u.unit_code, u.unit_name, cU[u.id], 'sc old')).join('')}</div>`).join('')}</div>` : ''}
+      <div class="tiny muted" style="margin:14px 0 6px">สำนักงาน/โครงการ (PRJ)</div><div class="os-prj">${prj.map(x => chip(x.branch_code, x.branch_name.replace(/^[A-Z0-9]+ – /, ''), cB[x.id], 'pj')).join('')}</div></div>`;
+    b.innerHTML = structure + `<div class="card"><h3>${ic('org')} สายการบังคับบัญชา</h3>${roots.length ? `<div class="org-tree"><ul>${roots.map(r => node(r, 1)).join('')}</ul></div>` : `<div class="notice">${ic('alert')}<div>ยังไม่มีการกำหนดผู้บังคับบัญชา — กำหนดได้ที่ ข้อมูลพนักงาน → แท็บการทำงาน → ย้าย/เปลี่ยนตำแหน่ง (ช่อง “ผู้บังคับบัญชา”) จำเป็นสำหรับสายอนุมัติขั้นที่ 1</div></div>`}</div>
      <div class="card" style="margin-top:14px"><h3>${ic('building')} พนักงานที่ยังไม่มีหัวหน้า (แยกตามสาขา/โครงการ) <span class="badge b-warn">${loose.length}</span></h3>
       ${Object.entries(byBranch).sort((a, c) => c[1].length - a[1].length).map(([k, v]) => `<details style="border-top:1px solid var(--line);padding:8px 0"><summary style="cursor:pointer"><b>${esc(k)}</b> <span class="muted small">${v.length} คน</span></summary><div class="row" style="margin-top:8px">${v.map(x => `<a class="badge" href="#/employee/${x.id}">${esc(x.employee_code)} ${esc(x.first_name)} · ${esc(x.position_name || '')}</a>`).join('')}</div></details>`).join('') || '<div class="muted small">ครบทุกคน</div>'}</div>`;
     on(b, 'click', '[data-tg]', (e, t) => { const ul = t.closest('li').querySelector(':scope>ul'); ul && ul.classList.toggle('hidden'); });
@@ -1695,20 +1724,20 @@ const ORG = {
   async depts(b) {
     const cnt = countBy('department_id');
     await crudCard(b, { title: 'ฝ่าย/แผนก', tbl: 'departments', order: 'department_code',
-      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.department_code)}</span>` }, { label: 'ชื่อ', fmt: r => esc(r.department_name) }, { label: 'ระดับ', fmt: r => r.dept_level === 'DIVISION' ? 'ฝ่าย' : 'แผนก' }, { label: 'สังกัด', fmt: r => r.parent_department_id ? esc(nameOf('departments', r.parent_department_id, 'department_name')) : '–' }, { label: 'สาขา', fmt: r => esc(nameOf('branches', r.branch_id, 'branch_name')) }, { label: 'พนักงาน', num: 1, fmt: r => num(cnt[r.id] || 0) }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
+      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.department_code)}</span>` }, { label: 'ชื่อ', fmt: r => esc(r.department_name) }, { label: 'ระดับ', fmt: r => r.dept_level === 'DIVISION' ? 'ฝ่าย (DIV)' : 'แผนก (DEP)' }, { label: 'สังกัด', fmt: r => r.parent_department_id ? esc(nameOf('departments', r.parent_department_id, 'department_name')) : '–' }, { label: 'สาขา', fmt: r => esc(nameOf('branches', r.branch_id, 'branch_name')) }, { label: 'พนักงาน', num: 1, fmt: r => num(cnt[r.id] || 0) }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
       fields: () => [{ k: 'department_code', label: 'รหัส', req: true }, { k: 'department_name', label: 'ชื่อ', req: true }, { k: 'dept_level', label: 'ระดับ', type: 'select', req: true, noEmpty: true, opts: [['DIVISION', 'ฝ่าย'], ['DEPARTMENT', 'แผนก']], def: 'DEPARTMENT' }, { k: 'parent_department_id', label: 'สังกัดฝ่าย', type: 'select', opts: opts('departments', 'id', 'department_name') }, { k: 'branch_id', label: 'สาขา', type: 'select', req: true, opts: opts('branches', 'id', 'branch_name') }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
   },
   async units(b) {
     const cnt = countBy('unit_id');
-    await crudCard(b, { title: 'หน่วยงาน/โครงการ', tbl: 'organizational_units', order: 'unit_code',
-      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.unit_code)}</span>` }, { label: 'ชื่อ', fmt: r => esc(r.unit_name) }, { label: 'ประเภท', fmt: r => r.unit_type === 'PROJECT' ? 'โครงการ' : 'หน่วยงาน' }, { label: 'แผนก', fmt: r => esc(nameOf('departments', r.department_id, 'department_name')) }, { label: 'พนักงาน', num: 1, fmt: r => num(cnt[r.id] || 0) }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
-      fields: () => [{ k: 'unit_code', label: 'รหัส', req: true }, { k: 'unit_name', label: 'ชื่อ', req: true }, { k: 'unit_type', label: 'ประเภท', type: 'select', req: true, noEmpty: true, opts: [['UNIT', 'หน่วยงาน'], ['PROJECT', 'โครงการ']] }, { k: 'department_id', label: 'แผนก', type: 'select', req: true, opts: opts('departments', 'id', 'department_name') }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
+    await crudCard(b, { title: 'ส่วนงาน/หน่วยงาน', tbl: 'organizational_units', order: 'unit_code',
+      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.unit_code)}</span>` }, { label: 'ชื่อ', fmt: r => esc(r.unit_name) }, { label: 'ประเภท', fmt: r => r.unit_type === 'SECTION' ? 'ส่วนงาน (SEC)' : r.unit_type === 'PROJECT' ? 'โครงการ' : 'หน่วยงาน' }, { label: 'สังกัดแผนก', fmt: r => esc(nameOf('departments', r.department_id, 'department_name')) }, { label: 'พนักงาน', num: 1, fmt: r => num(cnt[r.id] || 0) }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
+      fields: () => [{ k: 'unit_code', label: 'รหัส', req: true }, { k: 'unit_name', label: 'ชื่อ', req: true }, { k: 'unit_type', label: 'ประเภท', type: 'select', req: true, noEmpty: true, opts: [['SECTION', 'ส่วนงาน (SEC)'], ['UNIT', 'หน่วยงาน'], ['PROJECT', 'โครงการ']] }, { k: 'department_id', label: 'แผนก', type: 'select', req: true, opts: opts('departments', 'id', 'department_name') }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
   },
   async positions(b) {
     const cnt = countBy('position_id');
     await crudCard(b, { title: 'ตำแหน่ง', tbl: 'positions', order: 'position_code',
-      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.position_code)}</span>` }, { label: 'ตำแหน่ง', fmt: r => esc(r.position_name) }, { label: 'ระดับ', fmt: r => esc(r.position_level || '–') }, { label: 'อัตรากำลัง', num: 1, fmt: r => r.headcount != null ? num(r.headcount) : '–' }, { label: 'มีจริง', num: 1, fmt: r => { const n = cnt[r.id] || 0; return r.headcount != null && n > r.headcount ? `<span style="color:var(--bad)">${n}</span>` : num(n); } }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
-      fields: [{ k: 'position_code', label: 'รหัส', req: true }, { k: 'position_name', label: 'ตำแหน่ง', req: true }, { k: 'position_level', label: 'ระดับตำแหน่ง' }, { k: 'headcount', label: 'อัตรากำลัง (คน)', type: 'number', min: 0 }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
+      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.position_code)}</span>` }, { label: 'ตำแหน่ง', fmt: r => esc(r.position_name) }, { label: 'รหัส POS', fmt: r => r.position_level ? `<span class="mono">${esc(r.position_level)}</span>` : '–' }, { label: 'อัตรากำลัง', num: 1, fmt: r => r.headcount != null ? num(r.headcount) : '–' }, { label: 'มีจริง', num: 1, fmt: r => { const n = cnt[r.id] || 0; return r.headcount != null && n > r.headcount ? `<span style="color:var(--bad)">${n}</span>` : num(n); } }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
+      fields: [{ k: 'position_code', label: 'รหัส', req: true }, { k: 'position_name', label: 'ตำแหน่ง', req: true }, { k: 'position_level', label: 'รหัสกลุ่มตำแหน่ง (POS)', list: ['DIR', 'MGR', 'ASM', 'SUP', 'ENG', 'TEC', 'OFC', 'ACC', 'PUR', 'HRD', 'DRV'] }, { k: 'headcount', label: 'อัตรากำลัง (คน)', type: 'number', min: 0 }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
   }
 };
 
