@@ -673,6 +673,8 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 /* v1.5.2 — ปุ่มลัดพนักงาน: จัดแถวให้สมดุลตามจำนวนปุ่ม (แถวสุดท้ายอยู่กลาง) */
 .tiles.simple{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 .tiles.simple .tile{flex:0 0 calc((100% - (var(--cols,5) - 1) * 10px) / var(--cols,5));min-width:0}
+/* v1.5.3 กล่องโลโก้หน้าข้อมูลบริษัท */
+.co-logo img,.co-logo svg{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1070,7 +1072,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.5.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.3</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1860,7 +1862,7 @@ const ORG = {
   async company(b) {
     const c = S.company;
     b.innerHTML = `<div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('building')} ข้อมูลบริษัท</h3><span class="grow"></span>${can.hrAdmin() ? `<button class="btn sm" id="cedit">${ic('edit')} แก้ไข</button>` : ''}</div>
-      <div class="row" style="align-items:flex-start;gap:20px"><div style="width:110px;height:110px;border:1px solid var(--line);border-radius:14px;display:grid;place-items:center;background:var(--navy)">${logoImg()}</div>
+      <div class="row" style="align-items:flex-start;gap:20px"><div style="width:110px;height:110px;border:1px solid var(--line);border-radius:14px;display:grid;place-items:center;background:var(--navy);padding:14px;overflow:hidden;flex:0 0 110px" class="co-logo">${logoImg()}</div>
       <div class="grow">${kv([['ชื่อบริษัท', esc(c.company_name)], ['ชื่อจดทะเบียน (อังกฤษ)', c.registered_name ? esc(c.registered_name) : pend('รอยืนยัน')], ['ชื่อแบรนด์', esc(c.brand_name) + ' <span class="tiny muted">(ยังไม่ถือเป็นชื่อจดทะเบียน)</span>'], ['เลขผู้เสียภาษี', esc(c.tax_id)], ['ที่อยู่', esc(c.address)], ['โทรศัพท์', esc(c.phone)], ['จำนวนสาขา/โครงการ', num(S.L.branches.length)]])}</div></div>
       <div class="tiny muted" style="margin-top:10px">เปลี่ยนโลโก้ได้ที่ ตั้งค่าระบบ → บริษัทและโลโก้</div></div>`;
     if ($('#cedit')) $('#cedit').onclick = () => formModal({ title: 'แก้ไขข้อมูลบริษัท', fields: [{ k: 'company_name', label: 'ชื่อบริษัท', req: true, full: true }, { k: 'registered_name', label: 'ชื่อจดทะเบียน (อังกฤษ)', full: true }, { k: 'brand_name', label: 'ชื่อแบรนด์' }, { k: 'tax_id', label: 'เลขผู้เสียภาษี' }, { k: 'phone', label: 'โทรศัพท์' }, { k: 'address', label: 'ที่อยู่', type: 'textarea', full: true }], values: c,
