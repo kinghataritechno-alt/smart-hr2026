@@ -669,6 +669,10 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
   :root[data-skin=glass] .tbl th,:root[data-skin=glass] .atbl th{color:#e6efff}
   :root[data-skin=glass] .inp::placeholder{color:#c3d3ef}
 }
+
+/* v1.5.2 — ปุ่มลัดพนักงาน: จัดแถวให้สมดุลตามจำนวนปุ่ม (แถวสุดท้ายอยู่กลาง) */
+.tiles.simple{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.tiles.simple .tile{flex:0 0 calc((100% - (var(--cols,5) - 1) * 10px) / var(--cols,5));min-width:0}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1066,7 +1070,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.5.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1225,7 +1229,8 @@ function viewPreview(kind = 'phone') {
 }
 
 /* ===================== M01 DASHBOARD ===================== */
-/* เมนูลัดสำหรับพนักงานทั่วไปบนมือถือ */
+/* เมนูลัดสำหรับพนักงานทั่วไปบนมือถือ — จำนวนคอลัมน์ปรับตามจำนวนปุ่ม ให้แต่ละแถวเต็มและสมดุล */
+const tileCols = n => n <= 5 ? n : n === 6 ? 3 : 4;
 function simpleTiles(m) {
   const t = [{ h: '#/time/me', i: 'clock', c: 'linear-gradient(135deg,#22d3ee,#0e7490)', tl: 'เวลา<br>เข้า-ออก' },
     { h: '#/docs/new/LEAVE', i: 'umbrella', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอลา' },
@@ -1247,7 +1252,7 @@ PAGES.dashboard = async el => {
   const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
-   <div class="tiles${simple ? ' simple' : ''}">${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
+   <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
   <div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
