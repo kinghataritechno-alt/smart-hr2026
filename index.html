@@ -1084,7 +1084,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.6.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.6.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1269,8 +1269,8 @@ const tileCols = n => n <= 5 ? n : n === 6 ? 3 : 4;
 function simpleTiles(m) {
   const t = [{ h: '#/time/me', i: 'clock', c: 'linear-gradient(135deg,#22d3ee,#0e7490)', tl: 'เวลา<br>เข้า-ออก' },
     { h: '#/docs', i: 'upload', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอ<br>อนุมัติ' },
+    { h: '#/docs/history', i: 'history', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ประวัติ<br>ขออนุมัติ' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
-    { h: '#/approve', i: 'send', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ยื่น<br>คำขอ' },
     { h: '#/payroll', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
   if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
@@ -2457,6 +2457,7 @@ function docSummary(d) {
 }
 PAGES.docs = async (el, a, b) => {
   if (a === 'new') return docForm(el, b);
+  if (a === 'history') return docHistory(el, b);
   if (a && a !== 'list') return docDetail(el, a);
   const rows = await q(sb.from('document_requests').select('*').eq('requester_employee_id', me().id).order('created_at', { ascending: false }).limit(300));
   el.innerHTML = pageHead('ยื่นเอกสาร') + `
@@ -2485,6 +2486,21 @@ function docFields(code) {
     MATERIAL: [{ k: 'item', label: 'วัสดุ/อุปกรณ์', req: true, rd: 1, full: true }, { k: 'quantity', label: 'จำนวน', type: 'number', min: 0.01, step: 'any', req: true, rd: 1 }, { k: 'unit', label: 'หน่วย', rd: 1 }, { k: 'branch', label: 'ใช้ที่สาขา/โครงการ', type: 'select', rd: 1, opts: opts('branches', 'branch_name', 'branch_name') }, { k: 'effective_date', label: 'ต้องการวันที่', type: 'date' }, { k: 'reason', label: 'ใช้สำหรับ', type: 'textarea', full: true, req: true }]
   };
   return F[code] || [];
+}
+/* ประวัติการขออนุมัติของฉัน — รวมคำขอที่ รออนุมัติ และ อนุมัติแล้ว */
+async function docHistory(el, f0) {
+  const rows = me().is_system ? [] : await q(sb.from('document_requests').select('*').eq('requester_employee_id', me().id).in('status', ['PENDING', 'APPROVED']).order('submitted_at', { ascending: false, nullsFirst: false }).limit(300));
+  const nP = rows.filter(d => d.status === 'PENDING').length, nA = rows.length - nP;
+  const F = [['', `ทั้งหมด (${rows.length})`], ['PENDING', `รออนุมัติ (${nP})`], ['APPROVED', `อนุมัติแล้ว (${nA})`]];
+  let f = F.some(x => x[0] === f0) ? f0 : '';
+  el.innerHTML = pageHead('ประวัติการขออนุมัติ', `<a class="btn pri" href="#/docs">${ic('plus')} ขออนุมัติ</a>`) + `
+   ${me().is_system ? `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ไม่มีประวัติคำขอ</div>` : ''}
+   <div class="card"><div class="seg" id="hseg" style="margin-bottom:10px">${F.map(([k, l]) => `<button data-s="${k}">${l}</button>`).join('')}</div><div id="hlist"></div></div>`;
+  const draw = () => { const r = rows.filter(d => !f || d.status === f);
+    $$('#hseg button', el).forEach(b => b.classList.toggle('on', b.dataset.s === f));
+    $('#hlist').innerHTML = r.length ? r.map(d => reqItem(d)).join('') : emptyBox(f === 'PENDING' ? 'ไม่มีคำขอที่รออนุมัติ' : f === 'APPROVED' ? 'ยังไม่มีคำขอที่อนุมัติแล้ว' : 'ยังไม่มีประวัติการขออนุมัติ'); };
+  on($('#hseg'), 'click', 'button', (e, b) => { f = b.dataset.s; history.replaceState(null, '', '#/docs/history' + (f ? '/' + f : '')); draw(); });
+  draw();
 }
 async function docForm(el, code, doc) {
   const t = S.L.docTypes.find(x => x.document_code === code); if (!t) { location.hash = '#/docs'; return; }
