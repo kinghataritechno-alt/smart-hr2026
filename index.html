@@ -158,7 +158,15 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .pagehead h2{margin:0;font-size:22px;font-weight:600}
 .avatar{width:36px;height:36px;border-radius:50%;text-align:center;line-height:1;object-fit:cover;background:linear-gradient(135deg,#60a5fa,#1d4ed8);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px;flex:none;overflow:hidden}
 .avatar.lg{width:96px;height:96px;font-size:34px;border:4px solid rgba(255,255,255,.9);box-shadow:0 6px 20px rgba(0,0,0,.2)}
-.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar{position:relative}.avatar img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%}
+.crop{position:relative;width:260px;height:260px;margin:4px auto 12px;border-radius:50%;overflow:hidden;background:#0b1830;touch-action:none;cursor:grab;box-shadow:0 0 0 3px var(--brand)}.crop img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.agent{display:flex;gap:12px;align-items:flex-start}.agent .ab{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;background:linear-gradient(135deg,#6366f1,#2563eb)}.agent .ab svg{width:24px;height:24px}
+.agent.good .ab{background:linear-gradient(135deg,#34d399,#0f9f6e)}.agent.warn .ab{background:linear-gradient(135deg,#fb923c,#dc2626)}
+.agent h4{margin:0 0 2px;font-size:16px}.agent .ad{font-size:14px;color:var(--ink-2)}.lstat{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.lstat span{background:var(--panel-2);border-radius:10px;padding:6px 10px;font-size:13px}.lstat b{font-size:15px}
+.anlist .an{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);color:inherit}.anlist .an:first-child{border-top:0}.anlist .an .mi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--brand-3);color:var(--brand)}
+.chatbox{display:flex;flex-direction:column;gap:10px;min-height:50vh}.msg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:15px;line-height:1.5;white-space:pre-line}.msg.bot{background:var(--panel);border:1px solid var(--line);border-top-left-radius:4px;align-self:flex-start}.msg.me{background:var(--brand);color:#fff;border-top-right-radius:4px;align-self:flex-end}
+.chips2{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}.chips2 button{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:18px;padding:7px 12px;font:inherit;font-size:14px}
+.chatin{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));display:flex;gap:8px;background:var(--bg,transparent);padding:8px 0}.chatin input{flex:1}
 .bnav{display:none}
 .mtop{display:none}
 
@@ -774,7 +782,11 @@ const IP = {
   palm: '<path d="M12 22V11"/><path d="M12 11c-1.5-3-5-4-8-2 2.5 0 4.5 1 5 3"/><path d="M12 11c1.5-3 5-4 8-2-2.5 0-4.5 1-5 3"/><path d="M12 11c0-3-2-6-5-6.5 2 1.5 2.5 4 2 6"/><path d="M12 11c0-3 2-6 5-6.5-2 1.5-2.5 4-2 6"/><path d="M7 22h10"/>',
   medic: '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/>',
   scale: '<path d="M12 3v18M5 21h14"/><path d="M5 7h14"/><path d="M5 7l-3 7a3.5 3.5 0 006 0z"/><path d="M19 7l-3 7a3.5 3.5 0 006 0z"/>',
-  history: '<path d="M3 3v5h5"/><path d="M3.1 13a9 9 0 103-7.7L3 8"/><path d="M12 7v5l4 2"/>'
+  history: '<path d="M3 3v5h5"/><path d="M3.1 13a9 9 0 103-7.7L3 8"/><path d="M12 7v5l4 2"/>',
+  chat: '<path d="M21 12a8 8 0 01-11.7 7.1L4 20l1-4.6A8 8 0 1121 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/>',
+  bot: '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 14h.01M15 14h.01M9.5 17h5"/><circle cx="12" cy="3.5" r="1"/>',
+  mega: '<path d="M3 10v4a1 1 0 001 1h3l6 4V5L7 9H4a1 1 0 00-1 1z"/><path d="M17 9a4 4 0 010 6M19.5 6.5a7.5 7.5 0 010 11"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'
 };
 const ic = (n, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${IP[n] || IP.file}</svg>`;
 
@@ -1000,8 +1012,8 @@ const MODS = [
   { k: 'payroll', t: 'เงินเดือน', i: 'money', c: 'linear-gradient(135deg,#facc15,#ca8a04)', show: () => true },
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
-const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
-const BNAV = [['dashboard', 'หน้าหลัก', 'home'], ['time', 'เวลา', 'clock'], ['approve', 'ขออนุมัติ', 'approve'], ['payroll', 'สลิป', 'money'], ['profile', 'โปรไฟล์', 'user']];
+const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
+const BNAV = [['dashboard', 'หน้าหลัก', 'home'], ['chat', 'ChatHR', 'chat'], ['profile', 'โปรไฟล์', 'user']];
 const PAGES = {};
 const SIDE = [['dashboard', 'แดชบอร์ด', 'dash'], ['employees', 'พนักงาน', 'user'], ['org', 'โครงสร้างองค์กร', 'org'], ['time', 'เวลาเข้างาน', 'clock'], ['leave', 'การลา', 'plane'],
   ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
@@ -1072,7 +1084,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.5.3</div>
+      <div class="sbver">Smart Terminal HR<br>v1.6.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1168,11 +1180,6 @@ PAGES.profile = async el => {
     <div class="pline">${ic('brief')} ${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', ') || '–')}</div>
     <div class="pline">${ic('org')} ${esc(e.department_name || '–')}</div>
     <div class="pline">${ic('pin')} ${esc(e.branch_name || '–')}</div><span class="badge b-good pstat">● ${esc((EMP_STATUS[e.employee_status] || ['ปฏิบัติงาน'])[0])}</span></div></div></div>
-  <div class="card qgrid">
-    <a class="qtile" href="#/time/me/week">${ic('cal')}<span>ตารางกะ<br>การทำงาน</span></a>
-    <a class="qtile" href="#/time/me">${ic('clock')}<span>เวลาเข้า-ออก</span></a>
-    <a class="qtile" href="#/leave">${ic('umbrella')}<span>สิทธิการลา<br>คงเหลือ</span></a>
-    <a class="qtile" href="#/payroll">${ic('money')}<span>สลิปเงินเดือน</span></a></div>
   <div class="card mlist" style="margin-top:14px">${menuShown.map(([i, t, d, h]) => `<a class="mitem ${h ? '' : 'dis'}" ${h ? `href="${h}"` : ''}><span class="mi">${ic(i)}</span><span class="grow"><b>${t}</b><span>${d}</span></span>${ic('chev')}</a>`).join('')}</div>
   <div class="card mlist" style="margin-top:14px">
     <a class="mitem" id="pphoto"><span class="mi">${ic('up')}</span><span class="grow"><b>เปลี่ยนรูปโปรไฟล์</b><span>JPG/PNG ไม่เกิน 10MB</span></span>${ic('chev')}</a>
@@ -1185,9 +1192,35 @@ PAGES.profile = async el => {
   $('#ppw').onclick = () => formModal({ title: 'เปลี่ยนรหัสผ่าน', fields: [{ k: 'p1', label: 'รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)', type: 'password', req: true, full: true }, { k: 'p2', label: 'ยืนยันรหัสผ่านใหม่', type: 'password', req: true, full: true }],
     onSubmit: async v => { if (v.p1.length < 8) throw new Error('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'); if (v.p1 !== v.p2) throw new Error('รหัสผ่านไม่ตรงกัน'); const r = await sb.auth.updateUser({ password: v.p1, data: { weak_password: false } }); if (r.error) throw r.error; toast('เปลี่ยนรหัสผ่านแล้ว', 'good'); } });
   $('#pphoto').onclick = () => { if (sys) return toast('บัญชีระบบไม่มีรูปโปรไฟล์', 'bad'); formModal({ title: 'เปลี่ยนรูปโปรไฟล์', fields: [{ k: 'f', label: 'ไฟล์รูป (JPG/PNG ไม่เกิน 10MB)', type: 'file', accept: 'image/*', req: true, full: true }],
-    onSubmit: async v => { const f = await shrinkImage(v.f[0], 480); const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
+    onSubmit: async v => { const f = await cropPhoto(v.f[0]); if (!f) return; const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
   $$('.mitem.dis', el).forEach(x => x.onclick = () => toast('บัญชีระบบ (admin) ไม่มีข้อมูลพนักงาน'));
 };
+/* ครอปรูปโปรไฟล์เป็นสี่เหลี่ยมจัตุรัส ให้ใบหน้าอยู่กึ่งกลางกรอบวงกลม (ลาก/ซูมได้) */
+function cropPhoto(file) {
+  return new Promise((res, rej) => {
+    const img = new Image(); img.onerror = () => rej(new Error('ไฟล์รูปไม่ถูกต้อง'));
+    img.onload = () => {
+      const B = 260; const base = B / Math.min(img.width, img.height); let z = 1, x = 0, y = 0;
+      const m = modal({ title: 'จัดรูปให้อยู่กึ่งกลาง', body: `<div class="tiny muted" style="text-align:center">ลากรูปเพื่อเลื่อน และปรับขนาดให้ใบหน้าอยู่กลางวงกลม</div><div class="crop" id="cpb"></div><label class="f">ซูม<input type="range" id="cpz" min="1" max="4" step="0.01" value="1"></label>`,
+        foot: `<button class="btn" data-c>ยกเลิก</button><button class="btn pri" data-ok>ใช้รูปนี้</button>`, onClose: () => res(null) });
+      const box = $('#cpb', m.el); box.appendChild(img);
+      const clamp = () => { const s = base * z, w = img.width * s, h = img.height * s; x = Math.min(0, Math.max(B - w, x)); y = Math.min(0, Math.max(B - h, y)); img.style.width = w + 'px'; img.style.height = h + 'px'; img.style.transform = `translate(${x}px,${y}px)`; };
+      x = (B - img.width * base) / 2; y = (B - img.height * base) / 2; clamp();
+      $('#cpz', m.el).oninput = ev => { const nz = Number(ev.target.value); const cx = (B / 2 - x) / (base * z), cy = (B / 2 - y) / (base * z); z = nz; x = B / 2 - cx * base * z; y = B / 2 - cy * base * z; clamp(); };
+      let drag = null;
+      box.onpointerdown = ev => { drag = { px: ev.clientX, py: ev.clientY, x, y }; box.setPointerCapture(ev.pointerId); };
+      box.onpointermove = ev => { if (!drag) return; x = drag.x + ev.clientX - drag.px; y = drag.y + ev.clientY - drag.py; clamp(); };
+      box.onpointerup = box.onpointercancel = () => { drag = null; };
+      $('[data-c]', m.el).onclick = () => m.close();
+      $('[data-ok]', m.el).onclick = () => {
+        const O = 480, s = base * z, c = document.createElement('canvas'); c.width = c.height = O;
+        c.getContext('2d').drawImage(img, -x / s, -y / s, B / s, B / s, 0, 0, O, O);
+        c.toBlob(b => { m.el.remove(); res(new File([b], 'photo.jpg', { type: 'image/jpeg' })); }, 'image/jpeg', .88);
+      };
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
 function shrinkImage(file, max) {
   return new Promise((res, rej) => {
     const img = new Image(); img.onload = () => {
@@ -1259,9 +1292,9 @@ PAGES.dashboard = async el => {
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
     <div><div class="l"><span style="color:var(--bad)">${ic('out')}</span>เวลาออกงาน</div><div class="v">${fT(tdy.last_out)}</div></div>
-    <div><div class="l"><span style="color:var(--brand)">${ic('cal')}</span>กะการทำงาน</div><div class="v" style="font-size:16px">${shiftTxt}</div></div>
-    <div><div class="l"><span style="color:var(--brand)">${ic('umbrella')}</span>วันลาคงเหลือ</div><div class="v">${num(m.leave_remaining, 1)} <span class="small">วัน</span></div></div>
    </div></div>
+  <div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div>
+  <div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>
   ${simple ? `<div class="grid g2" style="margin-top:14px">
    ${kp(num((m.docs || {}).PENDING || 0), 'คำขอของฉันที่รออนุมัติ', 'upload', 'linear-gradient(135deg,#fbbf24,#ea8a0c)', '#/approve/tab/mine')}
    ${m.pending_approvals ? kp(num(m.pending_approvals), 'รออนุมัติจากฉัน', 'approve', 'linear-gradient(135deg,#4ade80,#16a34a)', '#/approve/tab/pending') : m.tasks_open ? kp(num(m.tasks_open), 'งานที่ได้รับมอบหมาย', 'tasks', 'linear-gradient(135deg,#f472b6,#db2777)', '#/tasks') : kp(num(m.unread || 0), 'การแจ้งเตือนใหม่', 'bell', 'linear-gradient(135deg,#60a5fa,#1d4ed8)')}
@@ -1298,6 +1331,109 @@ PAGES.dashboard = async el => {
     { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }], { empty: 'ยังไม่มีงวดที่อนุมัติ' })}</div>`;
   html += `<a class="svc" href="#/docs"><div><b>HR Services</b>บริการ HR สำหรับพนักงาน — ยื่นลา ขอ OT ขอปรับเวลา</div><div class="chips"><span>${ic('file')}</span><span>${ic('users')}</span><span>${ic('cal')}</span></div></a>`;
   el.innerHTML = html;
+  hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+  annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
+};
+
+/* ===================== HR AGENT — ตรวจเวลาเข้างานจากเครื่องสแกน แล้วชมเชย/เตือน =====================
+   ใช้ข้อมูลจริงจาก attendance_daily_summaries เท่านั้น — ถ้ายังไม่มีกะ (OI-05) จะไม่ตัดสินว่าสาย/ตรงเวลา */
+async function hrAgentData() {
+  const e = me(); const t = todayStr(); const p = dParts(t);
+  const from = `${p.y}-${String(p.m).padStart(2, '0')}-01`;
+  if (e.is_system) return { sys: true };
+  const rows = await q(sb.from('attendance_daily_summaries').select('work_date,first_in,last_out,scheduled_start,late_minutes,attendance_status,leave_type_code').eq('employee_id', e.id).gte('work_date', from).lte('work_date', t).order('work_date'));
+  const today = rows.find(r => r.work_date === t) || null;
+  const late = rows.filter(r => (r.late_minutes || 0) > 0);
+  const judged = rows.filter(r => r.first_in && r.scheduled_start);
+  let streak = 0; for (let i = judged.length - 1; i >= 0; i--) { if ((judged[i].late_minutes || 0) > 0) break; streak++; }
+  return { today, rows, late, lateMin: late.reduce((a, r) => a + (r.late_minutes || 0), 0), onTime: judged.length - late.length, streak };
+}
+function hrAgentVerdict(a) {
+  if (a.sys) return { k: '', h: 'HR Agent', d: 'บัญชีระบบไม่มีข้อมูลเวลาเข้างาน' };
+  const td = a.today;
+  if (td && td.leave_type_code) return { k: '', h: 'วันนี้คุณลางาน', d: 'ขอให้พักผ่อนให้เต็มที่ แล้วพบกันวันทำงานถัดไปครับ' };
+  if (td && ['HOLIDAY', 'DAY_OFF'].includes(td.attendance_status)) return { k: '', h: 'วันนี้เป็นวันหยุดของคุณ', d: 'พักผ่อนให้สบายครับ' };
+  if (!td || !td.first_in) return { k: '', h: 'ยังไม่พบการสแกนเข้างานวันนี้', d: 'HR Agent จะตรวจสอบให้อัตโนมัติเมื่อข้อมูลจากเครื่องสแกนใบหน้าเข้ามา' };
+  if (!td.scheduled_start) return { k: '', h: `บันทึกเข้างานแล้ว ${fT(td.first_in)} น.`, d: 'ยังไม่ได้กำหนดกะการทำงาน จึงยังตรวจการมาสาย/ตรงเวลาไม่ได้ — ติดต่อ HR' };
+  if ((td.late_minutes || 0) > 0) return a.late.length > 1
+    ? { k: 'warn', h: 'คุณมาทำงานสายอีกแล้ว!', d: `วันนี้เข้างาน ${fT(td.first_in)} น. สาย ${num(td.late_minutes)} นาที — เดือนนี้สายแล้ว ${a.late.length} ครั้ง รวม ${num(a.lateMin)} นาที` }
+    : { k: 'warn', h: 'วันนี้คุณมาสาย', d: `เข้างาน ${fT(td.first_in)} น. สาย ${num(td.late_minutes)} นาที — พรุ่งนี้มาให้ตรงเวลานะครับ` };
+  return { k: 'good', h: 'เยี่ยมมาก! วันนี้มาทำงานตรงเวลา', d: `เข้างาน ${fT(td.first_in)} น.${a.streak > 1 ? ` · ตรงเวลาต่อเนื่อง ${a.streak} วันทำงานแล้ว ขอบคุณที่เป็นแบบอย่างที่ดีครับ` : ' ขอบคุณที่ตรงต่อเวลาครับ'}` };
+}
+async function hrAgentCard(host) {
+  const a = await hrAgentData(); const v = hrAgentVerdict(a);
+  host.innerHTML = `<div class="agent ${v.k}"><span class="ab">${ic(v.k === 'good' ? 'star' : v.k === 'warn' ? 'alert' : 'bot')}</span><div class="grow"><div class="tiny muted">HR Agent · ตรวจเวลาเข้างาน</div><h4>${esc(v.h)}</h4><div class="ad">${esc(v.d)}</div>
+   ${a.sys ? '' : `<div class="lstat"><span>ตรงเวลา <b>${num(a.onTime)}</b> วัน</span><span>มาสาย <b style="color:${a.late.length ? 'var(--bad)' : 'inherit'}">${num(a.late.length)}</b> ครั้ง</span><span>สายสะสม <b>${num(a.lateMin)}</b> นาที</span></div>
+   ${a.late.length ? `<details style="margin-top:8px"><summary class="small" style="cursor:pointer;color:var(--brand)">รายละเอียดการมาสายเดือนนี้</summary><div class="small" style="margin-top:6px">${a.late.map(r => `<div class="row" style="padding:4px 0;border-top:1px solid var(--line)"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</div></details>` : ''}`}
+   </div></div>`;
+}
+
+/* ===================== ประกาศ + ผลการอนุมัติ ===================== */
+async function annCard(host) {
+  const e = me(); const since = new Date(Date.now() - 30 * 864e5).toISOString();
+  const [ann, docs] = await Promise.all([
+    q(sb.from('announcements').select('*').order('created_at', { ascending: false }).limit(can.hr() ? 20 : 5)),
+    e.is_system ? [] : q(sb.from('document_requests').select('*').eq('requester_employee_id', e.id).in('status', ['APPROVED', 'REJECTED', 'RETURNED']).gte('updated_at', since).order('updated_at', { ascending: false }).limit(5))]);
+  const live = a => a.active && a.publish_from <= todayStr() && (!a.publish_to || a.publish_to >= todayStr());
+  const list = can.hr() ? ann : ann.filter(live);
+  const items = [
+    ...list.map(a => ({ at: a.created_at, html: `<div class="an" data-an="${a.id}"><span class="mi" style="${a.priority === 'IMPORTANT' ? 'background:#fee2e2;color:#b91c1c' : ''}">${ic('mega')}</span><div class="grow" style="min-width:0"><div style="font-weight:600">${a.priority === 'IMPORTANT' ? '<span class="badge b-bad">สำคัญ</span> ' : ''}${esc(a.title)}${can.hr() && !live(a) ? ' <span class="badge">ไม่แสดง</span>' : ''}</div>${a.body ? `<div class="small muted" style="white-space:pre-line">${esc(a.body)}</div>` : ''}<div class="tiny muted">ประกาศ · ${fD(a.publish_from)}${a.publish_to ? ' – ' + fD(a.publish_to) : ''}</div></div>${can.hr() ? `<button class="btn ghost icon sm" data-adel="${a.id}" aria-label="ลบประกาศ">${ic('trash')}</button>` : ''}</div>` })),
+    ...docs.map(d => ({ at: d.updated_at, html: `<a class="an" href="#/docs/${d.id}"><span class="mi">${ic(d.status === 'APPROVED' ? 'okc' : d.status === 'REJECTED' ? 'xc' : 'history')}</span><div class="grow" style="min-width:0"><div style="font-weight:600">${esc(dtName(d.document_type_id))} ${badge(DOC_STATUS, d.status)}</div><div class="small muted">${esc(docSummary(d))}</div><div class="tiny muted">ผลการอนุมัติ · ${fDT(d.updated_at)}</div></div>${ic('chev')}</a>` }))];
+  host.innerHTML = `<div class="row" style="margin-bottom:6px"><h3 style="margin:0">${ic('mega')} ประกาศ และผลการอนุมัติ</h3><span class="grow"></span>${can.hr() ? `<button class="btn sm" id="annadd">${ic('plus')} ประกาศ</button>` : ''}</div>
+   <div class="anlist">${items.length ? items.map(x => x.html).join('') : emptyBox('ยังไม่มีประกาศหรือผลการอนุมัติใหม่', 'bell')}</div>`;
+  if ($('#annadd', host)) $('#annadd', host).onclick = () => formModal({ title: 'เพิ่มประกาศ', fields: [
+      { k: 'title', label: 'หัวข้อ', req: true, full: true }, { k: 'body', label: 'รายละเอียด', type: 'textarea', full: true },
+      { k: 'priority', label: 'ระดับ', type: 'select', opts: [['NORMAL', 'ทั่วไป'], ['IMPORTANT', 'สำคัญ']], def: 'NORMAL' },
+      { k: 'publish_from', label: 'แสดงตั้งแต่', type: 'date', req: true, def: todayStr() }, { k: 'publish_to', label: 'ถึง (เว้นว่าง = ไม่กำหนด)', type: 'date' }],
+    onSubmit: async v => { await q(sb.from('announcements').insert({ title: v.title, body: v.body || null, priority: v.priority || 'NORMAL', publish_from: v.publish_from, publish_to: v.publish_to || null })); toast('เผยแพร่ประกาศแล้ว', 'good'); annCard(host); } });
+  $$('[data-adel]', host).forEach(b => b.onclick = async () => { if (!await confirmDlg('ลบประกาศนี้?', { danger: true, okText: 'ลบ' })) return; await guard(() => q(sb.from('announcements').delete().eq('id', b.dataset.adel)), 'ลบแล้ว'); annCard(host); });
+}
+
+/* ===================== ChatHR — ผู้ช่วย HR ตอบจากข้อมูลจริงของพนักงาน ===================== */
+const CHAT_Q = [['มาสายกี่ครั้ง', 'late'], ['เวลาเข้างานวันนี้', 'today'], ['วันลาคงเหลือ', 'leave'], ['สถานะคำขอ', 'docs'], ['ประกาศล่าสุด', 'ann'], ['ขอลางาน', 'goleave'], ['สลิปเงินเดือน', 'slip']];
+function chatIntent(t) {
+  t = t.toLowerCase();
+  if (/สาย|late/.test(t)) return 'late';
+  if (/ลา.*(เหลือ|คงเหลือ|กี่วัน|สิทธิ)|สิทธิ.*ลา|โควตา/.test(t)) return 'leave';
+  if (/ขอลา|ยื่นลา|ลางาน/.test(t)) return 'goleave';
+  if (/เข้างาน|ออกงาน|สแกน|วันนี้|เวลา/.test(t)) return 'today';
+  if (/คำขอ|เอกสาร|อนุมัติ|สถานะ/.test(t)) return 'docs';
+  if (/ประกาศ|ข่าว/.test(t)) return 'ann';
+  if (/สลิป|เงินเดือน|payslip/.test(t)) return 'slip';
+  if (/สวัสดี|hello|hi\b/.test(t)) return 'hi';
+  return '';
+}
+async function chatAnswer(k) {
+  const e = me();
+  if (k === 'hi') return `สวัสดีครับคุณ${e.first_name} มีอะไรให้ HR Agent ช่วยครับ เลือกคำถามด้านบนหรือพิมพ์ถามได้เลย`;
+  if (k === 'late' || k === 'today') {
+    const a = await hrAgentData(); if (a.sys) return 'บัญชีระบบไม่มีข้อมูลเวลาเข้างานครับ';
+    if (k === 'today') { const v = hrAgentVerdict(a); const td = a.today; return `${v.h}\n${v.d}${td && td.last_out ? `\nออกงาน ${fT(td.last_out)} น.` : ''}`; }
+    if (!a.rows.some(r => r.scheduled_start)) return 'เดือนนี้ยังไม่มีข้อมูลกะการทำงานของคุณ จึงยังนับการมาสายไม่ได้ครับ';
+    if (!a.late.length) return `เดือนนี้คุณยังไม่เคยมาสายเลยครับ 👏 ตรงเวลาแล้ว ${a.onTime} วัน`;
+    return `เดือนนี้คุณมาสาย ${a.late.length} ครั้ง รวม ${num(a.lateMin)} นาที\n` + a.late.map(r => `• ${fD(r.work_date)} เข้า ${fT(r.first_in)} น. (สาย ${num(r.late_minutes)} นาที)`).join('\n');
+  }
+  if (k === 'leave') { const d = await rpc('dash_stats'); const m = d.me || {}; return `วันลาคงเหลือรวมทุกประเภทปีนี้ ${num(m.leave_remaining || 0, 1)} วัน\nดูแยกตามประเภทได้ที่เมนู “วันลาคงเหลือ” ครับ`; }
+  if (k === 'docs') {
+    if (e.is_system) return 'บัญชีระบบไม่มีคำขอครับ';
+    const r = await q(sb.from('document_requests').select('*').eq('requester_employee_id', e.id).neq('status', 'DRAFT').order('updated_at', { ascending: false }).limit(5));
+    return r.length ? 'คำขอล่าสุดของคุณ\n' + r.map(d => `• ${dtName(d.document_type_id)} — ${(DOC_STATUS[d.status] || [d.status])[0]}`).join('\n') : 'คุณยังไม่มีคำขอที่ยื่นไว้ครับ';
+  }
+  if (k === 'ann') { const r = await q(sb.from('announcements').select('title,publish_from,active,publish_to').order('created_at', { ascending: false }).limit(5)); const l = r.filter(a => a.active && (!a.publish_to || a.publish_to >= todayStr())); return l.length ? 'ประกาศล่าสุด\n' + l.map(a => `• ${a.title}`).join('\n') : 'ตอนนี้ยังไม่มีประกาศครับ'; }
+  if (k === 'goleave') { setTimeout(() => location.hash = '#/docs/new/LEAVE', 900); return 'กำลังพาไปหน้าขอลางานครับ…'; }
+  if (k === 'slip') { setTimeout(() => location.hash = '#/payroll', 900); return 'กำลังพาไปหน้าสลิปเงินเดือนครับ…'; }
+  return 'ขออภัยครับ ยังไม่เข้าใจคำถาม ลองถามเรื่อง การมาสาย เวลาเข้างาน วันลาคงเหลือ สถานะคำขอ ประกาศ หรือสลิปเงินเดือน';
+}
+PAGES.chat = async el => {
+  el.innerHTML = pageHead('ChatHR', '', '', 'chat') + `<div class="chips2" id="cq">${CHAT_Q.map(([l, k]) => `<button data-k="${k}">${l}</button>`).join('')}</div>
+   <div class="chatbox" id="cbx"></div>
+   <form class="chatin" id="cfm"><input class="inp" id="cin" placeholder="พิมพ์คำถามถึง HR…" autocomplete="off"><button class="btn pri" aria-label="ส่ง">${ic('send')}</button></form>`;
+  const bx = $('#cbx');
+  const add = (who, txt) => { const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = txt; bx.appendChild(d); d.scrollIntoView({ block: 'end', behavior: 'smooth' }); return d; };
+  const ask = async (label, k) => { add('me', label); const w = add('bot', '…'); try { w.textContent = await chatAnswer(k); } catch (err) { w.textContent = 'ดึงข้อมูลไม่สำเร็จ ลองใหม่อีกครั้งครับ'; } w.scrollIntoView({ block: 'end' }); };
+  add('bot', `สวัสดีครับคุณ${me().first_name || ''} ผม HR Agent 🤖\nถามเรื่องเวลาเข้างาน การมาสาย วันลา คำขอ ประกาศ หรือสลิปได้เลยครับ`);
+  on($('#cq'), 'click', 'button', (ev, b) => ask(b.textContent, b.dataset.k));
+  $('#cfm').onsubmit = ev => { ev.preventDefault(); const t = $('#cin').value.trim(); if (!t) return; $('#cin').value = ''; ask(t, chatIntent(t)); };
 };
 
 /* ===================== REPORTS ===================== */
