@@ -1084,7 +1084,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.6.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.6.3</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1271,7 +1271,7 @@ function simpleTiles(m) {
     { h: '#/docs', i: 'upload', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอ<br>อนุมัติ' },
     { h: '#/docs/history', i: 'history', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ประวัติ<br>ขออนุมัติ' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
-    { h: '#/payroll', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
+    { h: '#/payroll/hub', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
   if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
   return t;
@@ -2728,6 +2728,10 @@ async function taskDetail(el, id) {
 /* ===================== M09 PAYROLL ===================== */
 PAGES.payroll = async (el, a, b) => {
   if (a === 'slip') return payslipView(el, b);
+  if (a === 'hub') return payHub(el);
+  if (a === 'summary') return paySummary(el, b);
+  if (a === 'cert') return workCert(el);
+  if (a === 'other') return payOther(el);
   if (a === 'run' && can.payroll()) return runView(el, b);
   const T = [['mine', 'สลิปของฉัน']]; if (can.payroll()) T.unshift(['periods', 'งวดเงินเดือน']);
   el.innerHTML = pageHead('เงินเดือน') + `<div class="tabs" id="ptabs"></div><div id="pbody"></div>`;
@@ -2795,6 +2799,76 @@ async function runView(el, id) {
   if ($('#pxl')) $('#pxl').onclick = () => guard(() => exportXLSX(recs.map(x => ({ 'รหัส': x.snapshot?.employee_code, 'ชื่อ': x.snapshot?.name, 'ตำแหน่ง': x.snapshot?.position, 'สาขา/โครงการ': x.snapshot?.branch, 'เงินเดือนฐาน': Number(x.base_salary), 'รายได้รวม': Number(x.gross_income), 'รายการหัก': Number(x.total_deductions), 'สุทธิ': Number(x.net_salary), 'ฐานประกันสังคม': x.snapshot?.sso_base, 'เงินได้พึงประเมิน': x.snapshot?.taxable_income, 'ตรวจสอบ': (x.warnings || []).join('; ') })), `payroll_${p.period_code}_r${r.run_number}`, 'Payroll'));
   if ($('#pbank')) $('#pbank').onclick = () => { if (!['APPROVED', 'PUBLISHED'].includes(r.status)) return toast('ส่งออกรายการโอนได้หลังอนุมัติเท่านั้น', 'bad'); guard(() => exportXLSX(recs.filter(x => Number(x.net_salary) > 0).map(x => ({ 'รหัส': x.snapshot?.employee_code, 'ชื่อ': x.snapshot?.name, 'ธนาคาร': x.bank_name || '', 'เลขบัญชี (ปกปิด)': x.bank_account_masked || '', 'ยอดโอน': Number(x.net_salary) })), `bank_${p.period_code}_r${r.run_number}`, 'Bank')); };
 }
+/* ===== เมนูเงินเดือนของฉัน (มือถือ): สรุปรายเดือน · สลิป · หนังสือรับรองการทำงาน · อื่นๆ ===== */
+async function myPayRecs() {
+  if (me().is_system) return [];
+  const recs = await q(sb.from('payroll_records').select('*').eq('employee_id', me().id));
+  const runs = recs.length ? await q(sb.from('payroll_runs').select('*').in('id', recs.map(r => r.payroll_run_id)).eq('status', 'PUBLISHED')) : [];
+  const pers = runs.length ? await q(sb.from('payroll_periods').select('*').in('id', runs.map(r => r.payroll_period_id))) : [];
+  return recs.filter(r => runs.some(x => x.id === r.payroll_run_id) && r.calculation_status !== 'EXCLUDED').map(r => { const run = runs.find(x => x.id === r.payroll_run_id); return { ...r, run, per: pers.find(p => p.id === run.payroll_period_id) }; })
+    .sort((x, y) => x.per.period_code === y.per.period_code ? y.run.run_number - x.run.run_number : x.per.period_code < y.per.period_code ? 1 : -1);
+}
+const perLabel = r => esc(r.per.period_name) + (r.run.run_number > 1 ? ` (รอบเพิ่มเติม ${r.run.run_number})` : '');
+async function payHub(el) {
+  const M = [['#/payroll/summary', 'pie', '#0ea5e9', 'สรุปเงินเดือน', 'รายละเอียดรายได้-รายการหักของเดือนนั้น'],
+    ['#/payroll/mine', 'money', '#2563eb', 'สลิปเงินเดือน', 'ดูและพิมพ์ / บันทึก PDF สลิปแต่ละงวด'],
+    ['#/payroll/cert', 'report', '#16a34a', 'หนังสือรับรองการทำงาน', 'ร่างหนังสือรับรองจากข้อมูลพนักงาน'],
+    ['#/payroll/other', 'menu', '#ea8a0c', 'อื่นๆ', 'รายได้สะสมทั้งปี · หนังสือรับรองภาษี · ติดต่อ HR']];
+  el.innerHTML = pageHead('เงินเดือนของฉัน', '', '#/dashboard', 'money') + `<div class="card"><div class="rgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">${M.map(([h, i, c, t]) => `<a class="rtile" href="${h}"><span class="rti" style="color:${c}">${ic(i)}</span><span>${t}</span></a>`).join('')}</div></div>
+   <div class="card" style="margin-top:14px">${M.map(([h, i, c, t, d]) => `<a class="ritem" href="${h}"><span class="rti" style="color:${c}">${ic(i)}</span><span class="grow" style="min-width:0"><b>${t}</b><span class="tiny muted" style="display:block">${d}</span></span>${ic('chev')}</a>`).join('')}</div>`;
+}
+async function paySummary(el, sel) {
+  const rows = await myPayRecs();
+  const head = pageHead('สรุปเงินเดือน', '', '#/payroll/hub', 'pie');
+  if (!rows.length) { el.innerHTML = head + `<div class="card">${emptyBox('ยังไม่มีเงินเดือนที่เผยแพร่')}</div>`; return; }
+  const r = rows.find(x => x.id === sel) || rows[0];
+  const items = await rpc('payslip_items', { p_record: r.id });
+  const E = items.filter(i => i.item_type === 'EARNING'), D = items.filter(i => i.item_type === 'DEDUCTION');
+  const li = i => `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:nowrap"><span class="grow">${esc(i.item_name)}${i.quantity && i.item_code !== 'SSO' ? ` <span class="tiny muted">(${num(i.quantity, 2)})</span>` : ''}</span><b class="mono">${money(i.amount)}</b></div>`;
+  el.innerHTML = head + `
+   <div class="card"><label class="f">งวดเงินเดือน<select class="inp" id="psel">${rows.map(x => `<option value="${x.id}" ${x.id === r.id ? 'selected' : ''}>${perLabel(x)}</option>`).join('')}</select></label>
+    <div style="text-align:center;margin:14px 0 6px"><div class="small muted">เงินได้สุทธิ</div><div style="font-size:32px;font-weight:700;color:var(--brand)">${money(r.net_salary)} <span style="font-size:15px">บาท</span></div><div class="tiny muted">วันจ่าย ${fD(r.per.payment_date)}</div></div>
+    <div class="grid" style="gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card kpi"><span class="v" style="color:var(--good)">${money(r.gross_income)}</span><span class="l">รายได้รวม</span></div><div class="card kpi"><span class="v" style="color:var(--bad)">${money(r.total_deductions)}</span><span class="l">รายการหักรวม</span></div></div></div>
+   <div class="card" style="margin-top:14px"><h3 style="color:var(--good)">${ic('in')} รายได้</h3>${E.length ? E.map(li).join('') : emptyBox('ไม่มีรายการ')}</div>
+   <div class="card" style="margin-top:14px"><h3 style="color:var(--bad)">${ic('out')} รายการหัก</h3>${D.length ? D.map(li).join('') : emptyBox('ไม่มีรายการ')}</div>
+   <a class="btn pri" style="width:100%;margin-top:14px;justify-content:center" href="#/payroll/slip/${r.id}">${ic('money')} ดูสลิปเงินเดือนงวดนี้</a>`;
+  $('#psel').onchange = e => { location.hash = '#/payroll/summary/' + e.target.value; };
+}
+async function workCert(el) {
+  const head = pageHead('หนังสือรับรองการทำงาน', `<button class="btn" onclick="print()">${ic('print')} พิมพ์ / PDF</button>`, '#/payroll/hub', 'report');
+  if (me().is_system) { el.innerHTML = head + `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ออกหนังสือรับรองไม่ได้</div>`; return; }
+  const [emp, rows] = await Promise.all([q(sb.from('employees').select('*').eq('id', me().id).maybeSingle()), myPayRecs()]);
+  const e = { ...me(), ...(emp || {}) }; const sal = rows[0] ? rows[0].base_salary : null;
+  const name = `${e.title_th || ''}${e.first_name} ${e.last_name || ''}`.trim();
+  const svc = (() => { if (!e.hire_date) return ''; const a = dParts(e.hire_date), b = dParts(todayStr()); let m = (b.y - a.y) * 12 + (b.m - a.m) - (b.d < a.d ? 1 : 0); if (m < 0) return ''; return `${Math.floor(m / 12) ? Math.floor(m / 12) + ' ปี ' : ''}${m % 12} เดือน`; })();
+  el.innerHTML = head + `
+   <div class="card noprint" style="margin-bottom:12px"><div class="grid g2" style="gap:10px">
+    <label class="f">วัตถุประสงค์ (ถ้ามี)<input class="inp" id="cpur" placeholder="เช่น ประกอบการขอสินเชื่อ / ขอวีซ่า"></label>
+    <label class="f row" style="align-items:center;gap:8px;margin-top:22px"><input type="checkbox" id="csal" ${sal == null ? 'disabled' : ''}> ระบุเงินเดือน${sal == null ? ' <span class="tiny muted">(ยังไม่มีเงินเดือนที่เผยแพร่)</span>' : ''}</label></div>
+    <div class="notice info" style="margin-top:10px">${ic('alert')}<div>เอกสารนี้เป็นร่างจากข้อมูลในระบบ — ใช้อ้างอิงอย่างเป็นทางการได้เมื่อผู้มีอำนาจลงนามและประทับตราบริษัทแล้ว ติดต่อ HR เพื่อขอฉบับลงนาม</div></div></div>
+   <div class="payslip" id="cdoc"></div>`;
+  const draw = () => { const pur = $('#cpur').value.trim(), ws = $('#csal').checked;
+    $('#cdoc').innerHTML = `<div class="hd">${window.__MOCK_SB__ ? '<img src="logo.png" alt="">' : `<img src="${esc(logoSrc())}" alt="" onerror="this.remove()">`}<div style="flex:1"><div style="font-weight:700;font-size:17px">${esc(S.company.company_name || '')}</div></div></div>
+     <div style="text-align:center;font-weight:700;font-size:20px;margin:22px 0 6px">หนังสือรับรองการทำงาน</div>
+     <div style="text-align:right;margin-bottom:18px">วันที่ ${fD(todayStr())}</div>
+     <p style="text-indent:48px;line-height:2">หนังสือฉบับนี้ให้ไว้เพื่อรับรองว่า <b>${esc(name)}</b> รหัสพนักงาน <b>${esc(e.employee_code || '–')}</b> เป็นพนักงานของ${esc(S.company.company_name || 'บริษัท')} ปัจจุบันดำรงตำแหน่ง <b>${esc(e.position_name || '–')}</b>${e.department_name ? ` สังกัด${esc(e.department_name)}` : ''}${e.branch_name ? ` (${esc(e.branch_name)})` : ''} เริ่มปฏิบัติงานตั้งแต่วันที่ <b>${e.hire_date ? fD(e.hire_date) : '–'}</b> จนถึงปัจจุบัน${svc ? ` รวมอายุงาน ${svc}` : ''}${ws ? ` ได้รับเงินเดือนเดือนละ <b>${money(sal)}</b> บาท` : ''}</p>
+     <p style="text-indent:48px;line-height:2">${pur ? `ออกให้เพื่อใช้${esc(pur.replace(/^เพื่อ(ใช้)?/, ''))}` : 'ออกให้ไว้เพื่อเป็นหลักฐาน'}</p>
+     <div style="margin:56px 0 0 auto;width:280px;text-align:center;line-height:2">ลงชื่อ ......................................................<br>(......................................................)<br>ตำแหน่ง ..................................................<br>ผู้มีอำนาจลงนาม</div>
+     <div style="font-size:11.5px;color:#777;margin-top:28px">ร่างจากระบบ HR Application · ต้องลงนามและประทับตราบริษัทจึงมีผลใช้อ้างอิง</div>`; };
+  $('#cpur').oninput = draw; $('#csal').onchange = draw; draw();
+}
+async function payOther(el) {
+  const rows = await myPayRecs(); const y = todayStr().slice(0, 4);
+  const yr = rows.filter(r => (r.per.payment_date || r.per.period_code || '').slice(0, 4) === y);
+  const t = yr.reduce((s, x) => ({ g: s.g + Number(x.gross_income), d: s.d + Number(x.total_deductions), n: s.n + Number(x.net_salary) }), { g: 0, d: 0, n: 0 });
+  el.innerHTML = pageHead('อื่นๆ', '', '#/payroll/hub', 'menu') + `
+   <div class="card"><h3>${ic('wallet')} รายได้สะสมปี ${Number(y) + 543}</h3>${yr.length ? `<div class="tiny muted" style="margin-bottom:8px">จาก ${yr.length} งวดที่เผยแพร่แล้ว</div>
+    ${[['รายได้รวม', t.g, 'var(--good)'], ['รายการหักรวม', t.d, 'var(--bad)'], ['เงินได้สุทธิรวม', t.n, 'var(--brand)']].map(([l, v, c]) => `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><span class="grow">${l}</span><b class="mono" style="color:${c}">${money(v)}</b></div>`).join('')}` : emptyBox('ยังไม่มีเงินเดือนที่เผยแพร่ในปีนี้')}</div>
+   <div class="card" style="margin-top:14px">
+    <div class="ritem" style="opacity:.75"><span class="rti" style="color:#64748b">${ic('shield')}</span><span class="grow" style="min-width:0"><b>หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)</b><span class="tiny muted" style="display:block">ยังไม่เปิดใช้ — ระบบยังไม่คำนวณภาษีหัก ณ ที่จ่ายอัตโนมัติ ติดต่อ HR</span></span><span class="badge b-warn">รอเปิด</span></div>
+    <a class="ritem" href="#/docs"><span class="rti" style="color:#ea8a0c">${ic('send')}</span><span class="grow" style="min-width:0"><b>ยื่นคำขออื่นๆ</b><span class="tiny muted" style="display:block">ไปหน้ายื่นเอกสาร</span></span>${ic('chev')}</a>
+    <a class="ritem" href="#/chat"><span class="rti" style="color:#2563eb">${ic('chat')}</span><span class="grow" style="min-width:0"><b>สอบถาม HR (ChatHR)</b><span class="tiny muted" style="display:block">ถามเรื่องเงินเดือน วันลา สถานะคำขอ</span></span>${ic('chev')}</a></div>`;
+}
 async function payslipView(el, recId) {
   const rec = await q(sb.from('payroll_records').select('*').eq('id', recId).maybeSingle());
   if (!rec) { el.innerHTML = pageHead('สลิปเงินเดือน', '', '#/payroll') + emptyBox('ไม่พบสลิป หรือไม่มีสิทธิ์'); return; }
@@ -2802,7 +2876,7 @@ async function payslipView(el, recId) {
   const items = await rpc('payslip_items', { p_record: recId });
   const E = items.filter(i => i.item_type === 'EARNING'), D = items.filter(i => i.item_type === 'DEDUCTION'); const n = Math.max(E.length, D.length, 1);
   const line = i => i ? `<td>${esc(i.item_name)}${i.quantity && i.item_code !== 'SSO' ? ` <span style="color:#666;font-size:12px">(${num(i.quantity, 2)})</span>` : ''}</td><td style="text-align:right">${money(i.amount)}</td>` : '<td></td><td></td>';
-  el.innerHTML = pageHead('สลิปเงินเดือน', `<button class="btn" onclick="print()">${ic('print')} พิมพ์ / PDF</button>`, can.payroll() ? '#/payroll/run/' + run.id : '#/payroll/mine') + `
+  el.innerHTML = pageHead('สลิปเงินเดือน', `<button class="btn" onclick="print()">${ic('print')} พิมพ์ / PDF</button>`, can.payroll() ? '#/payroll/run/' + run.id : simpleMode() ? '#/payroll/hub' : '#/payroll/mine') + `
    <div class="payslip"><div class="hd">${window.__MOCK_SB__ ? '<img src="logo.png" alt="">' : `<img src="${esc(logoSrc())}" alt="" onerror="this.remove()">`}<div style="flex:1"><div style="font-weight:700;font-size:17px">${esc(S.company.company_name || '')}</div><div style="font-size:13px;color:#555">สลิปเงินเดือน (Payslip) · ${esc(per.period_name)}${run.run_number > 1 ? ' · รอบเพิ่มเติม ' + run.run_number : ''}</div></div><div style="text-align:right;font-size:13px">วันจ่าย<br><b>${per.payment_date ? fD(per.payment_date) : '–'}</b></div></div>
     <table style="margin-bottom:12px"><tr><td style="width:18%;color:#666">รหัสพนักงาน</td><td>${esc(rec.snapshot?.employee_code || '')}</td><td style="width:16%;color:#666">ตำแหน่ง</td><td>${esc(rec.snapshot?.position || '–')}</td></tr><tr><td style="color:#666">ชื่อ-นามสกุล</td><td>${esc(rec.snapshot?.name || '')}</td><td style="color:#666">สังกัด</td><td>${esc(rec.snapshot?.branch || '–')}</td></tr><tr><td style="color:#666">ธนาคาร</td><td>${esc(rec.bank_name || '–')}</td><td style="color:#666">เลขบัญชี</td><td>${esc(rec.bank_account_masked || '–')}</td></tr></table>
     <table style="border:1px solid #ccc"><tr style="background:#eef4ff"><td colspan="2"><b>รายได้</b></td><td colspan="2" style="border-left:1px solid #ccc"><b>รายการหัก</b></td></tr>
