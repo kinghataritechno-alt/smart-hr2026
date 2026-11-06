@@ -585,7 +585,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 @media (min-width:1000px), (min-width:700px) and (min-height:500px){
   :root[data-skin=glass]{--bg:#081a3d;--panel:rgba(18,44,98,.42);--panel-2:rgba(255,255,255,.07);--ink:#f1f6ff;--ink-2:#bfd0ee;--ink-3:#8fa6cf;--line:rgba(150,200,255,.24);
     --brand:#8cc8ff;--brand-2:#5eb1ff;--brand-3:rgba(255,255,255,.08);--gold:#e2b26a;--bar1:#38bdf8;--bar2:#f59e0b;--d1:#38bdf8;--d2:#f59e0b;--d3:#a5b4fc;--d4:#fcd34d;--d5:#34d399;--d6:#f472b6;--shadow:0 10px 30px rgba(0,8,30,.35);color-scheme:dark}
-  :root[data-skin=glass] body{background:linear-gradient(180deg,rgba(3,12,36,.74),rgba(3,14,42,.66) 40%,rgba(2,8,28,.86)) fixed,#061633 url(admin-bg.jpg) center/cover fixed no-repeat}
+  :root[data-skin=glass] body{background:linear-gradient(180deg,rgba(2,8,26,.86),rgba(2,10,32,.80) 40%,rgba(1,5,20,.92)) fixed,#061633 url(admin-bg.jpg) center/cover fixed no-repeat}
     :root[data-skin=glass] .shell{background:none;position:relative;z-index:0}
   :root[data-skin=glass] .main{background:none}
   /* sidebar แบบการ์ดกระจกลอย */
@@ -659,6 +659,15 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 @media (min-width:1000px), (min-width:700px) and (min-height:500px){
   :root[data-skin=glass] .sb{background:rgba(255,255,255,.10);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);border:1px solid rgba(170,215,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 4px 18px rgba(0,8,30,.18);text-shadow:0 1px 3px rgba(0,10,40,.75)}
   :root[data-skin=glass] .sb a.nav.on{text-shadow:none}
+}
+
+/* v1.5.1 — พื้นหลังมืดขึ้น + ตัวอักษรสว่างขึ้น */
+@media (min-width:1000px), (min-width:700px) and (min-height:500px){
+  :root[data-skin=glass]{--ink:#ffffff;--ink-2:#dce8ff;--ink-3:#b8cbec}
+  :root[data-skin=glass] .muted,:root[data-skin=glass] .small.muted,:root[data-skin=glass] .tiny.muted,:root[data-skin=glass] .kd,:root[data-skin=glass] .kl{color:#cfdcf5}
+  :root[data-skin=glass] .tbl td,:root[data-skin=glass] .atbl td,:root[data-skin=glass] .sb a.nav,:root[data-skin=glass] .ttl>span{color:#fff}
+  :root[data-skin=glass] .tbl th,:root[data-skin=glass] .atbl th{color:#e6efff}
+  :root[data-skin=glass] .inp::placeholder{color:#c3d3ef}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -1057,7 +1066,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.5.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1221,7 +1230,7 @@ function simpleTiles(m) {
   const t = [{ h: '#/time/me', i: 'clock', c: 'linear-gradient(135deg,#22d3ee,#0e7490)', tl: 'เวลา<br>เข้า-ออก' },
     { h: '#/docs/new/LEAVE', i: 'umbrella', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอลา' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
-    { h: '#/approve', i: 'send', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ขอ OT /<br>คำขออื่น' },
+    { h: '#/approve', i: 'send', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ยื่น<br>คำขอ' },
     { h: '#/payroll', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
   if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
@@ -2293,7 +2302,7 @@ function docSummary(d) {
   if (c === 'SHIFT_CHANGE') return `${fD(d.date_from)}${d.date_to ? ' – ' + fD(d.date_to) : ''} → ${nameOf('shifts', d.shift_id, 'shift_name')}`;
   if (c === 'DAYOFF_CHANGE') return `วันหยุดเดิม ${fD(d.date_from)} → วันหยุดใหม่ ${fD(d.date_to)}`;
   if (c === 'TIME_ADD') return `${fD(d.date_from)} เข้า ${fT(d.time_in)} ออก ${fT(d.time_out)}`;
-  if (c === 'OT') return `${fD(d.date_from)} · ${num(d.hours, 2)} ชม. · ${OT_DAY[(d.request_data || {}).day_type] || ''}`;
+  if (c === 'OT') { const em = (d.request_data || {}).employees || []; return `${fD(d.date_from)} · ${num(d.hours, 2)} ชม. · ${OT_DAY[(d.request_data || {}).day_type] || ''}${em.length ? ` · ${em.length} คน: ${em.slice(0, 3).map(id => (S.dirMap[id] || {}).first_name || '').filter(Boolean).join(', ')}${em.length > 3 ? '…' : ''}` : ''}`; }
   if (c === 'RESIGN') return `มีผล ${fD(d.effective_date)}`;
   if (c === 'FACE_PHOTO') return 'ขอเพิ่มรูปภาพใบหน้า';
   const r = d.request_data || {};
@@ -2337,7 +2346,10 @@ function docFields(code) {
 async function docForm(el, code, doc) {
   const t = S.L.docTypes.find(x => x.document_code === code); if (!t) { location.hash = '#/docs'; return; }
   if (me().is_system) { el.innerHTML = pageHead('ยื่นเอกสาร', '', '#/docs') + emptyBox('บัญชีระบบ (admin) ไม่ใช่พนักงาน จึงยื่นคำร้องไม่ได้'); return; }
-  const fields = docFields(code); const v = doc ? { ...doc, ...(doc.request_data || {}), in_t: doc.time_in ? fT(doc.time_in) : '', out_t: doc.time_out ? fT(doc.time_out) : '', out_d: doc.time_out ? new Date(doc.time_out).toLocaleDateString('en-CA', { timeZone: CFG.tz }) : '' } : {};
+  if (code === 'OT' && !(await rpc('ot_can_request').catch(() => false))) { el.innerHTML = pageHead('ขอค่าล่วงเวลา (OT)', '', '#/approve') + `<div class="card"><div class="notice info">${ic('alert')}<div>การขอ OT ทำได้เฉพาะระดับหัวหน้างานขึ้นไป (SUP / ASM / MGR / DIR) โดยหัวหน้าเป็นผู้ขอให้ลูกทีม — กรุณาแจ้งหัวหน้างานของท่าน</div></div></div>`; return; }
+  const otTeam = code === 'OT' ? await rpc('ot_team') : [];
+  const fields = docFields(code); if (code === 'OT') fields.unshift({ k: 'ot_emps', label: 'ขอ OT ให้ลูกทีม (เลือกได้หลายคน)', type: 'checks', req: true, full: true, opts: otTeam.map(x => [x.id, `${x.employee_code} ${x.name}`]) });
+  const v = doc ? { ...doc, ...(doc.request_data || {}), ot_emps: (doc.request_data || {}).employees || [], in_t: doc.time_in ? fT(doc.time_in) : '', out_t: doc.time_out ? fT(doc.time_out) : '', out_d: doc.time_out ? new Date(doc.time_out).toLocaleDateString('en-CA', { timeZone: CFG.tz }) : '' } : {};
   const atts = doc ? await q(sb.from('document_attachments').select('*').eq('document_id', doc.id)) : [];
   let extra = '';
   if (code === 'LEAVE') { const bal = await rpc('leave_balances', { p_emp: me().id, p_year: Number(todayStr().slice(0, 4)) }); extra = `<div class="row" style="margin-bottom:12px">${bal.filter(x => x.uses_quota).map(x => `<span class="badge b-info">${esc(x.leave_name)} คงเหลือ ${num(x.remaining - x.pending, 1)} วัน</span>`).join('')}</div>`; }
@@ -2362,7 +2374,7 @@ async function docForm(el, code, doc) {
     const x = readFields($('#dform'), fields);
     const row = { document_type_id: t.id, requester_employee_id: me().id, reason: x.reason || null, date_from: x.date_from || null, date_to: x.date_to || null, effective_date: x.effective_date || null, leave_type_id: x.leave_type_id || null, half_day: x.half_day || null, shift_id: x.shift_id || null, hours: x.hours ?? null, request_data: {} };
     if (code === 'TIME_ADD') { row.time_in = localTs(x.date_from, x.in_t); row.time_out = localTs(x.out_d || x.date_from, x.out_t); if (!row.time_in && !row.time_out) throw new Error('กรุณาระบุเวลาเข้าหรือออก'); }
-    if (code === 'OT') row.request_data = { day_type: x.day_type, from: x.ot_from, to: x.ot_to };
+    if (code === 'OT') row.request_data = { day_type: x.day_type, from: x.ot_from, to: x.ot_to, employees: x.ot_emps || [] };
     if (code === 'FACE_PHOTO') row.request_data = { consent: !!x.consent };
     if (RD_TYPES.includes(code)) row.request_data = Object.fromEntries(fields.filter(f => f.rd).map(f => [f.k, x[f.k]]));
     if (code === 'LEAVE' && x.date_to && x.date_from && x.date_to < x.date_from) throw new Error('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม');
@@ -2435,7 +2447,7 @@ PAGES.approve = async (el, a, tab) => {
     history.replaceState(null, '', '#/approve/tab/' + t);
     const b = $('#abody'); loading(b);
     if (t === 'request') {
-      const mine = await myDocs(); const SIMPLE = simpleMode(), grid = SIMPLE ? REQ_SIMPLE : REQ_GRID; const others = S.L.docTypes.filter(x => x.active_status === 'ACTIVE' && !grid.includes(x.document_code) && (!SIMPLE || REQ_SIMPLE_MORE.includes(x.document_code))).map(x => x.document_code);
+      const [mine, otOk] = await Promise.all([myDocs(), rpc('ot_can_request').catch(() => false)]); const SIMPLE = simpleMode(), grid = (SIMPLE ? REQ_SIMPLE : REQ_GRID).filter(c => c !== 'OT' || otOk); const others = S.L.docTypes.filter(x => x.active_status === 'ACTIVE' && !grid.includes(x.document_code) && (x.document_code !== 'OT' || otOk) && (!SIMPLE || REQ_SIMPLE_MORE.includes(x.document_code))).map(x => x.document_code);
       b.innerHTML = `<div class="card"><h3>${ic('upload')} สร้างคำขออนุมัติ</h3>${me().is_system ? `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ยื่นคำขอไม่ได้ แต่ดู/อนุมัติเอกสารได้</div>` : ''}
         <div class="rgrid">${grid.map(reqTile).join('')}</div>${others.length ? `<div class="row" style="margin-top:12px">${others.map(c => `<a class="btn sm" href="#/docs/new/${c}">${ic(DT_ICON[c] || 'file')} ${esc(dtName(S.L.docTypes.find(x => x.document_code === c).id))}</a>`).join('')}</div>` : ''}</div>
         <div class="card" style="margin-top:14px"><div class="row" style="margin-bottom:6px"><h3 style="margin:0">${ic('list')} รายการคำขอของฉัน</h3><span class="grow"></span><button class="btn ghost sm" data-go="mine">ดูทั้งหมด ${ic('chev')}</button></div>
