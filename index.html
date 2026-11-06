@@ -646,6 +646,16 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
   :root[data-skin=glass] .os-node{background:rgba(255,255,255,.08)}
   :root[data-skin=glass] .os-node.dv{background:#1d5fc4}
 }
+/* v1.4.1 — การ์ดโปร่งใสมากที่สุด */
+@media (min-width:1000px), (min-width:700px) and (min-height:500px){
+  :root[data-skin=glass] .card,:root[data-skin=glass] .panel,:root[data-skin=glass] .kcard,:root[data-skin=glass] .tbl-wrap,:root[data-skin=glass] .gtabs,:root[data-skin=glass] .org-node,:root[data-skin=glass] .os-div{
+    background:rgba(255,255,255,.02);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);
+    border:1px solid rgba(170,215,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 4px 18px rgba(0,8,30,.18)}
+  :root[data-skin=glass] .panel>header{background:transparent}
+  :root[data-skin=glass] .tbl th,:root[data-skin=glass] .atbl th{background:rgba(4,20,56,.22)}
+  :root[data-skin=glass] .card,:root[data-skin=glass] .panel,:root[data-skin=glass] .kcard,:root[data-skin=glass] .tbl-wrap{text-shadow:0 1px 3px rgba(0,10,40,.75)}
+  :root[data-skin=glass] .card .btn,:root[data-skin=glass] .panel .btn,:root[data-skin=glass] .badge{text-shadow:none}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1041,7 +1051,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.4.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.4.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
