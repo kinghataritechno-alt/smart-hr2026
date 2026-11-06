@@ -166,6 +166,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .agbn{text-align:center;border-radius:14px;padding:16px 14px 14px}.agbn .bi svg{width:34px;height:34px;stroke-width:1.8}.agbn h4{margin:6px 0 6px;font-size:19px;font-weight:700}.agbn .bm{font-size:14.5px;color:var(--ink);font-weight:500}.agbn .bs{font-size:14px;margin-top:10px}.agbn .bt{font-size:12.5px;color:var(--ink-2);margin-top:6px}
 .agbn.bad{background:#fdecec;color:#c8323a}.agbn.ok{background:#eaf6ee;color:#1f7a45}.agbn.bad h4{color:#b42318}.agbn.ok h4{color:#1f6b3e}
 :root[data-theme="dark"] .agbn.bad{background:rgba(220,38,38,.14)}:root[data-theme="dark"] .agbn.ok{background:rgba(22,163,74,.14)}
+.astep{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);position:relative}.astep .an{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--brand-3);color:var(--brand);font-weight:700;font-size:14px}.astep .an svg{width:16px;height:16px}
 .agent h4{margin:0 0 2px;font-size:16px}.agent .ad{font-size:14px;color:var(--ink-2)}.lstat{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.lstat span{background:var(--panel-2);border-radius:10px;padding:6px 10px;font-size:13px}.lstat b{font-size:15px}
 .anlist .an{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);color:inherit}.anlist .an:first-child{border-top:0}.anlist .an .mi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--brand-3);color:var(--brand)}
 .chatbox{display:flex;flex-direction:column;gap:10px;min-height:50vh}.msg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:15px;line-height:1.5;white-space:pre-line}.msg.bot{background:var(--panel);border:1px solid var(--line);border-top-left-radius:4px;align-self:flex-start}.msg.me{background:var(--brand);color:#fff;border-top-right-radius:4px;align-self:flex-end}
@@ -1091,7 +1092,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.7.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.7.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1190,6 +1191,7 @@ PAGES.profile = async el => {
     <div class="pline">${ic('brief')} ${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', ') || '–')}</div>
     <div class="pline">${ic('org')} ${esc(e.department_name || '–')}</div>
     <div class="pline">${ic('pin')} ${esc(e.branch_name || '–')}</div><span class="badge b-good pstat">● ${esc((EMP_STATUS[e.employee_status] || ['ปฏิบัติงาน'])[0])}</span></div></div></div>
+  ${sys ? '' : '<div id="porg" style="margin-top:14px"><div class="card"><div class="spin"></div></div></div>'}
   <div class="card mlist" style="margin-top:14px">${menuShown.map(([i, t, d, h]) => `<a class="mitem ${h ? '' : 'dis'}" ${h ? `href="${h}"` : ''}><span class="mi">${ic(i)}</span><span class="grow"><b>${t}</b><span>${d}</span></span>${ic('chev')}</a>`).join('')}</div>
   <div class="card mlist" style="margin-top:14px">
     <a class="mitem" id="pphoto"><span class="mi">${ic('up')}</span><span class="grow"><b>เปลี่ยนรูปโปรไฟล์</b><span>JPG/PNG ไม่เกิน 10MB</span></span>${ic('chev')}</a>
@@ -1204,7 +1206,40 @@ PAGES.profile = async el => {
   $('#pphoto').onclick = () => { if (sys) return toast('บัญชีระบบไม่มีรูปโปรไฟล์', 'bad'); formModal({ title: 'เปลี่ยนรูปโปรไฟล์', fields: [{ k: 'f', label: 'ไฟล์รูป (JPG/PNG ไม่เกิน 10MB)', type: 'file', accept: 'image/*', req: true, full: true }],
     onSubmit: async v => { const f = await cropPhoto(v.f[0]); if (!f) return; const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
   $$('.mitem.dis', el).forEach(x => x.onclick = () => toast('บัญชีระบบ (admin) ไม่มีข้อมูลพนักงาน'));
+  if (!sys) profileOrg($('#porg')).catch(err => { $('#porg').innerHTML = `<div class="notice bad">${esc(errMsg(err))}</div>`; });
 };
+/* อายุงานจากวันเริ่มงาน → "x ปี y เดือน z วัน" */
+function serviceLen(from, to = todayStr()) {
+  if (!from) return ''; const a = dParts(from), b = dParts(to);
+  let y = b.y - a.y, m = b.m - a.m, d = b.d - a.d;
+  if (d < 0) { m--; d += new Date(Date.UTC(b.y, b.m - 1, 0)).getUTCDate(); } if (m < 0) { y--; m += 12; } if (y < 0) return '';
+  return [y && `${y} ปี`, m && `${m} เดือน`, d && `${d} วัน`].filter(Boolean).join(' ') || '0 วัน';
+}
+/* ข้อมูลของฉัน: สังกัดตามโครงสร้างองค์กร · อายุงาน · สายอนุมัติ (ผู้ขอ → ผู้อนุมัติแต่ละขั้น พร้อมตำแหน่ง) */
+async function profileOrg(host) {
+  const o = await rpc('my_org_profile'); if (!o) { host.innerHTML = ''; return; }
+  const e = me(); const P = x => x ? `${esc(x.name)}${x.pos || x.position ? `<div class="tiny muted">${x.pos ? `<span class="mono">${esc(x.pos)}</span> · ` : ''}${esc(x.position || '')}</div>` : ''}` : '';
+  const row = (l, c, n) => `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);flex-wrap:nowrap;align-items:flex-start"><span class="muted small" style="width:118px;flex:none">${l}</span><span class="grow" style="min-width:0">${c ? `<span class="mono" style="color:var(--brand);font-weight:600">${esc(c)}</span> ` : ''}${n ? esc(n) : (c ? '' : '<span class="muted">–</span>')}</span></div>`;
+  const svc = serviceLen(o.hire_date);
+  const stepPeople = s => s.resolver === 'HR_ROLE' ? (s.approvers.length ? `ผู้มีสิทธิ์ HR ทุกคน <span class="tiny muted">(${s.approvers.map(x => esc(x.is_system ? 'admin' : x.name)).join(', ')})</span>` : pend('ยังไม่มีผู้มีสิทธิ์ HR'))
+    : s.approvers.length ? s.approvers.map(P).join('') : pend(s.resolver === 'SUPERVISOR' ? 'ยังไม่ได้กำหนดหัวหน้างาน' : 'ยังไม่ได้ตั้งค่า (OI-09)');
+  const roleOf = s => s.resolver === 'SUPERVISOR' ? 'หัวหน้างานโดยตรง' : s.resolver === 'HR_ROLE' ? 'ฝ่ายบุคคล (HR)' : 'ผู้มีอำนาจอนุมัติ';
+  host.innerHTML = `
+   <div class="card"><h3 style="margin-bottom:6px">${ic('org')} สังกัดตามโครงสร้างองค์กร</h3>
+    <div class="row" style="padding:6px 0 10px;flex-wrap:nowrap"><span class="muted small" style="width:118px;flex:none">รหัสตำแหน่งงาน</span><b class="mono" style="font-size:17px;letter-spacing:.5px;color:var(--brand)">${esc(o.position_code || '–')}</b></div>
+    ${row('ตำแหน่ง (POS)', o.position.pos, o.position.name)}${row('ฝ่าย (DIV)', o.division && o.division.code, o.division && o.division.name)}${row('แผนก (DEP)', o.department && o.department.code, o.department && o.department.name)}
+    ${row('ส่วนงาน (SEC)', o.section && o.section.code, o.section && o.section.name)}${row('โครงการ (PRJ)', o.project && o.project.code, o.project && o.project.name)}
+    <div class="row" style="padding:8px 0;border-top:1px solid var(--line);flex-wrap:nowrap;align-items:flex-start"><span class="muted small" style="width:118px;flex:none">หัวหน้างาน</span><span class="grow">${o.supervisor ? P(o.supervisor) : pend('ยังไม่ได้กำหนด')}</span></div></div>
+   <div class="card" style="margin-top:14px"><h3 style="margin-bottom:6px">${ic('cal')} อายุงาน</h3>
+    <div style="text-align:center;padding:6px 0 10px"><div style="font-size:24px;font-weight:700;color:var(--brand)">${svc || '–'}</div><div class="tiny muted">นับถึงวันนี้ ${fD(todayStr())}</div></div>
+    ${row('วันเริ่มงาน', '', o.hire_date ? fD(o.hire_date) : '')}${row('วันบรรจุ', '', o.regularization_date ? fD(o.regularization_date) : '')}${o.assigned_from ? row('สังกัดปัจจุบันตั้งแต่', '', fD(o.assigned_from)) : ''}</div>
+   <div class="card" style="margin-top:14px"><h3 style="margin-bottom:4px">${ic('approve')} สายอนุมัติเอกสารของฉัน</h3><div class="tiny muted" style="margin-bottom:8px">ใช้กับใบลา ขอเปลี่ยนกะ ขอเพิ่มเวลา และคำขออื่น ๆ</div>
+    <div class="astep"><span class="an">${ic('user')}</span><div class="grow"><div class="tiny muted">ผู้ขออนุมัติ</div><b>${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</b><div class="tiny muted">${o.position.pos ? `<span class="mono">${esc(o.position.pos)}</span> · ` : ''}${esc(o.position.name || '')}</div></div></div>
+    ${o.steps.map(s => `<div class="astep"><span class="an">${s.order}</span><div class="grow"><div class="tiny muted">ขั้นที่ ${s.order} · ${roleOf(s)}</div>${stepPeople(s)}${s.backup ? `<div class="tiny muted" style="margin-top:2px">ผู้อนุมัติสำรอง: ${esc(s.backup.name)}${s.backup.position ? ' · ' + esc(s.backup.position) : ''}</div>` : ''}</div></div>`).join('')}
+    ${o.position.pos && ['SUP', 'ASM', 'MGR', 'DIR'].includes(o.position.pos) ? `<div class="tiny muted" style="margin-top:10px">คำขอ OT: อนุมัติโดยผู้อำนวยการฝ่าย — ${o.ot_approvers.length ? o.ot_approvers.map(x => esc(x.name)).join(', ') : 'ยังไม่มีตำแหน่ง DIR ในฝ่ายของท่าน'}</div>` : ''}
+    ${o.steps.some(s => !s.approvers.length) ? `<div class="notice" style="margin-top:10px">${ic('alert')}<div>สายอนุมัติยังไม่ครบ — ยื่นเอกสารได้เมื่อ HR ตั้งค่าครบทุกขั้น</div></div>` : ''}</div>
+   ${o.team.length ? `<div class="card" style="margin-top:14px"><h3 style="margin-bottom:6px">${ic('users')} ผู้ที่ฉันอนุมัติให้ (ขั้นที่ 1) <span class="badge">${o.team.length} คน</span></h3>${o.team.map(x => `<div style="padding:6px 0;border-top:1px solid var(--line)">${P(x)}</div>`).join('')}</div>` : ''}`;
+}
 /* ครอปรูปโปรไฟล์เป็นสี่เหลี่ยมจัตุรัส ให้ใบหน้าอยู่กึ่งกลางกรอบวงกลม (ลาก/ซูมได้) */
 function cropPhoto(file) {
   return new Promise((res, rej) => {
