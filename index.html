@@ -1091,7 +1091,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.7.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.7.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -2901,8 +2901,7 @@ async function payHub(el) {
     ['#/payroll/mine', 'money', '#2563eb', 'สลิปเงินเดือน', 'ดูและพิมพ์ / บันทึก PDF สลิปแต่ละงวด'],
     ['#/payroll/cert', 'report', '#16a34a', 'หนังสือรับรองการทำงาน', 'ร่างหนังสือรับรองจากข้อมูลพนักงาน'],
     ['#/payroll/other', 'menu', '#ea8a0c', 'อื่นๆ', 'รายได้สะสมทั้งปี · หนังสือรับรองภาษี · ติดต่อ HR']];
-  el.innerHTML = pageHead('เงินเดือนของฉัน', '', '#/dashboard', 'money') + `<div class="card"><div class="rgrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">${M.map(([h, i, c, t]) => `<a class="rtile" href="${h}"><span class="rti" style="color:${c}">${ic(i)}</span><span>${t}</span></a>`).join('')}</div></div>
-   <div class="card" style="margin-top:14px">${M.map(([h, i, c, t, d]) => `<a class="ritem" href="${h}"><span class="rti" style="color:${c}">${ic(i)}</span><span class="grow" style="min-width:0"><b>${t}</b><span class="tiny muted" style="display:block">${d}</span></span>${ic('chev')}</a>`).join('')}</div>`;
+  el.innerHTML = pageHead('เงินเดือนของฉัน', '', '#/dashboard', 'money') + `<div class="card">${M.map(([h, i, c, t, d]) => `<a class="ritem" href="${h}"><span class="rti" style="color:${c}">${ic(i)}</span><span class="grow" style="min-width:0"><b>${t}</b><span class="tiny muted" style="display:block">${d}</span></span>${ic('chev')}</a>`).join('')}</div>`;
 }
 async function paySummary(el, sel) {
   const rows = await myPayRecs();
