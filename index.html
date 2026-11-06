@@ -95,6 +95,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .seg{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px}
 .seg button{border:none;background:none;border-radius:999px;padding:6px 13px;cursor:pointer;color:var(--ink-2);font-weight:500}
 .seg button.on{background:var(--panel);color:var(--brand);box-shadow:var(--shadow)}
+.seg a.btn{border:none;background:none;border-radius:999px;color:var(--ink-2);box-shadow:none}.seg a.btn.on{background:var(--panel);color:var(--brand);box-shadow:var(--shadow)}
 
 /* ---------- login ---------- */
 .login{min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;align-items:center;padding:24px 16px;color:#fff;
@@ -1015,6 +1016,7 @@ const MODS = [
   { k: 'approve', t: 'อนุมัติเอกสาร', tl: 'อนุมัติ<br>เอกสาร', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', show: () => true, cnt: () => S.pendingCount },
   { k: 'tasks', t: 'สิ่งที่ต้องทำ', tl: 'สิ่งที่<br>ต้องทำ', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', show: () => true },
   { k: 'payroll', t: 'เงินเดือน', i: 'money', c: 'linear-gradient(135deg,#facc15,#ca8a04)', show: () => true },
+  { k: 'inbox', t: 'กล่องข้อความ HR', tl: 'ข้อความ<br>ถึง HR', i: 'chat', c: 'linear-gradient(135deg,#38bdf8,#0369a1)', show: () => can.hr(), cnt: () => S.hrInbox },
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
 const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
@@ -1089,7 +1091,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.6.5</div>
+      <div class="sbver">Smart Terminal HR<br>v1.7.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1132,6 +1134,8 @@ async function refreshCounters() {
   try {
     const [r, p] = await Promise.all([sb.from('notifications').select('id', { count: 'exact', head: true }).is('read_at', null), rpc('my_pending_approvals')]);
     S.unread = r.count || 0; S.pendingCount = (p || []).length;
+    try { if (can.hr()) { const x = await sb.from('hr_threads').select('id', { count: 'exact', head: true }).eq('hr_unread', true); S.hrInbox = x.count || 0; }
+      if (!me().is_system) { const y = await sb.from('hr_threads').select('id', { count: 'exact', head: true }).eq('employee_id', me().id).eq('emp_unread', true); S.empChat = y.count || 0; } } catch (e) { }
     ['#ndot', '#ndot2'].forEach(s => { const d = $(s); if (d) { d.textContent = S.unread > 99 ? '99+' : S.unread; d.classList.toggle('hidden', !S.unread); } });
     renderNav();
   } catch (e) { }
@@ -1144,7 +1148,7 @@ async function openNotif(btn) {
   setTimeout(() => document.addEventListener('mousedown', close), 0);
   const rows = await q(sb.from('notifications').select('*').order('created_at', { ascending: false }).limit(40));
   d.innerHTML = `<div class="row" style="padding:10px 14px;border-bottom:1px solid var(--line)"><b>การแจ้งเตือน</b><span class="grow"></span><button class="btn sm ghost" id="nall">อ่านทั้งหมด</button></div><div style="overflow:auto">${rows.length ? rows.map(n =>
-    `<div class="it ${n.read_at ? '' : 'unread'}" data-id="${n.id}" data-ref="${esc(n.reference_type || '')}" data-rid="${esc(n.reference_id || '')}">${ic(n.notification_type === 'PAYSLIP' ? 'money' : n.reference_type === 'task' ? 'tasks' : n.notification_type === 'APPROVAL_PENDING' ? 'approve' : 'bell')}<div class="grow"><div style="font-weight:500">${esc(n.title)}</div><div class="small muted">${esc(n.message || '')}</div><div class="tiny muted">${fDT(n.created_at)}</div></div></div>`).join('') : emptyBox('ไม่มีการแจ้งเตือน', 'bell')}</div>`;
+    `<div class="it ${n.read_at ? '' : 'unread'}" data-id="${n.id}" data-ref="${esc(n.reference_type || '')}" data-rid="${esc(n.reference_id || '')}" data-nt="${esc(n.notification_type || '')}">${ic(n.notification_type === 'PAYSLIP' ? 'money' : n.reference_type === 'task' ? 'tasks' : n.notification_type === 'APPROVAL_PENDING' ? 'approve' : 'bell')}<div class="grow"><div style="font-weight:500">${esc(n.title)}</div><div class="small muted">${esc(n.message || '')}</div><div class="tiny muted">${fDT(n.created_at)}</div></div></div>`).join('') : emptyBox('ไม่มีการแจ้งเตือน', 'bell')}</div>`;
   $('#nall', d).onclick = async () => { await q(sb.from('notifications').update({ read_at: new Date().toISOString() }).is('read_at', null)); d.remove(); refreshCounters(); };
   on(d, 'click', '.it', async (e, it) => {
     await sb.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', it.dataset.id);
@@ -1154,6 +1158,7 @@ async function openNotif(btn) {
     else if (ref === 'task') location.hash = '#/tasks/' + rid;
     else if (ref === 'payroll_run') location.hash = '#/payroll';
     else if (ref === 'employee') location.hash = '#/employee/' + rid;
+    else if (ref === 'hr_thread') location.hash = it.dataset.nt === 'HR_CHAT' && can.hr() ? '#/inbox/' + rid : '#/chat/t/' + rid;
   });
 }
 
@@ -1165,7 +1170,7 @@ async function route() {
   if (!mod || !PAGES[k] || (mod.show && !mod.show())) { location.hash = '#/dashboard'; return; }
   $('#crumb').innerHTML = `SMART TERMINAL HR <b>${esc(mod.t)}</b>`;
   renderNav();
-  const el = $('#page'); loading(el); window.scrollTo(0, 0);
+  const el = $('#page'); el.onclick = null; loading(el); window.scrollTo(0, 0);
   try { await PAGES[k](el, ...params); } catch (e) { console.error(e); el.innerHTML = `<div class="notice bad">${ic('alert')}<div>เกิดข้อผิดพลาด: ${esc(errMsg(e))}</div></div>`; }
 }
 const pageHead = (title, actions = '', back, icon) => `<div class="pagehead"><a class="btn ghost icon ${back ? '' : 'mback'}" href="${back || '#/dashboard'}" aria-label="กลับ">${ic('back')}</a>${icon ? `<span class="phi">${ic(icon)}</span>` : ''}<h2>${esc(title)}</h2><span class="grow"></span>${actions ? `<div class="pha row">${actions}</div>` : ''}</div>`;
@@ -1399,7 +1404,7 @@ async function annCard(host) {
 }
 
 /* ===================== ChatHR — ผู้ช่วย HR ตอบจากข้อมูลจริงของพนักงาน ===================== */
-const CHAT_Q = [['มาสายกี่ครั้ง', 'late'], ['เวลาเข้างานวันนี้', 'today'], ['วันลาคงเหลือ', 'leave'], ['สถานะคำขอ', 'docs'], ['ประกาศล่าสุด', 'ann'], ['ขอลางาน', 'goleave'], ['สลิปเงินเดือน', 'slip']];
+const CHAT_Q = [['มาสายกี่ครั้ง', 'late'], ['เวลาเข้างานวันนี้', 'today'], ['วันลาคงเหลือ', 'leave'], ['สถานะคำขอ', 'docs'], ['ประกาศล่าสุด', 'ann'], ['ขอลางาน', 'goleave'], ['สลิปเงินเดือน', 'slip'], ['ติดต่อ HR', 'tohr']];
 function chatIntent(t) {
   t = t.toLowerCase();
   if (/สาย|late/.test(t)) return 'late';
@@ -1409,6 +1414,7 @@ function chatIntent(t) {
   if (/คำขอ|เอกสาร|อนุมัติ|สถานะ/.test(t)) return 'docs';
   if (/ประกาศ|ข่าว/.test(t)) return 'ann';
   if (/สลิป|เงินเดือน|payslip/.test(t)) return 'slip';
+  if (/ติดต่อ\s*hr|คุยกับ\s*hr|ถาม\s*hr|แอดมิน|admin/.test(t)) return 'tohr';
   if (/สวัสดี|hello|hi\b/.test(t)) return 'hi';
   return '';
 }
@@ -1433,13 +1439,81 @@ async function chatAnswer(k) {
   if (k === 'slip') { setTimeout(() => location.hash = '#/payroll', 900); return 'กำลังพาไปหน้าสลิปเงินเดือนครับ…'; }
   return 'ขออภัยครับ ยังไม่เข้าใจคำถาม ลองถามเรื่อง การมาสาย เวลาเข้างาน วันลาคงเหลือ สถานะคำขอ ประกาศ หรือสลิปเงินเดือน';
 }
-PAGES.chat = async el => {
-  el.innerHTML = pageHead('ChatHR', '', '', 'chat') + `<div class="chips2" id="cq">${CHAT_Q.map(([l, k]) => `<button data-k="${k}">${l}</button>`).join('')}</div>
+const TH_ST = { NEW: ['ใหม่', 'b-warn'], IN_PROGRESS: ['กำลังตอบ', 'b-info'], CLOSED: ['ปิดแล้ว', ''] };
+const chatTabs = cur => me().is_system ? '' : `<div class="seg" style="margin-bottom:10px"><a class="btn sm ${cur === 'bot' ? 'on' : ''}" href="#/chat">${ic('bot')} HR Agent</a><a class="btn sm ${cur === 'hr' ? 'on' : ''}" href="#/chat/hr">${ic('chat')} ข้อความถึง HR${S.empChat ? ` <span class="badge b-bad">${S.empChat}</span>` : ''}</a></div>`;
+async function newHrThread(prefill = '') {
+  if (me().is_system) return toast('บัญชีระบบ (admin) ไม่ใช่พนักงาน — ส่งข้อความถึง HR ไม่ได้', 'bad');
+  await formModal({ title: 'ส่งข้อความถึง HR', okText: 'ส่ง', intro: '<div class="tiny muted" style="margin-bottom:8px">ข้อความจะส่งถึงผู้มีสิทธิ์ HR ทุกคน · เห็นได้เฉพาะคุณกับ HR · แนบไฟล์ได้ในหน้าสนทนาหลังส่ง</div>',
+    fields: [{ k: 'subject', label: 'เรื่อง', full: true, ph: 'เช่น สอบถามสลิปเดือนนี้' }, { k: 'body', label: 'ข้อความ', type: 'textarea', req: true, full: true }], values: { body: prefill },
+    onSubmit: async v => { const id = await rpc('hr_thread_open', { p_subject: v.subject || '', p_body: v.body }); toast('ส่งถึง HR แล้ว', 'good'); location.hash = '#/chat/t/' + id; } });
+}
+const thItem = (t, href, who) => `<a class="ritem" href="${href}"><span class="rti" style="color:${t.status === 'CLOSED' ? '#94a3b8' : '#0369a1'}">${ic('chat')}</span><span class="grow" style="min-width:0"><b>${esc(t.subject)}</b><span class="tiny muted" style="display:block">${who ? esc(who) + ' · ' : ''}${fDT(t.last_message_at)}${t.last_sender ? ` · ล่าสุดโดย${t.last_sender === 'HR' ? ' HR' : 'พนักงาน'}` : ''}</span></span>${(who ? t.hr_unread : t.emp_unread) ? '<span class="badge b-bad">ใหม่</span>' : ''}<span class="badge ${TH_ST[t.status][1]}">${TH_ST[t.status][0]}</span>${ic('chev')}</a>`;
+async function hrThreadView(el, id, back, hrSide) {
+  const load = async () => {
+    const [t, ms] = await Promise.all([q(sb.from('hr_threads').select('*').eq('id', id).maybeSingle()), q(sb.from('hr_messages').select('*').eq('thread_id', id).order('created_at'))]);
+    return { t, ms };
+  };
+  let { t, ms } = await load();
+  if (!t) { el.innerHTML = pageHead('ข้อความถึง HR', '', back) + emptyBox('ไม่พบเรื่องนี้ หรือไม่มีสิทธิ์'); return; }
+  const mine = t.employee_id === me().id; const asHr = hrSide && can.hr() && !mine;
+  rpc('hr_thread_read', { p_thread: id }).then(refreshCounters).catch(() => { });
+  const bub = m => { const self = m.sender_employee_id === me().id;
+    return `<div class="msg ${self ? 'me' : 'bot'}">${self ? '' : `<div class="tiny" style="opacity:.75;margin-bottom:2px">${m.sender_side === 'HR' ? 'HR · ' : ''}${esc(empName(m.sender_employee_id))}</div>`}${m.body ? esc(m.body) : ''}${m.file_path ? `<div><a href="#" data-f="${esc(m.file_path)}" style="color:inherit;text-decoration:underline">${ic('clip')} ${esc(m.file_name || 'ไฟล์แนบ')}</a></div>` : ''}<div class="tiny" style="opacity:.65;margin-top:3px;text-align:right">${fDT(m.created_at)}</div></div>`; };
+  const acts = () => [asHr && t.status !== 'IN_PROGRESS' && t.status !== 'CLOSED' ? `<button class="btn sm" data-st="IN_PROGRESS">กำลังตอบ</button>` : '', t.status !== 'CLOSED' && (asHr || mine) ? `<button class="btn sm" data-st="CLOSED">${ic('check')} ปิดเรื่อง</button>` : '', asHr && t.status === 'CLOSED' ? `<button class="btn sm" data-st="IN_PROGRESS">เปิดเรื่องอีกครั้ง</button>` : ''].join('');
+  const draw = () => {
+    el.innerHTML = pageHead(t.subject, `<span class="badge ${TH_ST[t.status][1]}">${TH_ST[t.status][0]}</span>${acts()}`, back, 'chat') + `
+     ${asHr ? `<div class="card" style="margin-bottom:10px"><div class="row" style="flex-wrap:nowrap">${avatar(S.dirMap?.[t.employee_id] || { first_name: empName(t.employee_id) })}<div><b>${esc(empName(t.employee_id, true))}</b><div class="tiny muted">เริ่มเรื่อง ${fDT(t.created_at)}</div></div></div></div>` : ''}
+     <div class="chatbox" id="tbx" style="min-height:40vh">${ms.map(bub).join('')}</div>
+     ${t.status === 'CLOSED' && !mine ? `<div class="notice info" style="margin-top:10px">เรื่องนี้ปิดแล้ว — กด “เปิดเรื่องอีกครั้ง” เพื่อตอบต่อ</div>` : `
+     <form class="chatin" id="tfm" style="flex-wrap:wrap"><textarea class="inp" id="tin" rows="1" placeholder="${asHr ? 'ตอบกลับพนักงาน…' : 'พิมพ์ข้อความถึง HR…'}" style="flex:1;min-height:44px;resize:vertical"></textarea>
+      <label class="btn icon" title="แนบไฟล์" style="cursor:pointer">${ic('clip')}<input type="file" id="tfile" hidden></label><button class="btn pri" aria-label="ส่ง">${ic('send')}</button>
+      <div class="tiny muted" id="tfn" style="width:100%"></div></form>${mine && t.status === 'CLOSED' ? '<div class="tiny muted">ส่งข้อความใหม่เพื่อเปิดเรื่องนี้อีกครั้ง</div>' : ''}`}`;
+    const last = $('#tbx').lastElementChild; last && last.scrollIntoView({ block: 'end' });
+    if ($('#tfile')) $('#tfile').onchange = e => { const f = e.target.files[0]; $('#tfn').textContent = f ? '📎 ' + f.name : ''; };
+    if ($('#tfm')) $('#tfm').onsubmit = async ev => { ev.preventDefault(); const body = $('#tin').value.trim(), f = $('#tfile').files[0]; if (!body && !f) return;
+      const bt = $('#tfm button'); bt.disabled = true;
+      try { let fp = null; if (f) { fp = `chat/${t.employee_id}/${t.id}/${Date.now()}_${safeName(f.name)}`; await uploadFile(fp, f); }
+        await rpc('hr_msg_send', { p_thread: id, p_body: body, p_file_path: fp, p_file_name: f ? f.name : null, p_content_type: f ? f.type : null });
+        ({ t, ms } = await load()); draw(); refreshCounters(); } catch (e) { toast(errMsg(e), 'bad'); bt.disabled = false; } };
+  };
+  el.onclick = async e => {
+    const a = e.target.closest('[data-f]'); if (a) { e.preventDefault(); try { window.open(await signedUrl(a.dataset.f), '_blank'); } catch (err) { toast(errMsg(err), 'bad'); } return; }
+    const b = e.target.closest('[data-st]'); if (b) { if (b.dataset.st === 'CLOSED' && !await confirmDlg('ปิดเรื่องนี้?')) return; try { await rpc('hr_thread_status', { p_thread: id, p_status: b.dataset.st }); ({ t, ms } = await load()); draw(); refreshCounters(); } catch (err) { toast(errMsg(err), 'bad'); } }
+  };
+  draw();
+  const tm = setInterval(async () => { if (!el.isConnected || !$('#tbx') || !S.route.includes(id)) return clearInterval(tm); if ($('#tin') && $('#tin').value) return;
+    const r = await load().catch(() => null); if (r && r.ms.length !== ms.length) { ({ t, ms } = r); draw(); rpc('hr_thread_read', { p_thread: id }).then(refreshCounters).catch(() => { }); } }, 15000);
+}
+PAGES.inbox = async (el, id) => {
+  el.onclick = null;
+  if (id) return hrThreadView(el, id, '#/inbox', true);
+  const rows = await q(sb.from('hr_threads').select('*').order('last_message_at', { ascending: false }).limit(300));
+  const F = [['OPEN', 'ยังไม่ปิด'], ['NEW', 'ใหม่'], ['IN_PROGRESS', 'กำลังตอบ'], ['CLOSED', 'ปิดแล้ว'], ['', 'ทั้งหมด']];
+  let f = 'OPEN';
+  el.innerHTML = pageHead('กล่องข้อความ HR', '', '', 'chat') + `<div class="card"><div class="seg" id="ixs" style="margin-bottom:10px;overflow-x:auto">${F.map(([k, l]) => `<button data-s="${k}">${l} (${rows.filter(t => !k || (k === 'OPEN' ? t.status !== 'CLOSED' : t.status === k)).length})</button>`).join('')}</div><div id="ixl"></div></div>`;
+  const draw = () => { $$('#ixs button').forEach(b => b.classList.toggle('on', b.dataset.s === f)); const r = rows.filter(t => !f || (f === 'OPEN' ? t.status !== 'CLOSED' : t.status === f));
+    $('#ixl').innerHTML = r.length ? r.map(t => thItem(t, '#/inbox/' + t.id, empName(t.employee_id, true))).join('') : emptyBox('ไม่มีข้อความ', 'okc'); };
+  $('#ixs').onclick = e => { const b = e.target.closest('button'); if (b) { f = b.dataset.s; draw(); } };
+  draw();
+};
+PAGES.chat = async (el, a, b) => {
+  el.onclick = null;
+  if (a === 't' && b) return hrThreadView(el, b, '#/chat/hr', false);
+  if (a === 'hr') {
+    const rows = me().is_system ? [] : await q(sb.from('hr_threads').select('*').eq('employee_id', me().id).order('last_message_at', { ascending: false }));
+    el.innerHTML = pageHead('ChatHR', `<button class="btn pri" id="nth">${ic('plus')} ข้อความใหม่</button>`, '', 'chat') + chatTabs('hr') + `<div class="card">${rows.length ? rows.map(t => thItem(t, '#/chat/t/' + t.id)).join('') : emptyBox('ยังไม่มีข้อความถึง HR — กด “ข้อความใหม่” เพื่อเริ่มสอบถาม')}</div>`;
+    $('#nth').onclick = () => newHrThread();
+    return;
+  }
+  el.innerHTML = pageHead('ChatHR', '', '', 'chat') + chatTabs('bot') + `<div class="chips2" id="cq">${CHAT_Q.map(([l, k]) => `<button data-k="${k}">${l}</button>`).join('')}</div>
    <div class="chatbox" id="cbx"></div>
    <form class="chatin" id="cfm"><input class="inp" id="cin" placeholder="พิมพ์คำถามถึง HR…" autocomplete="off"><button class="btn pri" aria-label="ส่ง">${ic('send')}</button></form>`;
   const bx = $('#cbx');
   const add = (who, txt) => { const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = txt; bx.appendChild(d); d.scrollIntoView({ block: 'end', behavior: 'smooth' }); return d; };
-  const ask = async (label, k) => { add('me', label); const w = add('bot', '…'); try { w.textContent = await chatAnswer(k); } catch (err) { w.textContent = 'ดึงข้อมูลไม่สำเร็จ ลองใหม่อีกครั้งครับ'; } w.scrollIntoView({ block: 'end' }); };
+  const ask = async (label, k) => { add('me', label); if (k === 'tohr') { add('bot', 'เปิดหน้าส่งข้อความถึง HR ให้แล้วครับ'); return newHrThread(); }
+    const w = add('bot', '…'); try { w.textContent = await chatAnswer(k); } catch (err) { w.textContent = 'ดึงข้อมูลไม่สำเร็จ ลองใหม่อีกครั้งครับ'; }
+    if (!k && !me().is_system) { const bt = document.createElement('button'); bt.className = 'btn sm pri'; bt.style.marginTop = '8px'; bt.innerHTML = `${ic('send')} ส่งคำถามนี้ถึง HR`; bt.onclick = () => newHrThread(label); w.appendChild(document.createElement('br')); w.appendChild(bt); }
+    w.scrollIntoView({ block: 'end' }); };
   add('bot', `สวัสดีครับคุณ${me().first_name || ''} ผม HR Agent 🤖\nถามเรื่องเวลาเข้างาน การมาสาย วันลา คำขอ ประกาศ หรือสลิปได้เลยครับ`);
   on($('#cq'), 'click', 'button', (ev, b) => ask(b.textContent, b.dataset.k));
   $('#cfm').onsubmit = ev => { ev.preventDefault(); const t = $('#cin').value.trim(); if (!t) return; $('#cin').value = ''; ask(t, chatIntent(t)); };
