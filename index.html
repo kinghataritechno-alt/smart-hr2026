@@ -684,6 +684,16 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 }
 
 /* v1.5.2 — ปุ่มลัดพนักงาน: จัดแถวให้สมดุลตามจำนวนปุ่ม (แถวสุดท้ายอยู่กลาง) */
+.aah{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.aai{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#6366f1,#1e3a8a);flex:0 0 auto}
+.aai svg{width:22px;height:22px}
+.aab{color:#fff;border-radius:10px;font-size:12px;font-weight:600;padding:2px 9px}
+.aar{display:flex;align-items:flex-start;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);color:inherit;font-size:14.5px}
+.aar:last-child{border-bottom:0}
+.aar>svg{width:18px;height:18px;color:var(--ink-2);flex:0 0 auto;margin-top:3px}
+.aad{width:9px;height:9px;border-radius:50%;flex:0 0 auto;margin-top:8px}
+.aan{color:var(--ink-2);margin-top:2px}
+.aag{font-size:12.5px;color:var(--ink-2);margin:12px 0 2px;font-weight:600}
 .hrow{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line);color:inherit;font-size:15px}
 .hrow:last-child{border-bottom:0}
 .hrow .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
@@ -1111,7 +1121,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.8.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.9.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1340,6 +1350,23 @@ function simpleTiles(m) {
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
   return t;
 }
+/* ===== v1.9.0 Admin Agent — ตรวจความพร้อมข้อมูล HR / งานค้าง HR / การมาทำงาน (RPC admin_agent_checks, อ่านอย่างเดียว) ===== */
+const AA_LV = { bad: ['วิกฤต', '#dc2626'], warn: ['ควรแก้', '#d97706'], info: ['ข้อสังเกต', '#2563eb'] };
+async function adminAgentCard(box, full) {
+  if (!box) return;
+  const r = await rpc('admin_agent_checks'); const ch = r.checks || [];
+  const head = `<div class="aah"><span class="aai">${ic('bot')}</span><div class="grow"><b>Admin Agent</b><div class="tiny muted">ตรวจล่าสุด ${fT(r.generated_at)} น. · ผ่าน ${(r.passed || []).length} รายการ</div></div>
+    ${['bad', 'warn', 'info'].filter(k => r[k]).map(k => `<span class="aab" style="background:${AA_LV[k][1]}">${AA_LV[k][0]} ${r[k]}</span>`).join('')}</div>`;
+  if (!ch.length) { box.innerHTML = head + `<div class="hok">${ic('okc')} ระบบพร้อมใช้งาน ไม่พบปัญหา</div>`; return; }
+  const row = c => `<a class="aar" href="${c.href}"><span class="aad" style="background:${AA_LV[c.lvl][1]}"></span><div class="grow"><div>${esc(c.title)} <b>${num(c.n)}</b></div>
+    ${c.hint ? `<div class="tiny muted">${esc(c.hint)}</div>` : ''}${c.names && c.names.length ? `<div class="tiny aan">${c.names.map(esc).join(' · ')}${c.n > c.names.length && c.names.length >= 5 ? ' …' : ''}</div>` : ''}</div>${ic('chev')}</a>`;
+  const main = ch.filter(c => c.lvl !== 'info'), info = ch.filter(c => c.lvl === 'info');
+  const grp = list => { const g = {}; list.forEach(c => (g[c.grp] = g[c.grp] || []).push(c)); return Object.entries(g).map(([k, v]) => `<div class="aag">${esc(k)}</div>${v.map(row).join('')}`).join(''); };
+  box.innerHTML = head + (full ? grp(main) : main.map(row).join('')) +
+    (info.length ? `<details class="more"${full ? ' open' : ''}><summary>ข้อสังเกตอื่น (${info.length})</summary>${full ? grp(info) : info.map(row).join('')}</details>` : '') +
+    (full && (r.passed || []).length ? `<details class="more"><summary>รายการที่ผ่าน (${r.passed.length})</summary><div class="small muted" style="line-height:1.9">${r.passed.map(t => `✓ ${esc(t)}`).join('<br>')}</div></details>` : '');
+}
+const aaLoad = (sel, full) => { const b = $(sel); if (b) adminAgentCard(b, full).catch(e => { b.innerHTML = `<div class="small muted">Admin Agent โหลดไม่สำเร็จ: ${esc(errMsg(e))}</div>`; }); };
 /* ===== v1.8.0 หน้าหลัก HR/Admin (มือถือ/แท็บเล็ต) — ลดความซับซ้อน ===== */
 /* รายการที่ต้องจัดการ: แสดงเฉพาะที่มีจำนวน > 0 */
 function hrTodo(d) {
@@ -1374,6 +1401,7 @@ async function dashHR(el, d) {
    <div class="tiles simple" style="--cols:3">${T.map(([h, i, c, l]) => `<a class="tile" href="${h}"><span class="ti" style="background:${c}">${ic(i)}</span>${l}</a>`).join('')}</div>
    <a class="allmenu" href="#/hrwork">${ic('menu')} เมนูทั้งหมด${ic('chev')}</a></div>
   ${hrTodoCard(d)}
+  <div class="card aa" style="margin-top:14px" id="adagent"><div class="spin"></div></div>
   ${d.org ? `<div class="card" style="margin-top:14px"><div class="row" style="margin-bottom:8px"><h3 style="margin:0">${ic('users')} ภาพรวมองค์กร</h3><span class="grow"></span><span class="muted small">${fD(todayStr())}</span></div>
    <div class="kstrip">${st(o.total, 'ทั้งหมด', '#/employees')}${st(o.active, 'ปฏิบัติงาน', '#/employees')}${st(o.new_month, 'เข้าใหม่', '#/reports/newhire')}${st(o.resigned_month, 'ลาออก', '#/reports/newhire')}</div>
    <details class="more"><summary>ดูสถิติเพิ่มเติม</summary>
@@ -1383,6 +1411,7 @@ async function dashHR(el, d) {
     ${(o.devices || []).length ? `<div class="small muted" style="margin:12px 0 6px">เครื่องสแกน</div>${o.devices.map(x => `<span class="badge ${x.status === 'OK' ? 'b-good' : x.status === 'WARNING' ? 'b-warn' : ''}">${esc(x.name)} · ${x.last ? fDT(x.last) : 'ยังไม่ซิงก์'}</span>`).join(' ')}` : ''}
    </details></div>` : ''}
   ${sys ? '' : `<div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div><div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>`}`;
+  aaLoad('#adagent');
   if (!sys) {
     hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
     annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
@@ -1396,7 +1425,8 @@ PAGES.hrwork = async el => {
     ['เอกสารและงาน', [['#/approve', 'approve', 'อนุมัติเอกสาร', S.pendingCount], ['#/inbox', 'chat', 'กล่องข้อความ HR', S.hrInbox], ['#/docs', 'upload', 'ยื่นเอกสาร'], ['#/tasks', 'tasks', 'สิ่งที่ต้องทำ']]],
     ['เงินเดือนและรายงาน', [['#/payroll', 'money', 'เงินเดือน'], ['#/reports', 'report', 'รายงาน']]],
     ['ระบบ', [['#/settings', 'gear', 'ตั้งค่าระบบ']]]];
-  el.innerHTML = pageHead('งาน HR', '', '', 'board') + hrTodoCard(d) + G.map(([g, list]) => `<div class="card" style="margin-top:14px"><div class="small muted" style="margin-bottom:4px">${g}</div>${list.map(([h, i, l, n]) => hrRow(n ? n : '', l, i, h, 'var(--brand)')).join('')}</div>`).join('');
+  el.innerHTML = pageHead('งาน HR', '', '', 'board') + hrTodoCard(d) + `<div class="card aa" style="margin-top:14px" id="adagent"><div class="spin"></div></div>` + G.map(([g, list]) => `<div class="card" style="margin-top:14px"><div class="small muted" style="margin-bottom:4px">${g}</div>${list.map(([h, i, l, n]) => hrRow(n ? n : '', l, i, h, 'var(--brand)')).join('')}</div>`).join('');
+  aaLoad('#adagent', true);
 };
 PAGES.dashboard = async el => {
   if (isDesk()) return dashDesktop(el);
@@ -1770,6 +1800,7 @@ async function dashDesktop(el) {
   const scopeTxt = d.scope === 'org' ? 'ทั้งองค์กร' : d.scope === 'team' ? 'ทีมของฉัน' : 'ของฉัน';
   let html = `<div class="dhead"><div><h2>แดชบอร์ด</h2><span class="muted small">ภาพรวม${scopeTxt} · อัปเดต ${fT(new Date().toISOString())} น.</span></div><span class="grow"></span>${d.scope !== 'self' ? `<a class="btn gold" href="#/reports">${ic('report')} รายงาน</a>` : `<a class="btn gold" href="#/approve">${ic('plus')} ยื่นคำขอ</a>`}</div>
    <div class="kgrid">${(d.kpis || []).map(kc).join('')}</div>
+   ${can.hr() ? `<div class="card aa" id="adagent" style="margin:16px 0"><div class="spin"></div></div>` : ''}
    <div class="dgrid">
     ${panel('chart', 'สถิติการเข้างาน', `<div id="bch">${barChart(d.series || [])}</div>`, `<div class="gseg" id="rseg"><button class="on" data-r="month">เดือนนี้</button><button data-r="3m">3 เดือน</button><button data-r="6m">6 เดือน</button><button data-r="1y">1 ปี</button></div>`)}
     ${panel('pie', 'สรุปการลา', donut(d.leaves || []))}
@@ -1784,6 +1815,7 @@ async function dashDesktop(el) {
   }
   if (s.payroll && s.payroll.length) html += panel('wallet', 'สรุปค่าใช้จ่ายเงินเดือน', table(s.payroll, [{ label: 'งวด', fmt: r => esc(r.period_name) }, { label: 'จำนวนคน', num: 1, fmt: r => num(r.headcount) }, { label: 'รายได้รวม', num: 1, fmt: r => money(r.gross) }, { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }]), '', 'wide');
   el.innerHTML = `<div class="desk">${html}</div>`;
+  if (can.hr()) aaLoad('#adagent', true);
   on($('#rseg'), 'click', 'button', async (e, b) => { $$('#rseg button').forEach(x => x.classList.toggle('on', x === b)); const c = $('#bch'); c.style.opacity = .5;
     try { const r = await rpc('dash_desktop', { p_range: b.dataset.r }); c.innerHTML = barChart(r.series || []); } catch (er) { toast(errMsg(er), 'bad'); } c.style.opacity = 1; });
 }
