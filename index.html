@@ -1778,7 +1778,7 @@ const ORG = {
     const cnt = countBy('position_id');
     await crudCard(b, { title: 'ตำแหน่ง', tbl: 'positions', order: 'position_code',
       cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.position_code)}</span>` }, { label: 'ตำแหน่ง', fmt: r => esc(r.position_name) }, { label: 'รหัส POS', fmt: r => r.position_level ? `<span class="mono">${esc(r.position_level)}</span>` : '–' }, { label: 'อัตรากำลัง', num: 1, fmt: r => r.headcount != null ? num(r.headcount) : '–' }, { label: 'มีจริง', num: 1, fmt: r => { const n = cnt[r.id] || 0; return r.headcount != null && n > r.headcount ? `<span style="color:var(--bad)">${n}</span>` : num(n); } }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
-      fields: [{ k: 'position_code', label: 'รหัส', req: true }, { k: 'position_name', label: 'ตำแหน่ง', req: true }, { k: 'position_level', label: 'รหัสกลุ่มตำแหน่ง (POS)', list: ['DIR', 'MGR', 'ASM', 'SUP', 'ENG', 'TEC', 'OFC', 'ACC', 'PUR', 'HRD', 'DRV'] }, { k: 'headcount', label: 'อัตรากำลัง (คน)', type: 'number', min: 0 }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
+      fields: [{ k: 'position_code', label: 'รหัส', req: true }, { k: 'position_name', label: 'ตำแหน่ง', req: true }, { k: 'position_level', label: 'รหัสกลุ่มตำแหน่ง (POS)', list: ['DIR', 'MGR', 'ASM', 'SUP', 'ENG', 'TEC', 'OFC', 'ACC', 'PUR', 'HRD', 'DRV', 'STO'] }, { k: 'headcount', label: 'อัตรากำลัง (คน)', type: 'number', min: 0 }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, def: 'ACTIVE', noEmpty: true, req: true }] });
   }
 };
 
