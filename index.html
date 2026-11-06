@@ -1084,7 +1084,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.6.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.6.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1268,7 +1268,7 @@ function viewPreview(kind = 'phone') {
 const tileCols = n => n <= 5 ? n : n === 6 ? 3 : 4;
 function simpleTiles(m) {
   const t = [{ h: '#/time/me', i: 'clock', c: 'linear-gradient(135deg,#22d3ee,#0e7490)', tl: 'เวลา<br>เข้า-ออก' },
-    { h: '#/docs/new/LEAVE', i: 'umbrella', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอลา' },
+    { h: '#/docs', i: 'upload', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอ<br>อนุมัติ' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
     { h: '#/approve', i: 'send', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ยื่น<br>คำขอ' },
     { h: '#/payroll', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
@@ -2530,7 +2530,7 @@ async function docForm(el, code, doc) {
   $('#dsave').onclick = async () => { try { const d = await save(); toast('บันทึกร่างแล้ว', 'good'); location.hash = '#/docs/' + d.id; } catch (e) { toast(errMsg(e), 'bad'); } };
   $('#dsub').onclick = async ev => {
     ev.target.disabled = true;
-    try { const d = await save(); await rpc('doc_submit', { p_doc: d.id }); toast('ส่งอนุมัติแล้ว', 'good'); location.hash = '#/docs/' + d.id; refreshCounters(); }
+    try { const d = await save(); await rpc('doc_submit', { p_doc: d.id }); toast('ส่งขออนุมัติแล้ว', 'good'); location.hash = '#/dashboard'; refreshCounters(); }
     catch (e) { toast(errMsg(e), 'bad'); ev.target.disabled = false; if (doc && !location.hash.includes(doc.id)) history.replaceState(null, '', '#/docs/' + doc.id + '/edit'); }
   };
 }
