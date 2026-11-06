@@ -162,6 +162,9 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .crop{position:relative;width:260px;height:260px;margin:4px auto 12px;border-radius:50%;overflow:hidden;background:#0b1830;touch-action:none;cursor:grab;box-shadow:0 0 0 3px var(--brand)}.crop img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .agent{display:flex;gap:12px;align-items:flex-start}.agent .ab{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;background:linear-gradient(135deg,#6366f1,#2563eb)}.agent .ab svg{width:24px;height:24px}
 .agent.good .ab{background:linear-gradient(135deg,#34d399,#0f9f6e)}.agent.warn .ab{background:linear-gradient(135deg,#fb923c,#dc2626)}
+.agbn{text-align:center;border-radius:14px;padding:16px 14px 14px}.agbn .bi svg{width:34px;height:34px;stroke-width:1.8}.agbn h4{margin:6px 0 6px;font-size:19px;font-weight:700}.agbn .bm{font-size:14.5px;color:var(--ink);font-weight:500}.agbn .bs{font-size:14px;margin-top:10px}.agbn .bt{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.agbn.bad{background:#fdecec;color:#c8323a}.agbn.ok{background:#eaf6ee;color:#1f7a45}.agbn.bad h4{color:#b42318}.agbn.ok h4{color:#1f6b3e}
+:root[data-theme="dark"] .agbn.bad{background:rgba(220,38,38,.14)}:root[data-theme="dark"] .agbn.ok{background:rgba(22,163,74,.14)}
 .agent h4{margin:0 0 2px;font-size:16px}.agent .ad{font-size:14px;color:var(--ink-2)}.lstat{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.lstat span{background:var(--panel-2);border-radius:10px;padding:6px 10px;font-size:13px}.lstat b{font-size:15px}
 .anlist .an{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);color:inherit}.anlist .an:first-child{border-top:0}.anlist .an .mi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--brand-3);color:var(--brand)}
 .chatbox{display:flex;flex-direction:column;gap:10px;min-height:50vh}.msg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:15px;line-height:1.5;white-space:pre-line}.msg.bot{background:var(--panel);border:1px solid var(--line);border-top-left-radius:4px;align-self:flex-start}.msg.me{background:var(--brand);color:#fff;border-top-right-radius:4px;align-self:flex-end}
@@ -711,6 +714,8 @@ const debounce = (fn, ms = 250) => { let t; return (...a) => { clearTimeout(t); 
 
 /* ===================== ICONS ===================== */
 const IP = {
+  clockal: '<path d="M20.9 13.5A9 9 0 1112 3a9 9 0 017.4 3.9"/><path d="M12 7v5l3 2"/><path d="M21 8v4"/><path d="M21 15.5v.01"/>',
+  calok: '<rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18"/><path d="M8.5 15l2.5 2.5 4.5-5"/>',
   home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   chart: '<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
@@ -1084,7 +1089,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.6.3</div>
+      <div class="sbver">Smart Terminal HR<br>v1.6.4</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1355,14 +1360,18 @@ function hrAgentVerdict(a) {
   if (td && ['HOLIDAY', 'DAY_OFF'].includes(td.attendance_status)) return { k: '', h: 'วันนี้เป็นวันหยุดของคุณ', d: 'พักผ่อนให้สบายครับ' };
   if (!td || !td.first_in) return { k: '', h: 'ยังไม่พบการสแกนเข้างานวันนี้', d: 'HR Agent จะตรวจสอบให้อัตโนมัติเมื่อข้อมูลจากเครื่องสแกนใบหน้าเข้ามา' };
   if (!td.scheduled_start) return { k: '', h: `บันทึกเข้างานแล้ว ${fT(td.first_in)} น.`, d: 'ยังไม่ได้กำหนดกะการทำงาน จึงยังตรวจการมาสาย/ตรงเวลาไม่ได้ — ติดต่อ HR' };
-  if ((td.late_minutes || 0) > 0) return a.late.length > 1
-    ? { k: 'warn', h: 'คุณมาทำงานสายอีกแล้ว!', d: `วันนี้เข้างาน ${fT(td.first_in)} น. สาย ${num(td.late_minutes)} นาที — เดือนนี้สายแล้ว ${a.late.length} ครั้ง รวม ${num(a.lateMin)} นาที` }
-    : { k: 'warn', h: 'วันนี้คุณมาสาย', d: `เข้างาน ${fT(td.first_in)} น. สาย ${num(td.late_minutes)} นาที — พรุ่งนี้มาให้ตรงเวลานะครับ` };
-  return { k: 'good', h: 'เยี่ยมมาก! วันนี้มาทำงานตรงเวลา', d: `เข้างาน ${fT(td.first_in)} น.${a.streak > 1 ? ` · ตรงเวลาต่อเนื่อง ${a.streak} วันทำงานแล้ว ขอบคุณที่เป็นแบบอย่างที่ดีครับ` : ' ขอบคุณที่ตรงต่อเวลาครับ'}` };
+  /* แบนเนอร์ตามต้นแบบ: สาย = แดง (เตือนชัดเจน แต่ไม่ตำหนิรุนแรง) · ตรงเวลาหลังเคยสายในเดือน = เขียว "อย่าสายอีกนะ!" · ตรงเวลา = เขียว ชมเชย */
+  if ((td.late_minutes || 0) > 0) return { k: 'warn', bn: 'bad', bi: 'clockal', h: a.late.length > 1 ? 'มาสายอีกแล้วนะ! ⏰' : 'วันนี้มาสายนะ! ⏰', m: 'วันนี้เริ่มงานช้ากว่าเวลาที่กำหนด อย่าลืมปรับเวลาให้ตรงกันนะ', s: 'ตรงต่อเวลา เป็นมืออาชีพกว่าเดิม!',
+    d: `เข้างาน ${fT(td.first_in)} น. · สาย ${num(td.late_minutes)} นาที${a.late.length > 1 ? ` · เดือนนี้สาย ${a.late.length} ครั้ง รวม ${num(a.lateMin)} นาที` : ''}` };
+  if (a.late.length) return { k: 'good', bn: 'ok', bi: 'calok', h: 'อย่าสายอีกนะ! 😊', m: 'เริ่มต้นวันดี ๆ ด้วยการมาตรงเวลา พร้อมลุยงานอย่างเต็มที่', s: 'ตรงเวลาในทุกวัน สร้างความสำเร็จไปด้วยกัน!',
+    d: `วันนี้เข้างาน ${fT(td.first_in)} น. ตรงเวลา · เดือนนี้เคยสาย ${a.late.length} ครั้ง` };
+  return { k: 'good', bn: 'ok', bi: 'calok', h: 'เยี่ยมมาก! มาตรงเวลา 🎉', m: a.streak > 1 ? `ตรงเวลาต่อเนื่อง ${a.streak} วันทำงานแล้ว ขอบคุณที่เป็นแบบอย่างที่ดี` : 'ขอบคุณที่ตรงต่อเวลา พร้อมลุยงานอย่างเต็มที่', s: 'ตรงเวลาในทุกวัน สร้างความสำเร็จไปด้วยกัน!',
+    d: `วันนี้เข้างาน ${fT(td.first_in)} น.` };
 }
 async function hrAgentCard(host) {
   const a = await hrAgentData(); const v = hrAgentVerdict(a);
-  host.innerHTML = `<div class="agent ${v.k}"><span class="ab">${ic(v.k === 'good' ? 'star' : v.k === 'warn' ? 'alert' : 'bot')}</span><div class="grow"><div class="tiny muted">HR Agent · ตรวจเวลาเข้างาน</div><h4>${esc(v.h)}</h4><div class="ad">${esc(v.d)}</div>
+  host.innerHTML = v.bn ? `<div class="tiny muted" style="margin-bottom:6px">HR Agent · ตรวจเวลาเข้างาน</div><div class="agbn ${v.bn}"><span class="bi">${ic(v.bi)}</span><h4>${esc(v.h)}</h4><div class="bm">${esc(v.m)}</div><div class="bs">${esc(v.s)}</div><div class="bt">${esc(v.d)}</div></div><div><div>`
+   : `<div class="agent ${v.k}"><span class="ab">${ic(v.k === 'good' ? 'star' : v.k === 'warn' ? 'alert' : 'bot')}</span><div class="grow"><div class="tiny muted">HR Agent · ตรวจเวลาเข้างาน</div><h4>${esc(v.h)}</h4><div class="ad">${esc(v.d)}</div>
    ${a.sys ? '' : `<div class="lstat"><span>ตรงเวลา <b>${num(a.onTime)}</b> วัน</span><span>มาสาย <b style="color:${a.late.length ? 'var(--bad)' : 'inherit'}">${num(a.late.length)}</b> ครั้ง</span><span>สายสะสม <b>${num(a.lateMin)}</b> นาที</span></div>
    ${a.late.length ? `<details style="margin-top:8px"><summary class="small" style="cursor:pointer;color:var(--brand)">รายละเอียดการมาสายเดือนนี้</summary><div class="small" style="margin-top:6px">${a.late.map(r => `<div class="row" style="padding:4px 0;border-top:1px solid var(--line)"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</div></details>` : ''}`}
    </div></div>`;
