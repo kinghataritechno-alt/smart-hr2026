@@ -1089,7 +1089,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.6.4</div>
+      <div class="sbver">Smart Terminal HR<br>v1.6.5</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1966,8 +1966,12 @@ async function crudCard(host, cfg) {
   const save = async (v, id) => { v = map(v); if (id) await q(sb.from(tbl).update(v).eq('id', id)); else await q(sb.from(tbl).insert(v)); await loadLookups(); toast('บันทึกแล้ว', 'good'); reload(); };
   if (!canEdit) return rows;
   $('[data-new]', host).onclick = () => formModal({ title: 'เพิ่ม' + title, fields: typeof fields === 'function' ? fields() : fields, values: cfg.defaults || {}, onSubmit: v => save(v) });
-  on(host, 'click', '[data-ed]', (e, b) => { const r = rows.find(x => x.id === b.dataset.ed); formModal({ title: 'แก้ไข' + title, fields: typeof fields === 'function' ? fields(r) : fields, values: cfg.toForm ? cfg.toForm(r) : r, onSubmit: v => save(v, r.id) }); });
-  on(host, 'click', '[data-del]', async (e, b) => { if (await confirmDlg('ลบรายการนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from(tbl).delete().eq('id', b.dataset.del)), 'ลบแล้ว'); await loadLookups(); reload(); } });
+  /* ผูกตัวจัดการคลิกแบบ "แทนที่" (onclick) ไม่ใช่ addEventListener — เดิมทุกครั้งที่โหลดซ้ำ/สลับแท็บจะผูกเพิ่ม ทำให้กดแก้ไขครั้งเดียวแล้วเด้งหลายการ์ด */
+  host.onclick = async e => {
+    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+    if (ed && host.contains(ed)) { const r = rows.find(x => x.id === ed.dataset.ed); if (!r) return; formModal({ title: 'แก้ไข' + title, fields: typeof fields === 'function' ? fields(r) : fields, values: cfg.toForm ? cfg.toForm(r) : r, onSubmit: v => save(v, r.id) }); }
+    else if (dl && host.contains(dl)) { if (await confirmDlg('ลบรายการนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from(tbl).delete().eq('id', dl.dataset.del)), 'ลบแล้ว'); await loadLookups(); reload(); } }
+  };
   return rows;
 }
 const ST_OPTS = [['ACTIVE', 'ใช้งาน'], ['INACTIVE', 'ปิดใช้งาน']];
@@ -1978,7 +1982,7 @@ const countBy = k => { const c = {}; S.dir.filter(x => ['ACTIVE', 'PROBATION'].i
 PAGES.org = async (el, tab = 'chart') => {
   el.innerHTML = pageHead('โครงสร้างองค์กร') + `<div class="tabs" id="otabs"></div><div id="obody"></div>`;
   const T = [['chart', 'ผังองค์กร'], ['company', 'บริษัท'], ['branches', 'สำนักงาน/สาขา'], ['depts', 'ฝ่าย/แผนก'], ['units', 'หน่วยงาน/โครงการ'], ['positions', 'ตำแหน่ง']];
-  const show = t => { history.replaceState(null, '', '#/org/' + t); const b = $('#obody'); loading(b); ORG[t](b).catch(e => b.innerHTML = `<div class="notice bad">${esc(errMsg(e))}</div>`); };
+  const show = t => { history.replaceState(null, '', '#/org/' + t); const o = $('#obody'), b = o.cloneNode(false); o.replaceWith(b); loading(b); /* กล่องใหม่ทุกครั้ง — ไม่ให้ตัวจัดการคลิกของแท็บก่อนค้างอยู่ */ ORG[t](b).catch(e => b.innerHTML = `<div class="notice bad">${esc(errMsg(e))}</div>`); };
   tabs($('#otabs'), T, tab, show); show(tab);
 };
 const ORG = {
