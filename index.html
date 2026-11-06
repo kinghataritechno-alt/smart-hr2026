@@ -2223,7 +2223,7 @@ async function TM_ME(b, sub = 'today') {
   const draw = async v => {
     cv = v; history.replaceState(null, '', '#/time/me/' + v); loading(out);
     const M = await myMonth(ym); M0 = M; const st = M.st;
-    const statTiles = `<div class="stiles">${[['okc', '#22c55e', 'มาทำงาน', st.work + ' วัน'], ['cal', '#16a34a', 'ตรงเวลา', st.ontime + ' วัน'], ['clock', '#f59e0b', 'สาย', st.late + ' วัน'], ['xc', '#ef4444', 'ขาดงาน', st.absent + ' วัน'], ['ot', '#2563eb', 'OT รวม', mins(st.otMin) + ' ชม.']].map(([i, c, l, n]) => `<div class="stile"><span style="color:${c}">${ic(i)}</span><span class="l">${l}</span><b>${n}</b></div>`).join('')}</div>`;
+    const statTiles = `<div class="stiles">${[['okc', '#22c55e', 'มาทำงาน', st.work + ' วัน'], ['cal', '#16a34a', 'ตรงเวลา', st.ontime + ' วัน'], ['clock', '#f59e0b', 'สายสะสม', num(st.lateMin) + ' นาที'], ['xc', '#ef4444', 'ขาดงาน', st.absent + ' วัน'], ['ot', '#2563eb', 'OT รวม', mins(st.otMin) + ' ชม.']].map(([i, c, l, n]) => `<div class="stile"><span style="color:${c}">${ic(i)}</span><span class="l">${l}</span><b>${n}</b></div>`).join('')}</div>`;
     const monthNav = `<div class="row" style="gap:6px"><button class="btn ghost icon sm" data-mn="-1">${ic('back')}</button><b style="min-width:120px;text-align:center">${TH_MF[M.m - 1]} ${M.y + 543}</b><button class="btn ghost icon sm" data-mn="1">${ic('chev')}</button></div>`;
     if (v === 'today') {
       const r = M.by[t] || {}; const sch = (M.sch.find(s => s.work_date === t) || {}).info || {}; const sh = sch.shift_id ? S.L.shifts.find(x => x.id === sch.shift_id) : null;
