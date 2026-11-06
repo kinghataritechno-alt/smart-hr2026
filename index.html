@@ -581,6 +581,71 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .os-node.old{border-left-color:var(--muted);opacity:.85}
 
 .asg-code{grid-column:1/-1}.asg-code .notice{margin:0}
+/* ===================== v1.4 ธีมกระจก (Glass) สำหรับ PC/แท็บเล็ต — ค่าเริ่มต้น; สลับเป็นคลาสสิกได้ที่เมนูผู้ใช้ ===================== */
+@media (min-width:1000px), (min-width:700px) and (min-height:500px){
+  :root[data-skin=glass]{--bg:#081a3d;--panel:rgba(18,44,98,.42);--panel-2:rgba(255,255,255,.07);--ink:#f1f6ff;--ink-2:#bfd0ee;--ink-3:#8fa6cf;--line:rgba(150,200,255,.24);
+    --brand:#8cc8ff;--brand-2:#5eb1ff;--brand-3:rgba(255,255,255,.08);--gold:#e2b26a;--bar1:#38bdf8;--bar2:#f59e0b;--d1:#38bdf8;--d2:#f59e0b;--d3:#a5b4fc;--d4:#fcd34d;--d5:#34d399;--d6:#f472b6;--shadow:0 10px 30px rgba(0,8,30,.35);color-scheme:dark}
+  :root[data-skin=glass] body{background:#061633 url(admin-bg.jpg) center/cover fixed no-repeat}
+  :root[data-skin=glass] body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(4,16,46,.55),rgba(4,18,52,.45) 40%,rgba(3,12,36,.72))}
+  :root[data-skin=glass] .shell{background:none;position:relative;z-index:0}
+  :root[data-skin=glass] .main{background:none}
+  /* sidebar แบบการ์ดกระจกลอย */
+  :root[data-skin=glass] .sb{background:linear-gradient(180deg,rgba(30,80,160,.42),rgba(10,40,100,.38));backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+    margin:14px 0 14px 14px;height:calc(100dvh - 28px);top:14px;border-radius:24px;border:1px solid rgba(150,205,255,.45);box-shadow:0 12px 40px rgba(0,10,40,.45),inset 0 1px 0 rgba(255,255,255,.25)}
+  :root[data-skin=glass] .sblogo span{color:#f0b45c}
+  :root[data-skin=glass] .sblogo{border-bottom:1px solid transparent;border-image:linear-gradient(90deg,transparent,rgba(120,190,255,.8),transparent) 1;margin:0 16px 8px;padding-bottom:16px}
+  :root[data-skin=glass] .sb a.nav{color:#eaf2ff;border-bottom:1px solid rgba(150,200,255,.12);border-radius:10px}
+  :root[data-skin=glass] .sb a.nav:hover{background:rgba(255,255,255,.1)}
+  :root[data-skin=glass] .sb a.nav.on{background:linear-gradient(90deg,#e0b46f,#b98238);color:#fff;border-color:transparent;box-shadow:0 0 0 1px rgba(255,220,160,.5),0 6px 18px rgba(224,170,90,.35)}
+  :root[data-skin=glass] .sb::after{background:linear-gradient(90deg,transparent,#5ab4ff 30%,#f0b45c);opacity:.8}
+  :root[data-skin=glass] .sbver{color:#bcd0f0}
+  /* แถบบน */
+  :root[data-skin=glass] .top{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1.5px solid rgba(240,180,92,.75);margin:0 24px 0 18px;padding-left:12px;padding-right:6px}
+  :root[data-skin=glass] .ttl b,:root[data-skin=glass] .ttl>span{color:#fff}
+  :root[data-skin=glass] .search input{background:rgba(255,255,255,.08);border-color:rgba(150,205,255,.5);color:#fff}
+  :root[data-skin=glass] .tdate{border-color:rgba(150,205,255,.3);color:#fff}
+  :root[data-skin=glass] .tdate svg{color:#f0b45c}
+  :root[data-skin=glass] .ubtn .chev{border-color:rgba(255,255,255,.75);color:#fff}
+  :root[data-skin=glass] .top .ib,:root[data-skin=glass] .top button svg{color:#fff}
+  :root[data-skin=glass] .avatar{background:linear-gradient(135deg,#fff,#dbe9ff);color:#0b2c66}
+  /* การ์ด/แผง กระจก */
+  :root[data-skin=glass] .card,:root[data-skin=glass] .panel,:root[data-skin=glass] .kcard,:root[data-skin=glass] .tbl-wrap,:root[data-skin=glass] .gtabs,:root[data-skin=glass] .org-node,:root[data-skin=glass] .os-div{
+    background:linear-gradient(160deg,rgba(40,95,180,.38),rgba(12,40,100,.34));backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15);
+    border:1px solid rgba(150,205,255,.38);box-shadow:0 10px 30px rgba(0,8,30,.3),inset 0 1px 0 rgba(255,255,255,.18)}
+  :root[data-skin=glass] .panel>header{background:rgba(255,255,255,.05);border-bottom:1px solid rgba(150,205,255,.3)}
+  :root[data-skin=glass] .kic{background:rgba(10,40,100,.45);border:2px solid rgba(255,255,255,.75);box-shadow:0 0 18px rgba(80,170,255,.35)}
+  :root[data-skin=glass] .kwm{color:rgba(255,255,255,.4)}
+  :root[data-skin=glass] .kv,:root[data-skin=glass] .blist .brow b,:root[data-skin=glass] .pagehead h2,:root[data-skin=glass] .desk .dhead h2{color:#fff}
+  :root[data-skin=glass] .kd.up{color:#4ade80}
+  :root[data-skin=glass] .gseg{background:rgba(255,255,255,.08);border:1px solid rgba(150,205,255,.3)}
+  :root[data-skin=glass] .gseg button{color:#e6efff}
+  :root[data-skin=glass] .gseg button.on{background:linear-gradient(90deg,#e0b46f,#b98238);color:#fff;box-shadow:0 0 0 1px rgba(255,220,160,.55)}
+  :root[data-skin=glass] .pillbtn{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(150,205,255,.4)}
+  :root[data-skin=glass] .btn{background:rgba(255,255,255,.08);border-color:rgba(150,205,255,.35);color:var(--ink)}
+  :root[data-skin=glass] .btn:hover{background:rgba(255,255,255,.14)}
+  :root[data-skin=glass] .btn.pri{background:linear-gradient(180deg,#2f86f0,#1556c4);border-color:transparent;color:#fff}
+  :root[data-skin=glass] .btn.gold{background:linear-gradient(90deg,#e0b46f,#b98238);color:#fff;box-shadow:0 0 0 1px rgba(255,220,160,.5),0 6px 18px rgba(224,170,90,.3)}
+  :root[data-skin=glass] .inp,:root[data-skin=glass] select.inp,:root[data-skin=glass] textarea.inp{background:rgba(4,20,56,.45);border-color:rgba(150,205,255,.35);color:#fff}
+  :root[data-skin=glass] .inp::placeholder{color:#9fb4d8}
+  :root[data-skin=glass] option,:root[data-skin=glass] optgroup{background:#10265a;color:#fff}
+  :root[data-skin=glass] .tbl th,:root[data-skin=glass] .atbl th{background:rgba(255,255,255,.07);color:#cfe0ff}
+  :root[data-skin=glass] .tbl tr.click:hover td{background:rgba(255,255,255,.06)}
+  :root[data-skin=glass] .tab.on{color:#fff;border-color:#f0b45c}
+  :root[data-skin=glass] .seg button.on{background:rgba(255,255,255,.16);color:#fff}
+  :root[data-skin=glass] a{color:#9fd0ff}
+  :root[data-skin=glass] .sb a,:root[data-skin=glass] .btn,:root[data-skin=glass] .blist .brow,:root[data-skin=glass] .ritem,:root[data-skin=glass] .rtile,:root[data-skin=glass] .qtile,:root[data-skin=glass] .drop .it{color:var(--ink)}
+  :root[data-skin=glass] .hbar .b i{background:linear-gradient(90deg,#38bdf8,#2f86f0)}
+  :root[data-skin=glass] .donut .dn{fill:#fff}
+  /* หน้าต่างลอย ให้ทึบพอสำหรับอ่าน */
+  :root[data-skin=glass] .modal,:root[data-skin=glass] .drop,:root[data-skin=glass] .search .res{background:linear-gradient(170deg,#173a7c,#0d2552);border:1px solid rgba(150,205,255,.4);color:var(--ink)}
+  :root[data-skin=glass] .modal .tbl-wrap,:root[data-skin=glass] .modal .card{backdrop-filter:none;-webkit-backdrop-filter:none}
+  :root[data-skin=glass] .notice{background:rgba(245,158,11,.16);color:#ffe2a8;border:1px solid rgba(245,158,11,.35)}
+  :root[data-skin=glass] .notice.info{background:rgba(56,140,240,.2);color:#d6e9ff;border-color:rgba(120,180,255,.4)}
+  :root[data-skin=glass] .notice.bad{background:rgba(239,68,68,.18);color:#ffd0d0;border-color:rgba(239,68,68,.4)}
+  :root[data-skin=glass] .notice.good{background:rgba(34,197,94,.16);color:#c9f7da;border-color:rgba(34,197,94,.4)}
+  :root[data-skin=glass] .os-node{background:rgba(255,255,255,.08)}
+  :root[data-skin=glass] .os-node.dv{background:#1d5fc4}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -886,7 +951,8 @@ function logoImg(cls = '') { return `<img class="${cls}" src="${esc(window.__MOC
 const brandLine = () => `<div class="brandline">${logoImg()}<span class="sep"></span><div><div class="t1">SMART TERMINAL</div><div class="t2">${esc(S.company.company_name || 'บริษัท สมาร์ทเทอร์มินอล คอร์ปอเรชั่น จำกัด')}</div></div></div>`;
 
 /* ===================== THEME ===================== */
-function applyTheme() { let t = null; try { t = localStorage.getItem('hr_theme'); } catch (e) { } if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; }
+function applyTheme() { let t = null, k = null; try { t = localStorage.getItem('hr_theme'); k = localStorage.getItem('hr_skin'); } catch (e) { } if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; document.documentElement.dataset.skin = k === 'classic' ? 'classic' : 'glass'; }
+function toggleSkin() { const n = document.documentElement.dataset.skin === 'glass' ? 'classic' : 'glass'; try { localStorage.setItem('hr_skin', n); } catch (e) { } applyTheme(); toast(n === 'glass' ? 'ธีมกระจก (Glass)' : 'ธีมคลาสสิก (กรมท่า/ทอง)'); }
 function cycleTheme() { const c = document.documentElement.dataset.theme; const n = !c ? 'light' : c === 'light' ? 'dark' : null; try { n ? localStorage.setItem('hr_theme', n) : localStorage.removeItem('hr_theme'); } catch (e) { } applyTheme(); toast(n === 'light' ? 'โหมดสว่าง' : n === 'dark' ? 'โหมดมืด' : 'สีตามระบบ'); }
 applyTheme();
 
@@ -975,7 +1041,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.3.3</div>
+      <div class="sbver">Smart Terminal HR<br>v1.4.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -985,14 +1051,14 @@ function renderShell() {
         <div class="tdate">${ic('cal')}<span>${fDL(todayStr())}</span></div>
         <div class="umenu" style="position:relative"><button class="ubtn" id="ubtn">${avatar(e)}<span class="chev">${ic('down')}</span></button>
           <div class="drop hidden" id="udrop" style="width:250px"><div style="padding:12px 14px;border-bottom:1px solid var(--line)"><b>${esc(e.first_name)} ${esc(e.last_name || '')}</b><div class="tiny muted">${esc(e.employee_code)} · ${esc((S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
-          <a class="it" href="#/profile">${ic('user')} ข้อมูลของฉัน</a><a class="it" href="#/payroll">${ic('money')} สลิปเงินเดือน</a><a class="it" data-act="theme">${ic('moon')} โหมดสี</a><a class="it" data-act="viewprev">${ic('dash')} ดูตัวอย่างมุมมอง มือถือ/แท็บเล็ต</a><a class="it" data-act="logout" style="color:var(--bad)">${ic('logout')} ออกจากระบบ</a></div></div></header>
+          <a class="it" href="#/profile">${ic('user')} ข้อมูลของฉัน</a><a class="it" href="#/payroll">${ic('money')} สลิปเงินเดือน</a><a class="it" data-act="skin">${ic('dash')} สลับธีม กระจก / คลาสสิก</a><a class="it" data-act="theme">${ic('moon')} โหมดสี</a><a class="it" data-act="viewprev">${ic('dash')} ดูตัวอย่างมุมมอง มือถือ/แท็บเล็ต</a><a class="it" data-act="logout" style="color:var(--bad)">${ic('logout')} ออกจากระบบ</a></div></div></header>
       <header class="mtop">${brandLine()}<span class="grow"></span><div class="bell" style="position:relative"><button class="btn ghost icon" data-act="notif" aria-label="การแจ้งเตือน">${ic('bell')}</button><span class="dot hidden" id="ndot2"></span></div><a class="btn ghost icon" href="#/profile" aria-label="โปรไฟล์">${ic('user')}</a></header>
       <main class="content" id="page"></main>
     </div></div>
     <nav class="bnav" id="bnav"></nav>`;
   on(document.body, 'click', '[data-act]', (ev, b) => {
     const a = b.dataset.act;
-    if (a === 'logout') logout(); else if (a === 'theme') cycleTheme(); else if (a === 'viewprev') viewPreview(); else if (a === 'notif') openNotif(b);
+    if (a === 'logout') logout(); else if (a === 'theme') cycleTheme(); else if (a === 'skin') { toggleSkin(); route(); } else if (a === 'viewprev') viewPreview(); else if (a === 'notif') openNotif(b);
   });
   const gs = $('#gsearch'), gr = $('#gres');
   gs.oninput = debounce(() => {
@@ -1289,7 +1355,7 @@ const REPORT_FN = {
 const isDesk = () => !isPhone();
 let _deskMode = isDesk();
 window.addEventListener('resize', debounce(() => { const d = isDesk(); if (d !== _deskMode) { _deskMode = d; if (S.ctx && S.route.split('/')[0] === 'dashboard') route(); } }, 250));
-const DCOL = ['#132c5e', '#c9964f', '#d6dbe3', '#ecd8b2', '#5b7bb5', '#8a6a3a'];
+const DCOL = ['var(--d1,#132c5e)', 'var(--d2,#c9964f)', 'var(--d3,#d6dbe3)', 'var(--d4,#ecd8b2)', 'var(--d5,#5b7bb5)', 'var(--d6,#8a6a3a)'];
 function barChart(series) {
   if (!series.length) return emptyBox('ยังไม่มีข้อมูลเวลา — นำเข้าข้อมูลจากเครื่องสแกน ZKTeco', 'clock');
   const W = 640, H = 250, L = 44, B = 34, T = 24, R = 10; const mx0 = Math.max(1, ...series.map(s => Math.max(Number(s.present), Number(s.absent))));
@@ -1297,10 +1363,10 @@ function barChart(series) {
   const y = v => T + ih - (Number(v) / mx) * ih; let g = '';
   for (let i = 0; i <= 5; i++) { const v = mx * i / 5; g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" class="gl"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" class="ax">${num(v, 0)}</text>`; }
   series.forEach((s, i) => { const cx = L + gw * i + gw / 2; const x1 = cx - bw - 3, x2 = cx + 3;
-    g += `<rect x="${x1}" y="${y(s.present)}" width="${bw}" height="${Math.max(0, T + ih - y(s.present))}" rx="3" fill="#132c5e"><title>${esc(s.label)}: เข้างาน ${s.present}</title></rect><text x="${x1 + bw / 2}" y="${y(s.present) - 6}" text-anchor="middle" class="vl">${num(s.present, 1)}</text>
-      <rect x="${x2}" y="${y(s.absent)}" width="${bw}" height="${Math.max(2, T + ih - y(s.absent))}" rx="3" fill="#c9964f"><title>${esc(s.label)}: ขาดงาน ${s.absent}</title></rect><text x="${x2 + bw / 2}" y="${y(s.absent) - 6}" text-anchor="middle" class="vl">${num(s.absent, 1)}</text>
+    g += `<rect x="${x1}" y="${y(s.present)}" width="${bw}" height="${Math.max(0, T + ih - y(s.present))}" rx="3" style="fill:var(--bar1,#132c5e)"><title>${esc(s.label)}: เข้างาน ${s.present}</title></rect><text x="${x1 + bw / 2}" y="${y(s.present) - 6}" text-anchor="middle" class="vl">${num(s.present, 1)}</text>
+      <rect x="${x2}" y="${y(s.absent)}" width="${bw}" height="${Math.max(2, T + ih - y(s.absent))}" rx="3" style="fill:var(--bar2,#c9964f)"><title>${esc(s.label)}: ขาดงาน ${s.absent}</title></rect><text x="${x2 + bw / 2}" y="${y(s.absent) - 6}" text-anchor="middle" class="vl">${num(s.absent, 1)}</text>
       <text x="${cx}" y="${H - 10}" text-anchor="middle" class="xl">${esc(s.label)}</text>`; });
-  return `<div class="lgnd"><span><i style="background:#132c5e"></i>เข้างานปกติ</span><span><i style="background:#c9964f"></i>ขาดงาน</span></div><svg viewBox="0 0 ${W} ${H}" class="bchart" role="img" aria-label="สถิติการเข้างาน">${g}</svg>`;
+  return `<div class="lgnd"><span><i style="background:var(--bar1,#132c5e)"></i>เข้างานปกติ</span><span><i style="background:var(--bar2,#c9964f)"></i>ขาดงาน</span></div><svg viewBox="0 0 ${W} ${H}" class="bchart" role="img" aria-label="สถิติการเข้างาน">${g}</svg>`;
 }
 function donut(items) {
   let list = items.slice(0, 3); const rest = items.slice(3).reduce((a, x) => a + Number(x.n), 0); if (rest) list.push({ name: 'อื่น ๆ', n: rest });
@@ -1308,7 +1374,7 @@ function donut(items) {
   if (!tot) return `<div class="dwrap"><svg viewBox="0 0 120 120" class="donut"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--line)" stroke-width="18"/><text x="60" y="62" text-anchor="middle" class="dn">0</text><text x="60" y="78" text-anchor="middle" class="ds">รายการ</text></svg><div class="muted small">ยังไม่มีการลาในเดือนนี้</div></div>`;
   let a0 = -Math.PI / 2, segs = ''; const r = 44, c = 60;
   list.forEach((x, i) => { const a = (Number(x.n) / tot) * Math.PI * 2; const a1 = a0 + a - (list.length > 1 ? 0.03 : 0); const big = a > Math.PI ? 1 : 0;
-    segs += list.length === 1 ? `<circle cx="60" cy="60" r="${r}" fill="none" stroke="${DCOL[i]}" stroke-width="18"/>` : `<path d="M${c + r * Math.cos(a0)} ${c + r * Math.sin(a0)} A${r} ${r} 0 ${big} 1 ${c + r * Math.cos(a1)} ${c + r * Math.sin(a1)}" fill="none" stroke="${DCOL[i]}" stroke-width="18"><title>${esc(x.name)} ${x.n}</title></path>`; a0 += a; });
+    segs += list.length === 1 ? `<circle cx="60" cy="60" r="${r}" fill="none" style="stroke:${DCOL[i]}" stroke-width="18"/>` : `<path d="M${c + r * Math.cos(a0)} ${c + r * Math.sin(a0)} A${r} ${r} 0 ${big} 1 ${c + r * Math.cos(a1)} ${c + r * Math.sin(a1)}" fill="none" style="stroke:${DCOL[i]}" stroke-width="18"><title>${esc(x.name)} ${x.n}</title></path>`; a0 += a; });
   return `<div class="dwrap"><svg viewBox="0 0 120 120" class="donut">${segs}<text x="60" y="62" text-anchor="middle" class="dn">${num(tot)}</text><text x="60" y="78" text-anchor="middle" class="ds">รายการ</text></svg>
     <div class="dleg">${list.map((x, i) => `<div><i style="background:${DCOL[i]}"></i><div><b>${esc(x.name)}</b><span>${num(x.n)} รายการ<br>(${(Number(x.n) * 100 / tot).toFixed(1)}%)</span></div></div>`).join('')}</div></div>`;
 }
