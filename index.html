@@ -941,6 +941,8 @@ const can = {
   payroll: () => !!S.ctx?.is_payroll, payAdmin: () => hasRole('SUPER_ADMIN', 'PAYROLL_ADMIN'), payApprover: () => hasRole('SUPER_ADMIN', 'PAYROLL_APPROVER'),
   manager: () => !!S.ctx?.is_manager, org: () => !!(S.ctx?.is_hr || S.ctx?.is_exec)
 };
+/* โหมดพนักงานทั่วไปบนมือถือ: แสดงเฉพาะเมนูที่จำเป็น */
+const simpleMode = () => isPhone() && !(can.org() || can.manager() || can.payroll() || can.hr());
 const hasRole = (...r) => (S.ctx?.roles || []).some(x => r.includes(x));
 const me = () => S.ctx?.employee || {};
 const empName = (id, withCode) => { const e = S.dirMap[id]; if (!e) return id === me().id ? `${me().first_name} ${me().last_name || ''}` : '–'; return (withCode ? e.employee_code + ' ' : '') + `${e.title_th || ''}${e.first_name} ${e.last_name || ''}`.trim(); };
@@ -984,7 +986,7 @@ const MODS = [
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
 const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
-const BNAV = [['dashboard', 'หน้าหลัก', 'home'], ['time', 'เวลา', 'clock'], ['docs', 'เอกสาร', 'file'], ['approve', 'งาน/ขออนุมัติ', 'approve'], ['profile', 'โปรไฟล์', 'user']];
+const BNAV = [['dashboard', 'หน้าหลัก', 'home'], ['time', 'เวลา', 'clock'], ['approve', 'ขออนุมัติ', 'approve'], ['payroll', 'สลิป', 'money'], ['profile', 'โปรไฟล์', 'user']];
 const PAGES = {};
 const SIDE = [['dashboard', 'แดชบอร์ด', 'dash'], ['employees', 'พนักงาน', 'user'], ['org', 'โครงสร้างองค์กร', 'org'], ['time', 'เวลาเข้างาน', 'clock'], ['leave', 'การลา', 'plane'],
   ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
@@ -1055,7 +1057,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.4.4</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1143,6 +1145,7 @@ PAGES.profile = async el => {
   const menu = [['user', 'ข้อมูลส่วนตัว', 'ข้อมูลพื้นฐาน ติดต่อ และที่อยู่', base && base + '/basic'], ['brief', 'ข้อมูลการทำงาน', 'ตำแหน่ง สังกัด วันที่เริ่มงาน และประวัติการทำงาน', base && base + '/work'],
     ['coins', 'ค่าจ้างและสวัสดิการ', 'เงินเดือน รายได้/รายการหัก และสวัสดิการ', base && base + '/pay'], ['cap', 'การฝึกอบรม', 'หลักสูตรอบรม ประวัติการเข้าร่วม', base && base + '/training'],
     ['box', 'สินทรัพย์ที่รับผิดชอบ', 'อุปกรณ์/ทรัพย์สินของบริษัท', base && base + '/asset'], ['file', 'เอกสารของฉัน', 'เอกสารสำคัญ เช่น สัญญาจ้าง ใบรับรอง ฯลฯ', base && base + '/files']];
+  const simple = simpleMode(); const menuShown = simple ? menu.filter(x => ['ข้อมูลส่วนตัว', 'ข้อมูลการทำงาน'].includes(x[1])) : menu;
   el.innerHTML = pageHead('ข้อมูลของฉัน', '', '', 'user') + `
   <div class="hero prof"><div class="hi">${avatar(e, 'lg')}<div class="grow" style="min-width:0">
     <div class="nm" style="font-size:22px;font-weight:600">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div>
@@ -1155,13 +1158,13 @@ PAGES.profile = async el => {
     <a class="qtile" href="#/time/me">${ic('clock')}<span>เวลาเข้า-ออก</span></a>
     <a class="qtile" href="#/leave">${ic('umbrella')}<span>สิทธิการลา<br>คงเหลือ</span></a>
     <a class="qtile" href="#/payroll">${ic('money')}<span>สลิปเงินเดือน</span></a></div>
-  <div class="card mlist" style="margin-top:14px">${menu.map(([i, t, d, h]) => `<a class="mitem ${h ? '' : 'dis'}" ${h ? `href="${h}"` : ''}><span class="mi">${ic(i)}</span><span class="grow"><b>${t}</b><span>${d}</span></span>${ic('chev')}</a>`).join('')}</div>
+  <div class="card mlist" style="margin-top:14px">${menuShown.map(([i, t, d, h]) => `<a class="mitem ${h ? '' : 'dis'}" ${h ? `href="${h}"` : ''}><span class="mi">${ic(i)}</span><span class="grow"><b>${t}</b><span>${d}</span></span>${ic('chev')}</a>`).join('')}</div>
   <div class="card mlist" style="margin-top:14px">
     <a class="mitem" id="pphoto"><span class="mi">${ic('up')}</span><span class="grow"><b>เปลี่ยนรูปโปรไฟล์</b><span>JPG/PNG ไม่เกิน 10MB</span></span>${ic('chev')}</a>
     <a class="mitem" id="ppw"><span class="mi">${ic('key')}</span><span class="grow"><b>เปลี่ยนรหัสผ่าน</b><span>อย่างน้อย 8 ตัวอักษร</span></span>${ic('chev')}</a>
     <a class="mitem" data-act="theme"><span class="mi">${ic('moon')}</span><span class="grow"><b>โหมดสี</b><span>ตามระบบ / สว่าง / มืด</span></span>${ic('chev')}</a>
-    <a class="mitem" href="#/tasks"><span class="mi">${ic('tasks')}</span><span class="grow"><b>สิ่งที่ต้องทำ</b><span>งานที่ได้รับมอบหมาย</span></span>${ic('chev')}</a>
-    <a class="mitem" href="#/reports"><span class="mi">${ic('report')}</span><span class="grow"><b>รายงาน</b><span>ตามสิทธิ์ของท่าน</span></span>${ic('chev')}</a>
+    ${simple ? '' : `<a class="mitem" href="#/tasks"><span class="mi">${ic('tasks')}</span><span class="grow"><b>สิ่งที่ต้องทำ</b><span>งานที่ได้รับมอบหมาย</span></span>${ic('chev')}</a>
+    <a class="mitem" href="#/reports"><span class="mi">${ic('report')}</span><span class="grow"><b>รายงาน</b><span>ตามสิทธิ์ของท่าน</span></span>${ic('chev')}</a>`}
     <div class="mitem" style="cursor:default"><span class="mi">${ic('shield')}</span><span class="grow"><b>สิทธิ์ในระบบ</b><span>${roles || '–'}${e.supervisor_name ? ' · หัวหน้า: ' + esc(e.supervisor_name) : ''}</span></span></div>
     <a class="mitem bad" data-act="logout"><span class="mi">${ic('logout')}</span><span class="grow"><b>ออกจากระบบ</b></span></a></div>`;
   $('#ppw').onclick = () => formModal({ title: 'เปลี่ยนรหัสผ่าน', fields: [{ k: 'p1', label: 'รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)', type: 'password', req: true, full: true }, { k: 'p2', label: 'ยืนยันรหัสผ่านใหม่', type: 'password', req: true, full: true }],
@@ -1213,10 +1216,21 @@ function viewPreview(kind = 'phone') {
 }
 
 /* ===================== M01 DASHBOARD ===================== */
+/* เมนูลัดสำหรับพนักงานทั่วไปบนมือถือ */
+function simpleTiles(m) {
+  const t = [{ h: '#/time/me', i: 'clock', c: 'linear-gradient(135deg,#22d3ee,#0e7490)', tl: 'เวลา<br>เข้า-ออก' },
+    { h: '#/docs/new/LEAVE', i: 'umbrella', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอลา' },
+    { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
+    { h: '#/approve', i: 'send', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ขอ OT /<br>คำขออื่น' },
+    { h: '#/payroll', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
+  if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
+  if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
+  return t;
+}
 PAGES.dashboard = async el => {
   if (isDesk()) return dashDesktop(el);
   const e = me(); const t = todayStr(); const p = dParts(t);
-  const d = await rpc('dash_stats');
+  const d = await rpc('dash_stats'); const simple = simpleMode();
   const m = d.me || {}; const tdy = m.today || {}; const sh = m.shift_today || {}; const shi = sh.info || {};
   const shiftTxt = sh.shift ? `${esc(sh.shift.shift_name)}<div class="tiny muted">(${hm(sh.shift.start_time)} – ${hm(sh.shift.end_time)})</div>` : shi.holiday ? 'วันหยุด' : shi.day_off ? 'วันหยุด' : '<span class="small muted">ยังไม่กำหนด</span>';
   const kp = (v, l, i, c, href) => `<a class="card kpi" ${href ? `href="${href}"` : ''} style="color:inherit"><span class="ic" style="background:${c}">${ic(i)}</span><span class="v">${v}</span><span class="l">${l}</span></a>`;
@@ -1224,7 +1238,7 @@ PAGES.dashboard = async el => {
   const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
-   <div class="tiles">${MODS.filter(x => x.show()).map(x => `<a class="tile" href="#/${x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
+   <div class="tiles${simple ? ' simple' : ''}">${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
   <div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
@@ -1232,12 +1246,15 @@ PAGES.dashboard = async el => {
     <div><div class="l"><span style="color:var(--brand)">${ic('cal')}</span>กะการทำงาน</div><div class="v" style="font-size:16px">${shiftTxt}</div></div>
     <div><div class="l"><span style="color:var(--brand)">${ic('umbrella')}</span>วันลาคงเหลือ</div><div class="v">${num(m.leave_remaining, 1)} <span class="small">วัน</span></div></div>
    </div></div>
-  <div class="grid g4" style="margin-top:14px">
+  ${simple ? `<div class="grid g2" style="margin-top:14px">
+   ${kp(num((m.docs || {}).PENDING || 0), 'คำขอของฉันที่รออนุมัติ', 'upload', 'linear-gradient(135deg,#fbbf24,#ea8a0c)', '#/approve/tab/mine')}
+   ${m.pending_approvals ? kp(num(m.pending_approvals), 'รออนุมัติจากฉัน', 'approve', 'linear-gradient(135deg,#4ade80,#16a34a)', '#/approve/tab/pending') : m.tasks_open ? kp(num(m.tasks_open), 'งานที่ได้รับมอบหมาย', 'tasks', 'linear-gradient(135deg,#f472b6,#db2777)', '#/tasks') : kp(num(m.unread || 0), 'การแจ้งเตือนใหม่', 'bell', 'linear-gradient(135deg,#60a5fa,#1d4ed8)')}
+  </div>` : `<div class="grid g4" style="margin-top:14px">
    ${kp(num(m.pending_approvals || 0), 'รออนุมัติจากฉัน', 'approve', 'linear-gradient(135deg,#4ade80,#16a34a)', '#/approve')}
    ${kp(num((m.docs || {}).PENDING || 0), 'เอกสารของฉันที่รออนุมัติ', 'upload', 'linear-gradient(135deg,#fbbf24,#ea8a0c)', '#/docs')}
    ${kp(num(m.tasks_open || 0), 'งานที่ได้รับมอบหมาย', 'tasks', 'linear-gradient(135deg,#f472b6,#db2777)', '#/tasks')}
    ${kp(num(m.unread || 0), 'การแจ้งเตือนใหม่', 'bell', 'linear-gradient(135deg,#60a5fa,#1d4ed8)')}
-  </div>`;
+  </div>`}`;
   if (d.team) html += `<h3 style="margin:22px 0 10px;font-size:17px">ทีมของฉัน</h3><div class="grid g3">
    ${kp(num(d.team.size), 'สมาชิกในทีม', 'users', 'linear-gradient(135deg,#818cf8,#4338ca)', '#/employees')}
    ${kp(num(d.team.on_leave_today), 'ลาวันนี้', 'umbrella', 'linear-gradient(135deg,#34d399,#0f9f6e)', '#/leave')}
@@ -2264,6 +2281,7 @@ async function scheduleGrid(host) {
 const DT_ICON = { LEAVE: 'plane', SHIFT_CHANGE: 'swap', DAYOFF_CHANGE: 'swap', DAYOFF_PATTERN: 'cal', TIME_ADD: 'clock', OT: 'ot', FACE_PHOTO: 'face', RESIGN: 'resign', MANPOWER: 'useradd', TRAINING_REQ: 'board', PR: 'cart', MATERIAL: 'box' };
 const RD_TYPES = ['DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
 const REQ_GRID = ['LEAVE', 'OT', 'DAYOFF_CHANGE', 'DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
+const REQ_SIMPLE = ['LEAVE', 'OT', 'TIME_ADD', 'SHIFT_CHANGE', 'DAYOFF_CHANGE'], REQ_SIMPLE_MORE = ['RESIGN'];  /* คำขอของพนักงานทั่วไปบนมือถือ */
 const DT_COLOR = { LEAVE: '#16a34a', SHIFT_CHANGE: '#2563eb', DAYOFF_CHANGE: '#7c3aed', TIME_ADD: '#0e7490', OT: '#ea8a0c', FACE_PHOTO: '#db2777', RESIGN: '#b91c1c', DAYOFF_PATTERN: '#7c3aed', MANPOWER: '#0891b2', TRAINING_REQ: '#4f46e5', PR: '#0d9488', MATERIAL: '#a16207' };
 const WD = ['', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'];
 const OT_DAY = { WORKDAY: 'OT วันทำงาน', HOLIDAY_WORK: 'ทำงานวันหยุด', HOLIDAY_OT: 'OT วันหยุด' };
@@ -2404,10 +2422,11 @@ const reqItem = (d, href, extra = '') => { const c = dtCode(d.document_type_id);
   return `<a class="ritem" href="${href || '#/docs/' + d.id}"><span class="rti" style="color:${DT_COLOR[c] || '#2563eb'}">${ic(DT_ICON[c] || 'file')}</span><span class="grow" style="min-width:0"><b>${esc(dtName(d.document_type_id))}</b><span>${esc(docSummary(d))}</span>${extra}</span><span class="pill ${st[2]}">${ic(st[0])} ${st[1]}</span>${ic('chev')}</a>`; };
 const reqTile = c => { const t = S.L.docTypes.find(x => x.document_code === c && x.active_status === 'ACTIVE'); if (!t) return '';
   return `<a class="rtile" href="#/docs/new/${c}"><span class="rti" style="color:${DT_COLOR[c]}">${ic(DT_ICON[c] || 'file')}</span><span>${TILE_LBL[c] || esc(t.document_name)}</span></a>`; };
-const TILE_LBL = { LEAVE: 'ขอลา', OT: 'ขอล่วงเวลา<br>(OT)', DAYOFF_CHANGE: 'ขอสลับ<br>วันหยุด', DAYOFF_PATTERN: 'ขอเปลี่ยน<br>วันหยุด', MANPOWER: 'ขอเพิ่ม<br>อัตรากำลัง', TRAINING_REQ: 'ขอเข้ารับ<br>การอบรม', PR: 'ขอซื้อ/ขอจ้าง<br>(PR)', MATERIAL: 'ขอเบิก<br>วัสดุ/อุปกรณ์' };
+const TILE_LBL = { LEAVE: 'ขอลา', TIME_ADD: 'ขอปรับ<br>เวลา', SHIFT_CHANGE: 'ขอเปลี่ยน<br>กะ', OT: 'ขอล่วงเวลา<br>(OT)', DAYOFF_CHANGE: 'ขอสลับ<br>วันหยุด', DAYOFF_PATTERN: 'ขอเปลี่ยน<br>วันหยุด', MANPOWER: 'ขอเพิ่ม<br>อัตรากำลัง', TRAINING_REQ: 'ขอเข้ารับ<br>การอบรม', PR: 'ขอซื้อ/ขอจ้าง<br>(PR)', MATERIAL: 'ขอเบิก<br>วัสดุ/อุปกรณ์' };
 PAGES.approve = async (el, a, tab) => {
   if (a && a !== 'tab') return docDetail(el, a, { back: '#/approve' });
   const T = [['request', 'ขออนุมัติ', 'send'], ['mine', 'รายการของฉัน', 'list'], ['pending', `รออนุมัติ${S.pendingCount ? ` (${S.pendingCount})` : ''}`, 'clock'], ['done', 'อนุมัติแล้ว', 'okc']];
+  if (simpleMode() && !S.pendingCount) T.splice(2, 2);  /* พนักงานทั่วไป: แสดงแท็บอนุมัติเฉพาะเมื่อมีเอกสารรออนุมัติ */
   if (can.org() || can.manager()) T.push(['all', can.org() ? 'ทั้งหมด' : 'ของทีม', 'users']);
   const t0 = T.some(x => x[0] === tab) ? tab : 'request';
   el.innerHTML = pageHead('งาน/ขออนุมัติ', '', '', 'approve') + `<div class="gtabs" id="atabs">${T.map(([k, l, i]) => `<button data-t="${k}" class="${k === t0 ? 'on' : ''}">${ic(i)}<span>${esc(l)}</span></button>`).join('')}</div><div id="abody"></div>`;
@@ -2416,9 +2435,9 @@ PAGES.approve = async (el, a, tab) => {
     history.replaceState(null, '', '#/approve/tab/' + t);
     const b = $('#abody'); loading(b);
     if (t === 'request') {
-      const mine = await myDocs(); const others = S.L.docTypes.filter(x => x.active_status === 'ACTIVE' && !REQ_GRID.includes(x.document_code)).map(x => x.document_code);
+      const mine = await myDocs(); const SIMPLE = simpleMode(), grid = SIMPLE ? REQ_SIMPLE : REQ_GRID; const others = S.L.docTypes.filter(x => x.active_status === 'ACTIVE' && !grid.includes(x.document_code) && (!SIMPLE || REQ_SIMPLE_MORE.includes(x.document_code))).map(x => x.document_code);
       b.innerHTML = `<div class="card"><h3>${ic('upload')} สร้างคำขออนุมัติ</h3>${me().is_system ? `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ยื่นคำขอไม่ได้ แต่ดู/อนุมัติเอกสารได้</div>` : ''}
-        <div class="rgrid">${REQ_GRID.map(reqTile).join('')}</div>${others.length ? `<div class="row" style="margin-top:12px">${others.map(c => `<a class="btn sm" href="#/docs/new/${c}">${ic(DT_ICON[c] || 'file')} ${esc(dtName(S.L.docTypes.find(x => x.document_code === c).id))}</a>`).join('')}</div>` : ''}</div>
+        <div class="rgrid">${grid.map(reqTile).join('')}</div>${others.length ? `<div class="row" style="margin-top:12px">${others.map(c => `<a class="btn sm" href="#/docs/new/${c}">${ic(DT_ICON[c] || 'file')} ${esc(dtName(S.L.docTypes.find(x => x.document_code === c).id))}</a>`).join('')}</div>` : ''}</div>
         <div class="card" style="margin-top:14px"><div class="row" style="margin-bottom:6px"><h3 style="margin:0">${ic('list')} รายการคำขอของฉัน</h3><span class="grow"></span><button class="btn ghost sm" data-go="mine">ดูทั้งหมด ${ic('chev')}</button></div>
         ${mine.length ? mine.slice(0, 5).map(d => reqItem(d)).join('') : emptyBox('ยังไม่มีคำขอ')}</div>`;
       on(b, 'click', '[data-go]', (e, x) => $(`#atabs [data-t="${x.dataset.go}"]`).click());
