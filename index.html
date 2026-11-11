@@ -95,7 +95,6 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .seg{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px}
 .seg button{border:none;background:none;border-radius:999px;padding:6px 13px;cursor:pointer;color:var(--ink-2);font-weight:500}
 .seg button.on{background:var(--panel);color:var(--brand);box-shadow:var(--shadow)}
-.seg a.btn{border:none;background:none;border-radius:999px;color:var(--ink-2);box-shadow:none}.seg a.btn.on{background:var(--panel);color:var(--brand);box-shadow:var(--shadow)}
 
 /* ---------- login ---------- */
 .login{min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;align-items:center;padding:24px 16px;color:#fff;
@@ -159,19 +158,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .pagehead h2{margin:0;font-size:22px;font-weight:600}
 .avatar{width:36px;height:36px;border-radius:50%;text-align:center;line-height:1;object-fit:cover;background:linear-gradient(135deg,#60a5fa,#1d4ed8);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px;flex:none;overflow:hidden}
 .avatar.lg{width:96px;height:96px;font-size:34px;border:4px solid rgba(255,255,255,.9);box-shadow:0 6px 20px rgba(0,0,0,.2)}
-.avatar{position:relative}.avatar img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%}
-.crop{position:relative;width:260px;height:260px;margin:4px auto 12px;border-radius:50%;overflow:hidden;background:#0b1830;touch-action:none;cursor:grab;box-shadow:0 0 0 3px var(--brand)}.crop img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
-.agent{display:flex;gap:12px;align-items:flex-start}.agent .ab{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;background:linear-gradient(135deg,#6366f1,#2563eb)}.agent .ab svg{width:24px;height:24px}
-.agent.good .ab{background:linear-gradient(135deg,#34d399,#0f9f6e)}.agent.warn .ab{background:linear-gradient(135deg,#fb923c,#dc2626)}
-.agbn{text-align:center;border-radius:14px;padding:16px 14px 14px}.agbn .bi svg{width:34px;height:34px;stroke-width:1.8}.agbn h4{margin:6px 0 6px;font-size:19px;font-weight:700}.agbn .bm{font-size:14.5px;color:var(--ink);font-weight:500}.agbn .bs{font-size:14px;margin-top:10px}.agbn .bt{font-size:12.5px;color:var(--ink-2);margin-top:6px}
-.agbn.bad{background:#fdecec;color:#c8323a}.agbn.ok{background:#eaf6ee;color:#1f7a45}.agbn.bad h4{color:#b42318}.agbn.ok h4{color:#1f6b3e}
-:root[data-theme="dark"] .agbn.bad{background:rgba(220,38,38,.14)}:root[data-theme="dark"] .agbn.ok{background:rgba(22,163,74,.14)}
-.astep{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);position:relative}.astep .an{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--brand-3);color:var(--brand);font-weight:700;font-size:14px}.astep .an svg{width:16px;height:16px}
-.agent h4{margin:0 0 2px;font-size:16px}.agent .ad{font-size:14px;color:var(--ink-2)}.lstat{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.lstat span{background:var(--panel-2);border-radius:10px;padding:6px 10px;font-size:13px}.lstat b{font-size:15px}
-.anlist .an{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);color:inherit}.anlist .an:first-child{border-top:0}.anlist .an .mi{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--brand-3);color:var(--brand)}
-.chatbox{display:flex;flex-direction:column;gap:10px;min-height:50vh}.msg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:15px;line-height:1.5;white-space:pre-line}.msg.bot{background:var(--panel);border:1px solid var(--line);border-top-left-radius:4px;align-self:flex-start}.msg.me{background:var(--brand);color:#fff;border-top-right-radius:4px;align-self:flex-end}
-.chips2{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}.chips2 button{flex:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:18px;padding:7px 12px;font:inherit;font-size:14px}
-.chatin{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));display:flex;gap:8px;background:var(--bg,transparent);padding:8px 0}.chatin input{flex:1}
+.avatar img{width:100%;height:100%;object-fit:cover}
 .bnav{display:none}
 .mtop{display:none}
 
@@ -684,36 +671,17 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 }
 
 /* v1.5.2 — ปุ่มลัดพนักงาน: จัดแถวให้สมดุลตามจำนวนปุ่ม (แถวสุดท้ายอยู่กลาง) */
-.aah{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
-.aai{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#6366f1,#1e3a8a);flex:0 0 auto}
-.aai svg{width:22px;height:22px}
-.aab{color:#fff;border-radius:10px;font-size:12px;font-weight:600;padding:2px 9px}
-.aar{display:flex;align-items:flex-start;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);color:inherit;font-size:14.5px}
-.aar:last-child{border-bottom:0}
-.aar>svg{width:18px;height:18px;color:var(--ink-2);flex:0 0 auto;margin-top:3px}
-.aad{width:9px;height:9px;border-radius:50%;flex:0 0 auto;margin-top:8px}
-.aan{color:var(--ink-2);margin-top:2px}
-.aag{font-size:12.5px;color:var(--ink-2);margin:12px 0 2px;font-weight:600}
-.hrow{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line);color:inherit;font-size:15px}
-.hrow:last-child{border-bottom:0}
-.hrow .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
-.hrow .ic svg{width:19px;height:19px}
-.hrow>svg{width:18px;height:18px;color:var(--ink-2);flex:0 0 auto}
-.hrow .cnt{background:#ef4444;color:#fff;border-radius:11px;font-size:12px;font-weight:700;padding:1px 8px}
-.hok{display:flex;align-items:center;gap:8px;color:var(--good);padding:8px 2px;font-size:15px}
-.hok svg{width:20px;height:20px}
-.kstrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.kstrip a{display:flex;flex-direction:column;align-items:center;padding:10px 4px;border-radius:12px;background:var(--brand-3);color:inherit;text-align:center}
-.kstrip b{font-size:22px;font-weight:600;line-height:1.2}
-.kstrip span{font-size:12px;color:var(--ink-2)}
-details.more{margin-top:10px}
-details.more summary{cursor:pointer;color:var(--brand);font-size:14px;padding:4px 0}
-.allmenu{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;padding:9px;border-radius:12px;background:rgba(255,255,255,.12);color:#fff;font-size:14px;position:relative;z-index:1}
-.allmenu svg{width:17px;height:17px}
 .tiles.simple{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 .tiles.simple .tile{flex:0 0 calc((100% - (var(--cols,5) - 1) * 10px) / var(--cols,5));min-width:0}
 /* v1.5.3 กล่องโลโก้หน้าข้อมูลบริษัท */
 .co-logo img,.co-logo svg{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block}
+/* v1.5.5 ช่องวันที่ วว/ดด/ปปปป */
+.thd-w{position:relative;display:flex;align-items:center;width:100%}
+.thd-w .thd{width:100%;padding-right:38px;font-variant-numeric:tabular-nums}
+.thd-w .thd.bad{border-color:var(--bad,#dc2626)!important;box-shadow:0 0 0 3px rgba(220,38,38,.18)}
+.thd-b{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent;color:var(--muted,#64748b);display:grid;place-items:center;cursor:pointer;border-radius:8px}
+.thd-b:hover{background:rgba(127,127,127,.12)}.thd-b svg{width:18px;height:18px}
+input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;height:1px!important;opacity:0;pointer-events:none;padding:0!important;border:0!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -742,8 +710,6 @@ const debounce = (fn, ms = 250) => { let t; return (...a) => { clearTimeout(t); 
 
 /* ===================== ICONS ===================== */
 const IP = {
-  clockal: '<path d="M20.9 13.5A9 9 0 1112 3a9 9 0 017.4 3.9"/><path d="M12 7v5l3 2"/><path d="M21 8v4"/><path d="M21 15.5v.01"/>',
-  calok: '<rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18"/><path d="M8.5 15l2.5 2.5 4.5-5"/>',
   home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   chart: '<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
@@ -815,11 +781,7 @@ const IP = {
   palm: '<path d="M12 22V11"/><path d="M12 11c-1.5-3-5-4-8-2 2.5 0 4.5 1 5 3"/><path d="M12 11c1.5-3 5-4 8-2-2.5 0-4.5 1-5 3"/><path d="M12 11c0-3-2-6-5-6.5 2 1.5 2.5 4 2 6"/><path d="M12 11c0-3 2-6 5-6.5-2 1.5-2.5 4-2 6"/><path d="M7 22h10"/>',
   medic: '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/>',
   scale: '<path d="M12 3v18M5 21h14"/><path d="M5 7h14"/><path d="M5 7l-3 7a3.5 3.5 0 006 0z"/><path d="M19 7l-3 7a3.5 3.5 0 006 0z"/>',
-  history: '<path d="M3 3v5h5"/><path d="M3.1 13a9 9 0 103-7.7L3 8"/><path d="M12 7v5l4 2"/>',
-  chat: '<path d="M21 12a8 8 0 01-11.7 7.1L4 20l1-4.6A8 8 0 1121 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/>',
-  bot: '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 14h.01M15 14h.01M9.5 17h5"/><circle cx="12" cy="3.5" r="1"/>',
-  mega: '<path d="M3 10v4a1 1 0 001 1h3l6 4V5L7 9H4a1 1 0 00-1 1z"/><path d="M17 9a4 4 0 010 6M19.5 6.5a7.5 7.5 0 010 11"/>',
-  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'
+  history: '<path d="M3 3v5h5"/><path d="M3.1 13a9 9 0 103-7.7L3 8"/><path d="M12 7v5l4 2"/>'
 };
 const ic = (n, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${IP[n] || IP.file}</svg>`;
 
@@ -1032,6 +994,43 @@ function toggleSkin() { const n = document.documentElement.dataset.skin === 'gla
 function cycleTheme() { const c = document.documentElement.dataset.theme; const n = !c ? 'light' : c === 'light' ? 'dark' : null; try { n ? localStorage.setItem('hr_theme', n) : localStorage.removeItem('hr_theme'); } catch (e) { } applyTheme(); toast(n === 'light' ? 'โหมดสว่าง' : n === 'dark' ? 'โหมดมืด' : 'สีตามระบบ'); }
 applyTheme();
 
+/* ===== v1.5.5 ช่องกรอกวันที่แบบ วว/ดด/ปปปป (พ.ศ.) =====
+   แปลงทุก <input type="date"> อัตโนมัติ: ช่องเดิมถูกซ่อนไว้และยังเก็บค่า ISO (yyyy-mm-dd) ให้โค้ดเดิมอ่าน/ฟัง change ได้เหมือนเดิม */
+const thdFmt = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? `${m[3]}/${m[2]}/${+m[1] + 543}` : ''; };
+function thdParse(s) {
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec((s || '').trim()); if (!m) return null;
+  let d = +m[1], mo = +m[2], y = +m[3]; if (y > 2400) y -= 543;
+  const dt = new Date(Date.UTC(y, mo - 1, d)); if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return null;
+  return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+const VAL_DESC = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+function thdEnhance(src) {
+  if (src.dataset.thd) return; src.dataset.thd = 1;
+  const w = document.createElement('span'); w.className = 'thd-w';
+  const t = document.createElement('input'); t.className = 'inp thd'; t.type = 'text'; t.inputMode = 'numeric'; t.placeholder = 'วว/ดด/ปปปป'; t.maxLength = 10; t.autocomplete = 'off';
+  if (src.style.cssText) t.style.cssText = src.style.cssText;
+  t.readOnly = src.readOnly; t.disabled = src.disabled;
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'thd-b'; b.tabIndex = -1; b.setAttribute('aria-label', 'เลือกจากปฏิทิน'); b.innerHTML = ic('cal');
+  src.parentNode.insertBefore(w, src); w.append(t, b, src); src.classList.add('thd-src'); src.tabIndex = -1;
+  const sync = () => { t.value = thdFmt(VAL_DESC.get.call(src)); t.classList.remove('bad'); };
+  Object.defineProperty(src, 'value', { configurable: true, get() { return VAL_DESC.get.call(this); }, set(v) { VAL_DESC.set.call(this, v); sync(); } });
+  sync();
+  let pushing = false;
+  const push = iso => { if (VAL_DESC.get.call(src) === iso) return; VAL_DESC.set.call(src, iso); pushing = true; try { src.dispatchEvent(new Event('input', { bubbles: true })); src.dispatchEvent(new Event('change', { bubbles: true })); } finally { pushing = false; } };
+  t.addEventListener('input', () => {
+    const p = t.value.replace(/[^\d/]/g, '').split('/');  /* เติม / ให้อัตโนมัติ ทั้งพิมพ์ตัวเลขล้วนหรือพิมพ์ / เอง */
+    for (let i = 0; i < 2 && i < p.length; i++) if (p[i].length > 2) { p.splice(i + 1, 0, p[i].slice(2)); p[i] = p[i].slice(0, 2); }
+    let v = p.slice(0, 3).join('/'); if (p.length > 3) v += p.slice(3).join('');
+    v = v.slice(0, 10); t.value = v; t.classList.remove('bad');
+    if (v === '') push(''); else { const iso = thdParse(v); if (iso) push(iso); }
+  });
+  t.addEventListener('blur', () => { const v = t.value.trim(); if (!v) { push(''); return; } const iso = thdParse(v); if (iso) { push(iso); t.value = thdFmt(iso); } else { t.classList.add('bad'); push(''); toast('วันที่ไม่ถูกต้อง — ใช้รูปแบบ วว/ดด/ปปปป (พ.ศ.) เช่น 06/11/2569', 'bad'); } });
+  src.addEventListener('change', () => { if (!pushing) sync(); });
+  b.onclick = () => { if (t.disabled || t.readOnly) return; try { src.showPicker(); } catch (e) { t.focus(); } };
+}
+const thdScan = root => (root.querySelectorAll ? root : document).querySelectorAll('input[type=date]:not([data-thd])').forEach(thdEnhance);
+new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1) { if (n.matches && n.matches('input[type=date]')) thdEnhance(n); else thdScan(n); } }).observe(document.documentElement, { childList: true, subtree: true });
+
 /* ===================== MODULES ===================== */
 const MODS = [
   { k: 'dashboard', t: 'หน้าหลัก', i: 'chart', c: 'linear-gradient(135deg,#38bdf8,#2563eb)', show: () => true },
@@ -1043,14 +1042,10 @@ const MODS = [
   { k: 'approve', t: 'อนุมัติเอกสาร', tl: 'อนุมัติ<br>เอกสาร', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', show: () => true, cnt: () => S.pendingCount },
   { k: 'tasks', t: 'สิ่งที่ต้องทำ', tl: 'สิ่งที่<br>ต้องทำ', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', show: () => true },
   { k: 'payroll', t: 'เงินเดือน', i: 'money', c: 'linear-gradient(135deg,#facc15,#ca8a04)', show: () => true },
-  { k: 'inbox', t: 'กล่องข้อความ HR', tl: 'ข้อความ<br>ถึง HR', i: 'chat', c: 'linear-gradient(135deg,#38bdf8,#0369a1)', show: () => can.hr(), cnt: () => S.hrInbox },
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
-const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
-const BNAV_ALL = [['dashboard', 'หน้าหลัก', 'home'], ['chat', 'ChatHR', 'chat'], ['hrwork', 'งาน HR', 'board'], ['profile', 'โปรไฟล์', 'user']];
-/* v1.8.0: พนักงาน 3 แท็บ · ผู้มีสิทธิ์ HR 4 แท็บ (เพิ่ม "งาน HR" พร้อมตัวเลขงานค้าง) */
-const bnavItems = () => BNAV_ALL.filter(([k]) => k !== 'hrwork' || can.hr());
-const bnavCnt = k => k === 'hrwork' ? (S.pendingCount || 0) + (S.hrInbox || 0) : k === 'chat' ? (S.empChat || 0) : 0;
+const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
+const BNAV = [['dashboard', 'หน้าหลัก', 'home'], ['time', 'เวลา', 'clock'], ['approve', 'ขออนุมัติ', 'approve'], ['payroll', 'สลิป', 'money'], ['profile', 'โปรไฟล์', 'user']];
 const PAGES = {};
 const SIDE = [['dashboard', 'แดชบอร์ด', 'dash'], ['employees', 'พนักงาน', 'user'], ['org', 'โครงสร้างองค์กร', 'org'], ['time', 'เวลาเข้างาน', 'clock'], ['leave', 'การลา', 'plane'],
   ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
@@ -1107,7 +1102,7 @@ async function boot() {
   } catch (e) { console.error(e); return renderLogin(errMsg(e)); }
   renderShell();
   const um = data.session.user?.user_metadata || {};
-  if (um.must_change_password) setTimeout(() => weakPwPrompt(true), 400); else if (um.weak_password && window.self === window.top) setTimeout(() => weakPwPrompt(false), 400);
+  /* v1.5.5: ไม่บังคับเปลี่ยนรหัสผ่านตอนเข้าใช้ครั้งแรก — พนักงานเปลี่ยนเองได้ที่ โปรไฟล์ → เปลี่ยนรหัสผ่าน */
   window.onhashchange = route;
   route();
   refreshCounters();
@@ -1121,7 +1116,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.9.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.5</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1158,14 +1153,12 @@ function renderNav() {
   $('#nav').innerHTML = SIDE.filter(([k]) => { const m = MODS.find(x => x.k === k); return !m || m.show(); }).map(([k, l, i, h]) => {
     const on = h ? S.route === h.slice(2) : (cur === k && !(k === 'reports' && sub === 'ot')); const m = MODS.find(x => x.k === k);
     return `<a class="nav ${on ? 'on' : ''}" href="${h || '#/' + k}">${ic(i)}<span>${l}</span>${m && m.cnt && m.cnt() ? `<span class="cnt">${m.cnt()}</span>` : ''}</a>`; }).join('');
-  $('#bnav').innerHTML = bnavItems().map(([k, l, i]) => { const n = bnavCnt(k); return `<a href="#/${k}" class="${cur === k ? 'on' : ''}">${ic(i)}<span>${l}</span>${n ? `<span class="cnt">${n > 99 ? '99+' : n}</span>` : ''}</a>`; }).join('');
+  $('#bnav').innerHTML = BNAV.map(([k, l, i]) => `<a href="#/${k}" class="${cur === k ? 'on' : ''}">${ic(i)}<span>${l}</span>${k === 'approve' && S.pendingCount ? `<span class="cnt">${S.pendingCount}</span>` : ''}</a>`).join('');
 }
 async function refreshCounters() {
   try {
     const [r, p] = await Promise.all([sb.from('notifications').select('id', { count: 'exact', head: true }).is('read_at', null), rpc('my_pending_approvals')]);
     S.unread = r.count || 0; S.pendingCount = (p || []).length;
-    try { if (can.hr()) { const x = await sb.from('hr_threads').select('id', { count: 'exact', head: true }).eq('hr_unread', true); S.hrInbox = x.count || 0; }
-      if (!me().is_system) { const y = await sb.from('hr_threads').select('id', { count: 'exact', head: true }).eq('employee_id', me().id).eq('emp_unread', true); S.empChat = y.count || 0; } } catch (e) { }
     ['#ndot', '#ndot2'].forEach(s => { const d = $(s); if (d) { d.textContent = S.unread > 99 ? '99+' : S.unread; d.classList.toggle('hidden', !S.unread); } });
     renderNav();
   } catch (e) { }
@@ -1178,7 +1171,7 @@ async function openNotif(btn) {
   setTimeout(() => document.addEventListener('mousedown', close), 0);
   const rows = await q(sb.from('notifications').select('*').order('created_at', { ascending: false }).limit(40));
   d.innerHTML = `<div class="row" style="padding:10px 14px;border-bottom:1px solid var(--line)"><b>การแจ้งเตือน</b><span class="grow"></span><button class="btn sm ghost" id="nall">อ่านทั้งหมด</button></div><div style="overflow:auto">${rows.length ? rows.map(n =>
-    `<div class="it ${n.read_at ? '' : 'unread'}" data-id="${n.id}" data-ref="${esc(n.reference_type || '')}" data-rid="${esc(n.reference_id || '')}" data-nt="${esc(n.notification_type || '')}">${ic(n.notification_type === 'PAYSLIP' ? 'money' : n.reference_type === 'task' ? 'tasks' : n.notification_type === 'APPROVAL_PENDING' ? 'approve' : 'bell')}<div class="grow"><div style="font-weight:500">${esc(n.title)}</div><div class="small muted">${esc(n.message || '')}</div><div class="tiny muted">${fDT(n.created_at)}</div></div></div>`).join('') : emptyBox('ไม่มีการแจ้งเตือน', 'bell')}</div>`;
+    `<div class="it ${n.read_at ? '' : 'unread'}" data-id="${n.id}" data-ref="${esc(n.reference_type || '')}" data-rid="${esc(n.reference_id || '')}">${ic(n.notification_type === 'PAYSLIP' ? 'money' : n.reference_type === 'task' ? 'tasks' : n.notification_type === 'APPROVAL_PENDING' ? 'approve' : 'bell')}<div class="grow"><div style="font-weight:500">${esc(n.title)}</div><div class="small muted">${esc(n.message || '')}</div><div class="tiny muted">${fDT(n.created_at)}</div></div></div>`).join('') : emptyBox('ไม่มีการแจ้งเตือน', 'bell')}</div>`;
   $('#nall', d).onclick = async () => { await q(sb.from('notifications').update({ read_at: new Date().toISOString() }).is('read_at', null)); d.remove(); refreshCounters(); };
   on(d, 'click', '.it', async (e, it) => {
     await sb.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', it.dataset.id);
@@ -1188,7 +1181,6 @@ async function openNotif(btn) {
     else if (ref === 'task') location.hash = '#/tasks/' + rid;
     else if (ref === 'payroll_run') location.hash = '#/payroll';
     else if (ref === 'employee') location.hash = '#/employee/' + rid;
-    else if (ref === 'hr_thread') location.hash = it.dataset.nt === 'HR_CHAT' && can.hr() ? '#/inbox/' + rid : '#/chat/t/' + rid;
   });
 }
 
@@ -1200,7 +1192,7 @@ async function route() {
   if (!mod || !PAGES[k] || (mod.show && !mod.show())) { location.hash = '#/dashboard'; return; }
   $('#crumb').innerHTML = `SMART TERMINAL HR <b>${esc(mod.t)}</b>`;
   renderNav();
-  const el = $('#page'); el.onclick = null; loading(el); window.scrollTo(0, 0);
+  const el = $('#page'); loading(el); window.scrollTo(0, 0);
   try { await PAGES[k](el, ...params); } catch (e) { console.error(e); el.innerHTML = `<div class="notice bad">${ic('alert')}<div>เกิดข้อผิดพลาด: ${esc(errMsg(e))}</div></div>`; }
 }
 const pageHead = (title, actions = '', back, icon) => `<div class="pagehead"><a class="btn ghost icon ${back ? '' : 'mback'}" href="${back || '#/dashboard'}" aria-label="กลับ">${ic('back')}</a>${icon ? `<span class="phi">${ic(icon)}</span>` : ''}<h2>${esc(title)}</h2><span class="grow"></span>${actions ? `<div class="pha row">${actions}</div>` : ''}</div>`;
@@ -1220,7 +1212,11 @@ PAGES.profile = async el => {
     <div class="pline">${ic('brief')} ${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', ') || '–')}</div>
     <div class="pline">${ic('org')} ${esc(e.department_name || '–')}</div>
     <div class="pline">${ic('pin')} ${esc(e.branch_name || '–')}</div><span class="badge b-good pstat">● ${esc((EMP_STATUS[e.employee_status] || ['ปฏิบัติงาน'])[0])}</span></div></div></div>
-  ${sys ? '' : '<div id="porg" style="margin-top:14px"><div class="card"><div class="spin"></div></div></div>'}
+  <div class="card qgrid">
+    <a class="qtile" href="#/time/me/week">${ic('cal')}<span>ตารางกะ<br>การทำงาน</span></a>
+    <a class="qtile" href="#/time/me">${ic('clock')}<span>เวลาเข้า-ออก</span></a>
+    <a class="qtile" href="#/leave">${ic('umbrella')}<span>สิทธิการลา<br>คงเหลือ</span></a>
+    <a class="qtile" href="#/payroll">${ic('money')}<span>สลิปเงินเดือน</span></a></div>
   <div class="card mlist" style="margin-top:14px">${menuShown.map(([i, t, d, h]) => `<a class="mitem ${h ? '' : 'dis'}" ${h ? `href="${h}"` : ''}><span class="mi">${ic(i)}</span><span class="grow"><b>${t}</b><span>${d}</span></span>${ic('chev')}</a>`).join('')}</div>
   <div class="card mlist" style="margin-top:14px">
     <a class="mitem" id="pphoto"><span class="mi">${ic('up')}</span><span class="grow"><b>เปลี่ยนรูปโปรไฟล์</b><span>JPG/PNG ไม่เกิน 10MB</span></span>${ic('chev')}</a>
@@ -1233,68 +1229,9 @@ PAGES.profile = async el => {
   $('#ppw').onclick = () => formModal({ title: 'เปลี่ยนรหัสผ่าน', fields: [{ k: 'p1', label: 'รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)', type: 'password', req: true, full: true }, { k: 'p2', label: 'ยืนยันรหัสผ่านใหม่', type: 'password', req: true, full: true }],
     onSubmit: async v => { if (v.p1.length < 8) throw new Error('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'); if (v.p1 !== v.p2) throw new Error('รหัสผ่านไม่ตรงกัน'); const r = await sb.auth.updateUser({ password: v.p1, data: { weak_password: false } }); if (r.error) throw r.error; toast('เปลี่ยนรหัสผ่านแล้ว', 'good'); } });
   $('#pphoto').onclick = () => { if (sys) return toast('บัญชีระบบไม่มีรูปโปรไฟล์', 'bad'); formModal({ title: 'เปลี่ยนรูปโปรไฟล์', fields: [{ k: 'f', label: 'ไฟล์รูป (JPG/PNG ไม่เกิน 10MB)', type: 'file', accept: 'image/*', req: true, full: true }],
-    onSubmit: async v => { const f = await cropPhoto(v.f[0]); if (!f) return; const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
+    onSubmit: async v => { const f = await shrinkImage(v.f[0], 480); const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
   $$('.mitem.dis', el).forEach(x => x.onclick = () => toast('บัญชีระบบ (admin) ไม่มีข้อมูลพนักงาน'));
-  if (!sys) profileOrg($('#porg')).catch(err => { $('#porg').innerHTML = `<div class="notice bad">${esc(errMsg(err))}</div>`; });
 };
-/* อายุงานจากวันเริ่มงาน → "x ปี y เดือน z วัน" */
-function serviceLen(from, to = todayStr()) {
-  if (!from) return ''; const a = dParts(from), b = dParts(to);
-  let y = b.y - a.y, m = b.m - a.m, d = b.d - a.d;
-  if (d < 0) { m--; d += new Date(Date.UTC(b.y, b.m - 1, 0)).getUTCDate(); } if (m < 0) { y--; m += 12; } if (y < 0) return '';
-  return [y && `${y} ปี`, m && `${m} เดือน`, d && `${d} วัน`].filter(Boolean).join(' ') || '0 วัน';
-}
-/* ข้อมูลของฉัน: สังกัดตามโครงสร้างองค์กร · อายุงาน · สายอนุมัติ (ผู้ขอ → ผู้อนุมัติแต่ละขั้น พร้อมตำแหน่ง) */
-async function profileOrg(host) {
-  const o = await rpc('my_org_profile'); if (!o) { host.innerHTML = ''; return; }
-  const e = me(); const P = x => x ? `${esc(x.name)}${x.pos || x.position ? `<div class="tiny muted">${x.pos ? `<span class="mono">${esc(x.pos)}</span> · ` : ''}${esc(x.position || '')}</div>` : ''}` : '';
-  const row = (l, c, n) => `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);flex-wrap:nowrap;align-items:flex-start"><span class="muted small" style="width:118px;flex:none">${l}</span><span class="grow" style="min-width:0">${c ? `<span class="mono" style="color:var(--brand);font-weight:600">${esc(c)}</span> ` : ''}${n ? esc(n) : (c ? '' : '<span class="muted">–</span>')}</span></div>`;
-  const svc = serviceLen(o.hire_date);
-  const stepPeople = s => s.resolver === 'HR_ROLE' ? (s.approvers.length ? `ผู้มีสิทธิ์ HR ทุกคน <span class="tiny muted">(${s.approvers.map(x => esc(x.is_system ? 'admin' : x.name)).join(', ')})</span>` : pend('ยังไม่มีผู้มีสิทธิ์ HR'))
-    : s.approvers.length ? s.approvers.map(P).join('') : pend(s.resolver === 'SUPERVISOR' ? 'ยังไม่ได้กำหนดหัวหน้างาน' : 'ยังไม่ได้ตั้งค่า (OI-09)');
-  const roleOf = s => s.resolver === 'SUPERVISOR' ? 'หัวหน้างานโดยตรง' : s.resolver === 'HR_ROLE' ? 'ฝ่ายบุคคล (HR)' : 'ผู้มีอำนาจอนุมัติ';
-  host.innerHTML = `
-   <div class="card"><h3 style="margin-bottom:6px">${ic('org')} สังกัดตามโครงสร้างองค์กร</h3>
-    <div class="row" style="padding:6px 0 10px;flex-wrap:nowrap"><span class="muted small" style="width:118px;flex:none">รหัสตำแหน่งงาน</span><b class="mono" style="font-size:17px;letter-spacing:.5px;color:var(--brand)">${esc(o.position_code || '–')}</b></div>
-    ${row('ตำแหน่ง (POS)', o.position.pos, o.position.name)}${row('ฝ่าย (DIV)', o.division && o.division.code, o.division && o.division.name)}${row('แผนก (DEP)', o.department && o.department.code, o.department && o.department.name)}
-    ${row('ส่วนงาน (SEC)', o.section && o.section.code, o.section && o.section.name)}${row('โครงการ (PRJ)', o.project && o.project.code, o.project && o.project.name)}
-    <div class="row" style="padding:8px 0;border-top:1px solid var(--line);flex-wrap:nowrap;align-items:flex-start"><span class="muted small" style="width:118px;flex:none">หัวหน้างาน</span><span class="grow">${o.supervisor ? P(o.supervisor) : pend('ยังไม่ได้กำหนด')}</span></div></div>
-   <div class="card" style="margin-top:14px"><h3 style="margin-bottom:6px">${ic('cal')} อายุงาน</h3>
-    <div style="text-align:center;padding:6px 0 10px"><div style="font-size:24px;font-weight:700;color:var(--brand)">${svc || '–'}</div><div class="tiny muted">นับถึงวันนี้ ${fD(todayStr())}</div></div>
-    ${row('วันเริ่มงาน', '', o.hire_date ? fD(o.hire_date) : '')}${row('วันบรรจุ', '', o.regularization_date ? fD(o.regularization_date) : '')}${o.assigned_from ? row('สังกัดปัจจุบันตั้งแต่', '', fD(o.assigned_from)) : ''}</div>
-   <div class="card" style="margin-top:14px"><h3 style="margin-bottom:4px">${ic('approve')} สายอนุมัติเอกสารของฉัน</h3><div class="tiny muted" style="margin-bottom:8px">ใช้กับใบลา ขอเปลี่ยนกะ ขอเพิ่มเวลา และคำขออื่น ๆ</div>
-    <div class="astep"><span class="an">${ic('user')}</span><div class="grow"><div class="tiny muted">ผู้ขออนุมัติ</div><b>${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</b><div class="tiny muted">${o.position.pos ? `<span class="mono">${esc(o.position.pos)}</span> · ` : ''}${esc(o.position.name || '')}</div></div></div>
-    ${o.steps.map(s => `<div class="astep"><span class="an">${s.order}</span><div class="grow"><div class="tiny muted">ขั้นที่ ${s.order} · ${roleOf(s)}</div>${stepPeople(s)}${s.backup ? `<div class="tiny muted" style="margin-top:2px">ผู้อนุมัติสำรอง: ${esc(s.backup.name)}${s.backup.position ? ' · ' + esc(s.backup.position) : ''}</div>` : ''}</div></div>`).join('')}
-    ${o.position.pos && ['SUP', 'ASM', 'MGR', 'DIR'].includes(o.position.pos) ? `<div class="tiny muted" style="margin-top:10px">คำขอ OT: อนุมัติโดยผู้อำนวยการฝ่าย — ${o.ot_approvers.length ? o.ot_approvers.map(x => esc(x.name)).join(', ') : 'ยังไม่มีตำแหน่ง DIR ในฝ่ายของท่าน'}</div>` : ''}
-    ${o.steps.some(s => !s.approvers.length) ? `<div class="notice" style="margin-top:10px">${ic('alert')}<div>สายอนุมัติยังไม่ครบ — ยื่นเอกสารได้เมื่อ HR ตั้งค่าครบทุกขั้น</div></div>` : ''}</div>
-   ${o.team.length ? `<div class="card" style="margin-top:14px"><h3 style="margin-bottom:6px">${ic('users')} ผู้ที่ฉันอนุมัติให้ (ขั้นที่ 1) <span class="badge">${o.team.length} คน</span></h3>${o.team.map(x => `<div style="padding:6px 0;border-top:1px solid var(--line)">${P(x)}</div>`).join('')}</div>` : ''}`;
-}
-/* ครอปรูปโปรไฟล์เป็นสี่เหลี่ยมจัตุรัส ให้ใบหน้าอยู่กึ่งกลางกรอบวงกลม (ลาก/ซูมได้) */
-function cropPhoto(file) {
-  return new Promise((res, rej) => {
-    const img = new Image(); img.onerror = () => rej(new Error('ไฟล์รูปไม่ถูกต้อง'));
-    img.onload = () => {
-      const B = 260; const base = B / Math.min(img.width, img.height); let z = 1, x = 0, y = 0;
-      const m = modal({ title: 'จัดรูปให้อยู่กึ่งกลาง', body: `<div class="tiny muted" style="text-align:center">ลากรูปเพื่อเลื่อน และปรับขนาดให้ใบหน้าอยู่กลางวงกลม</div><div class="crop" id="cpb"></div><label class="f">ซูม<input type="range" id="cpz" min="1" max="4" step="0.01" value="1"></label>`,
-        foot: `<button class="btn" data-c>ยกเลิก</button><button class="btn pri" data-ok>ใช้รูปนี้</button>`, onClose: () => res(null) });
-      const box = $('#cpb', m.el); box.appendChild(img);
-      const clamp = () => { const s = base * z, w = img.width * s, h = img.height * s; x = Math.min(0, Math.max(B - w, x)); y = Math.min(0, Math.max(B - h, y)); img.style.width = w + 'px'; img.style.height = h + 'px'; img.style.transform = `translate(${x}px,${y}px)`; };
-      x = (B - img.width * base) / 2; y = (B - img.height * base) / 2; clamp();
-      $('#cpz', m.el).oninput = ev => { const nz = Number(ev.target.value); const cx = (B / 2 - x) / (base * z), cy = (B / 2 - y) / (base * z); z = nz; x = B / 2 - cx * base * z; y = B / 2 - cy * base * z; clamp(); };
-      let drag = null;
-      box.onpointerdown = ev => { drag = { px: ev.clientX, py: ev.clientY, x, y }; box.setPointerCapture(ev.pointerId); };
-      box.onpointermove = ev => { if (!drag) return; x = drag.x + ev.clientX - drag.px; y = drag.y + ev.clientY - drag.py; clamp(); };
-      box.onpointerup = box.onpointercancel = () => { drag = null; };
-      $('[data-c]', m.el).onclick = () => m.close();
-      $('[data-ok]', m.el).onclick = () => {
-        const O = 480, s = base * z, c = document.createElement('canvas'); c.width = c.height = O;
-        c.getContext('2d').drawImage(img, -x / s, -y / s, B / s, B / s, 0, 0, O, O);
-        c.toBlob(b => { m.el.remove(); res(new File([b], 'photo.jpg', { type: 'image/jpeg' })); }, 'image/jpeg', .88);
-      };
-    };
-    img.src = URL.createObjectURL(file);
-  });
-}
 function shrinkImage(file, max) {
   return new Promise((res, rej) => {
     const img = new Image(); img.onload = () => {
@@ -1342,98 +1279,19 @@ function viewPreview(kind = 'phone') {
 const tileCols = n => n <= 5 ? n : n === 6 ? 3 : 4;
 function simpleTiles(m) {
   const t = [{ h: '#/time/me', i: 'clock', c: 'linear-gradient(135deg,#22d3ee,#0e7490)', tl: 'เวลา<br>เข้า-ออก' },
-    { h: '#/docs', i: 'upload', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอ<br>อนุมัติ' },
-    { h: '#/docs/history', i: 'history', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ประวัติ<br>ขออนุมัติ' },
+    { h: '#/docs/new/LEAVE', i: 'umbrella', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอลา' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
-    { h: '#/payroll/hub', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
+    { h: '#/approve', i: 'send', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ยื่น<br>คำขอ' },
+    { h: '#/payroll', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
   if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
   return t;
 }
-/* ===== v1.9.0 Admin Agent — ตรวจความพร้อมข้อมูล HR / งานค้าง HR / การมาทำงาน (RPC admin_agent_checks, อ่านอย่างเดียว) ===== */
-const AA_LV = { bad: ['วิกฤต', '#dc2626'], warn: ['ควรแก้', '#d97706'], info: ['ข้อสังเกต', '#2563eb'] };
-async function adminAgentCard(box, full) {
-  if (!box) return;
-  const r = await rpc('admin_agent_checks'); const ch = r.checks || [];
-  const head = `<div class="aah"><span class="aai">${ic('bot')}</span><div class="grow"><b>Admin Agent</b><div class="tiny muted">ตรวจล่าสุด ${fT(r.generated_at)} น. · ผ่าน ${(r.passed || []).length} รายการ</div></div>
-    ${['bad', 'warn', 'info'].filter(k => r[k]).map(k => `<span class="aab" style="background:${AA_LV[k][1]}">${AA_LV[k][0]} ${r[k]}</span>`).join('')}</div>`;
-  if (!ch.length) { box.innerHTML = head + `<div class="hok">${ic('okc')} ระบบพร้อมใช้งาน ไม่พบปัญหา</div>`; return; }
-  const row = c => `<a class="aar" href="${c.href}"><span class="aad" style="background:${AA_LV[c.lvl][1]}"></span><div class="grow"><div>${esc(c.title)} <b>${num(c.n)}</b></div>
-    ${c.hint ? `<div class="tiny muted">${esc(c.hint)}</div>` : ''}${c.names && c.names.length ? `<div class="tiny aan">${c.names.map(esc).join(' · ')}${c.n > c.names.length && c.names.length >= 5 ? ' …' : ''}</div>` : ''}</div>${ic('chev')}</a>`;
-  const main = ch.filter(c => c.lvl !== 'info'), info = ch.filter(c => c.lvl === 'info');
-  const grp = list => { const g = {}; list.forEach(c => (g[c.grp] = g[c.grp] || []).push(c)); return Object.entries(g).map(([k, v]) => `<div class="aag">${esc(k)}</div>${v.map(row).join('')}`).join(''); };
-  box.innerHTML = head + (full ? grp(main) : main.map(row).join('')) +
-    (info.length ? `<details class="more"${full ? ' open' : ''}><summary>ข้อสังเกตอื่น (${info.length})</summary>${full ? grp(info) : info.map(row).join('')}</details>` : '') +
-    (full && (r.passed || []).length ? `<details class="more"><summary>รายการที่ผ่าน (${r.passed.length})</summary><div class="small muted" style="line-height:1.9">${r.passed.map(t => `✓ ${esc(t)}`).join('<br>')}</div></details>` : '');
-}
-const aaLoad = (sel, full) => { const b = $(sel); if (b) adminAgentCard(b, full).catch(e => { b.innerHTML = `<div class="small muted">Admin Agent โหลดไม่สำเร็จ: ${esc(errMsg(e))}</div>`; }); };
-/* ===== v1.8.0 หน้าหลัก HR/Admin (มือถือ/แท็บเล็ต) — ลดความซับซ้อน ===== */
-/* รายการที่ต้องจัดการ: แสดงเฉพาะที่มีจำนวน > 0 */
-function hrTodo(d) {
-  const m = d.me || {}, o = d.org || {};
-  return [
-    [m.pending_approvals || S.pendingCount, 'เอกสารรออนุมัติจากฉัน', 'approve', '#/approve/tab/pending', 'linear-gradient(135deg,#4ade80,#16a34a)'],
-    [S.hrInbox, 'ข้อความถึง HR ยังไม่อ่าน', 'chat', '#/inbox', 'linear-gradient(135deg,#38bdf8,#0369a1)'],
-    [o.exceptions_open, 'ข้อมูลสแกนรอจับคู่พนักงาน', 'finger', '#/time/devices', 'linear-gradient(135deg,#94a3b8,#475569)'],
-    [o.tasks_overdue, 'งานเกินกำหนด', 'alert', '#/reports/tasks', 'linear-gradient(135deg,#fb923c,#c2410c)'],
-    [m.tasks_open, 'งานที่ได้รับมอบหมาย', 'tasks', '#/tasks', 'linear-gradient(135deg,#f472b6,#db2777)'],
-    [(m.docs || {}).PENDING, 'คำขอของฉันที่รออนุมัติ', 'upload', '#/approve/tab/mine', 'linear-gradient(135deg,#fbbf24,#ea8a0c)']
-  ].filter(x => +x[0] > 0);
-}
-const hrRow = (n, l, i, h, c) => `<a class="hrow" href="${h}"><span class="ic" style="background:${c}">${ic(i)}</span><span class="grow">${l}</span>${n !== '' ? `<span class="cnt">${num(n)}</span>` : ''}${ic('chev')}</a>`;
-const hrTodoCard = d => { const t = hrTodo(d); return `<div class="card"><h3 style="margin:0 0 6px">${ic('bell')} ต้องจัดการ</h3>${t.length ? t.map(x => hrRow(...x)).join('') : `<div class="hok">${ic('okc')} ไม่มีงานค้าง</div>`}</div>`; };
-async function dashHR(el, d) {
-  const e = me(), sys = !!e.is_system, o = d.org || {};
-  const roles = (S.ctx.roles || []).map(r => ROLE_NAMES[r] || r).join(', ');
-  const T = [['#/employees', 'idcard', 'linear-gradient(135deg,#60a5fa,#1d4ed8)', 'พนักงาน'],
-    ['#/org', 'org', 'linear-gradient(135deg,#818cf8,#4338ca)', 'โครงสร้าง<br>องค์กร'],
-    ['#/time', 'clock', 'linear-gradient(135deg,#22d3ee,#0e7490)', 'เวลา<br>เข้า-ออก'],
-    ['#/leave', 'leave', 'linear-gradient(135deg,#34d399,#0f9f6e)', 'การลา'],
-    ['#/payroll', 'money', 'linear-gradient(135deg,#facc15,#ca8a04)', 'เงินเดือน'],
-    ['#/settings', 'gear', 'linear-gradient(135deg,#94a3b8,#475569)', 'ตั้งค่า<br>ระบบ']];
-  const st = (v, l, h) => `<a href="${h}"><b>${num(v || 0)}</b><span>${l}</span></a>`;
-  const mx = Math.max(...(o.by_branch || []).map(x => x.n), 1);
-  const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
-  el.innerHTML = `
-  <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div>
-    <div class="code">${sys ? 'บัญชีผู้ดูแลระบบ' : 'รหัสพนักงาน : ' + esc(e.employee_code)}</div>
-    <div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(sys ? roles : (e.position_name || roles))}</div></div></div>
-   <div class="tiles simple" style="--cols:3">${T.map(([h, i, c, l]) => `<a class="tile" href="${h}"><span class="ti" style="background:${c}">${ic(i)}</span>${l}</a>`).join('')}</div>
-   <a class="allmenu" href="#/hrwork">${ic('menu')} เมนูทั้งหมด${ic('chev')}</a></div>
-  ${hrTodoCard(d)}
-  <div class="card aa" style="margin-top:14px" id="adagent"><div class="spin"></div></div>
-  ${d.org ? `<div class="card" style="margin-top:14px"><div class="row" style="margin-bottom:8px"><h3 style="margin:0">${ic('users')} ภาพรวมองค์กร</h3><span class="grow"></span><span class="muted small">${fD(todayStr())}</span></div>
-   <div class="kstrip">${st(o.total, 'ทั้งหมด', '#/employees')}${st(o.active, 'ปฏิบัติงาน', '#/employees')}${st(o.new_month, 'เข้าใหม่', '#/reports/newhire')}${st(o.resigned_month, 'ลาออก', '#/reports/newhire')}</div>
-   <details class="more"><summary>ดูสถิติเพิ่มเติม</summary>
-    <div class="small muted" style="margin:10px 0 6px">พนักงานแยกสาขา/โครงการ</div>${(o.by_branch || []).slice(0, 12).map(x => `<div class="hbar"><span class="t" title="${esc(x.name)}">${esc(x.name)}</span><span class="b"><i style="width:${Math.max(3, (x.n / mx) * 100)}%"></i></span><span class="n">${num(x.n)}</span></div>`).join('') || emptyBox('ยังไม่มีข้อมูล')}
-    <div class="small muted" style="margin:12px 0 6px">การมาทำงานวันนี้</div>${chips(o.att_today)}
-    <div class="small muted" style="margin:12px 0 6px">เดือนนี้</div>${chips(o.att_month)}
-    ${(o.devices || []).length ? `<div class="small muted" style="margin:12px 0 6px">เครื่องสแกน</div>${o.devices.map(x => `<span class="badge ${x.status === 'OK' ? 'b-good' : x.status === 'WARNING' ? 'b-warn' : ''}">${esc(x.name)} · ${x.last ? fDT(x.last) : 'ยังไม่ซิงก์'}</span>`).join(' ')}` : ''}
-   </details></div>` : ''}
-  ${sys ? '' : `<div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div><div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>`}`;
-  aaLoad('#adagent');
-  if (!sys) {
-    hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
-    annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
-  }
-}
-/* เมนูทั้งหมดของ HR จัดกลุ่ม — แท็บ "งาน HR" */
-PAGES.hrwork = async el => {
-  const d = await rpc('dash_stats');
-  const G = [['บุคลากร', [['#/employees', 'idcard', 'ข้อมูลพนักงาน'], ['#/org', 'org', 'โครงสร้างองค์กร']]],
-    ['เวลาและการลา', [['#/time', 'clock', 'จัดการเวลา'], ['#/leave', 'leave', 'โควตาการลา'], ['#/reports/ot', 'otcal', 'OT']]],
-    ['เอกสารและงาน', [['#/approve', 'approve', 'อนุมัติเอกสาร', S.pendingCount], ['#/inbox', 'chat', 'กล่องข้อความ HR', S.hrInbox], ['#/docs', 'upload', 'ยื่นเอกสาร'], ['#/tasks', 'tasks', 'สิ่งที่ต้องทำ']]],
-    ['เงินเดือนและรายงาน', [['#/payroll', 'money', 'เงินเดือน'], ['#/reports', 'report', 'รายงาน']]],
-    ['ระบบ', [['#/settings', 'gear', 'ตั้งค่าระบบ']]]];
-  el.innerHTML = pageHead('งาน HR', '', '', 'board') + hrTodoCard(d) + `<div class="card aa" style="margin-top:14px" id="adagent"><div class="spin"></div></div>` + G.map(([g, list]) => `<div class="card" style="margin-top:14px"><div class="small muted" style="margin-bottom:4px">${g}</div>${list.map(([h, i, l, n]) => hrRow(n ? n : '', l, i, h, 'var(--brand)')).join('')}</div>`).join('');
-  aaLoad('#adagent', true);
-};
 PAGES.dashboard = async el => {
   if (isDesk()) return dashDesktop(el);
   const e = me(); const t = todayStr(); const p = dParts(t);
   const d = await rpc('dash_stats'); const simple = simpleMode();
   const m = d.me || {}; const tdy = m.today || {}; const sh = m.shift_today || {}; const shi = sh.info || {};
-  if (!simple && can.hr()) return dashHR(el, d);
   const shiftTxt = sh.shift ? `${esc(sh.shift.shift_name)}<div class="tiny muted">(${hm(sh.shift.start_time)} – ${hm(sh.shift.end_time)})</div>` : shi.holiday ? 'วันหยุด' : shi.day_off ? 'วันหยุด' : '<span class="small muted">ยังไม่กำหนด</span>';
   const kp = (v, l, i, c, href) => `<a class="card kpi" ${href ? `href="${href}"` : ''} style="color:inherit"><span class="ic" style="background:${c}">${ic(i)}</span><span class="v">${v}</span><span class="l">${l}</span></a>`;
   const bars = (list, max) => (list || []).slice(0, 12).map(x => `<div class="hbar"><span class="t" title="${esc(x.name)}">${esc(x.name)}</span><span class="b"><i style="width:${Math.max(3, (x.n / (max || 1)) * 100)}%"></i></span><span class="n">${num(x.n)}</span></div>`).join('') || emptyBox('ยังไม่มีข้อมูล');
@@ -1445,9 +1303,9 @@ PAGES.dashboard = async el => {
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
     <div><div class="l"><span style="color:var(--bad)">${ic('out')}</span>เวลาออกงาน</div><div class="v">${fT(tdy.last_out)}</div></div>
+    <div><div class="l"><span style="color:var(--brand)">${ic('cal')}</span>กะการทำงาน</div><div class="v" style="font-size:16px">${shiftTxt}</div></div>
+    <div><div class="l"><span style="color:var(--brand)">${ic('umbrella')}</span>วันลาคงเหลือ</div><div class="v">${num(m.leave_remaining, 1)} <span class="small">วัน</span></div></div>
    </div></div>
-  <div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div>
-  <div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>
   ${simple ? `<div class="grid g2" style="margin-top:14px">
    ${kp(num((m.docs || {}).PENDING || 0), 'คำขอของฉันที่รออนุมัติ', 'upload', 'linear-gradient(135deg,#fbbf24,#ea8a0c)', '#/approve/tab/mine')}
    ${m.pending_approvals ? kp(num(m.pending_approvals), 'รออนุมัติจากฉัน', 'approve', 'linear-gradient(135deg,#4ade80,#16a34a)', '#/approve/tab/pending') : m.tasks_open ? kp(num(m.tasks_open), 'งานที่ได้รับมอบหมาย', 'tasks', 'linear-gradient(135deg,#f472b6,#db2777)', '#/tasks') : kp(num(m.unread || 0), 'การแจ้งเตือนใหม่', 'bell', 'linear-gradient(135deg,#60a5fa,#1d4ed8)')}
@@ -1484,182 +1342,6 @@ PAGES.dashboard = async el => {
     { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }], { empty: 'ยังไม่มีงวดที่อนุมัติ' })}</div>`;
   html += `<a class="svc" href="#/docs"><div><b>HR Services</b>บริการ HR สำหรับพนักงาน — ยื่นลา ขอ OT ขอปรับเวลา</div><div class="chips"><span>${ic('file')}</span><span>${ic('users')}</span><span>${ic('cal')}</span></div></a>`;
   el.innerHTML = html;
-  hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
-  annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
-};
-
-/* ===================== HR AGENT — ตรวจเวลาเข้างานจากเครื่องสแกน แล้วชมเชย/เตือน =====================
-   ใช้ข้อมูลจริงจาก attendance_daily_summaries เท่านั้น — ถ้ายังไม่มีกะ (OI-05) จะไม่ตัดสินว่าสาย/ตรงเวลา */
-async function hrAgentData() {
-  const e = me(); const t = todayStr(); const p = dParts(t);
-  const from = `${p.y}-${String(p.m).padStart(2, '0')}-01`;
-  if (e.is_system) return { sys: true };
-  const rows = await q(sb.from('attendance_daily_summaries').select('work_date,first_in,last_out,scheduled_start,late_minutes,attendance_status,leave_type_code').eq('employee_id', e.id).gte('work_date', from).lte('work_date', t).order('work_date'));
-  const today = rows.find(r => r.work_date === t) || null;
-  const late = rows.filter(r => (r.late_minutes || 0) > 0);
-  const judged = rows.filter(r => r.first_in && r.scheduled_start);
-  let streak = 0; for (let i = judged.length - 1; i >= 0; i--) { if ((judged[i].late_minutes || 0) > 0) break; streak++; }
-  return { today, rows, late, lateMin: late.reduce((a, r) => a + (r.late_minutes || 0), 0), onTime: judged.length - late.length, streak };
-}
-function hrAgentVerdict(a) {
-  if (a.sys) return { k: '', h: 'HR Agent', d: 'บัญชีระบบไม่มีข้อมูลเวลาเข้างาน' };
-  const td = a.today;
-  if (td && td.leave_type_code) return { k: '', h: 'วันนี้คุณลางาน', d: 'ขอให้พักผ่อนให้เต็มที่ แล้วพบกันวันทำงานถัดไปครับ' };
-  if (td && ['HOLIDAY', 'DAY_OFF'].includes(td.attendance_status)) return { k: '', h: 'วันนี้เป็นวันหยุดของคุณ', d: 'พักผ่อนให้สบายครับ' };
-  if (!td || !td.first_in) return { k: '', h: 'ยังไม่พบการสแกนเข้างานวันนี้', d: 'HR Agent จะตรวจสอบให้อัตโนมัติเมื่อข้อมูลจากเครื่องสแกนใบหน้าเข้ามา' };
-  if (!td.scheduled_start) return { k: '', h: `บันทึกเข้างานแล้ว ${fT(td.first_in)} น.`, d: 'ยังไม่ได้กำหนดกะการทำงาน จึงยังตรวจการมาสาย/ตรงเวลาไม่ได้ — ติดต่อ HR' };
-  /* แบนเนอร์ตามต้นแบบ: สาย = แดง (เตือนชัดเจน แต่ไม่ตำหนิรุนแรง) · ตรงเวลาหลังเคยสายในเดือน = เขียว "อย่าสายอีกนะ!" · ตรงเวลา = เขียว ชมเชย */
-  if ((td.late_minutes || 0) > 0) return { k: 'warn', bn: 'bad', bi: 'clockal', h: a.late.length > 1 ? 'มาสายอีกแล้วนะ! ⏰' : 'วันนี้มาสายนะ! ⏰', m: 'วันนี้เริ่มงานช้ากว่าเวลาที่กำหนด อย่าลืมปรับเวลาให้ตรงกันนะ', s: 'ตรงต่อเวลา เป็นมืออาชีพกว่าเดิม!',
-    d: `เข้างาน ${fT(td.first_in)} น. · สาย ${num(td.late_minutes)} นาที${a.late.length > 1 ? ` · เดือนนี้สาย ${a.late.length} ครั้ง รวม ${num(a.lateMin)} นาที` : ''}` };
-  if (a.late.length) return { k: 'good', bn: 'ok', bi: 'calok', h: 'อย่าสายอีกนะ! 😊', m: 'เริ่มต้นวันดี ๆ ด้วยการมาตรงเวลา พร้อมลุยงานอย่างเต็มที่', s: 'ตรงเวลาในทุกวัน สร้างความสำเร็จไปด้วยกัน!',
-    d: `วันนี้เข้างาน ${fT(td.first_in)} น. ตรงเวลา · เดือนนี้เคยสาย ${a.late.length} ครั้ง` };
-  return { k: 'good', bn: 'ok', bi: 'calok', h: 'เยี่ยมมาก! มาตรงเวลา 🎉', m: a.streak > 1 ? `ตรงเวลาต่อเนื่อง ${a.streak} วันทำงานแล้ว ขอบคุณที่เป็นแบบอย่างที่ดี` : 'ขอบคุณที่ตรงต่อเวลา พร้อมลุยงานอย่างเต็มที่', s: 'ตรงเวลาในทุกวัน สร้างความสำเร็จไปด้วยกัน!',
-    d: `วันนี้เข้างาน ${fT(td.first_in)} น.` };
-}
-async function hrAgentCard(host) {
-  const a = await hrAgentData(); const v = hrAgentVerdict(a);
-  host.innerHTML = v.bn ? `<div class="tiny muted" style="margin-bottom:6px">HR Agent · ตรวจเวลาเข้างาน</div><div class="agbn ${v.bn}"><span class="bi">${ic(v.bi)}</span><h4>${esc(v.h)}</h4><div class="bm">${esc(v.m)}</div><div class="bs">${esc(v.s)}</div><div class="bt">${esc(v.d)}</div></div><div><div>`
-   : `<div class="agent ${v.k}"><span class="ab">${ic(v.k === 'good' ? 'star' : v.k === 'warn' ? 'alert' : 'bot')}</span><div class="grow"><div class="tiny muted">HR Agent · ตรวจเวลาเข้างาน</div><h4>${esc(v.h)}</h4><div class="ad">${esc(v.d)}</div>
-   ${a.sys ? '' : `<div class="lstat"><span>ตรงเวลา <b>${num(a.onTime)}</b> วัน</span><span>มาสาย <b style="color:${a.late.length ? 'var(--bad)' : 'inherit'}">${num(a.late.length)}</b> ครั้ง</span><span>สายสะสม <b>${num(a.lateMin)}</b> นาที</span></div>
-   ${a.late.length ? `<details style="margin-top:8px"><summary class="small" style="cursor:pointer;color:var(--brand)">รายละเอียดการมาสายเดือนนี้</summary><div class="small" style="margin-top:6px">${a.late.map(r => `<div class="row" style="padding:4px 0;border-top:1px solid var(--line)"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</div></details>` : ''}`}
-   </div></div>`;
-}
-
-/* ===================== ประกาศ + ผลการอนุมัติ ===================== */
-async function annCard(host) {
-  const e = me(); const since = new Date(Date.now() - 30 * 864e5).toISOString();
-  const [ann, docs] = await Promise.all([
-    q(sb.from('announcements').select('*').order('created_at', { ascending: false }).limit(can.hr() ? 20 : 5)),
-    e.is_system ? [] : q(sb.from('document_requests').select('*').eq('requester_employee_id', e.id).in('status', ['APPROVED', 'REJECTED', 'RETURNED']).gte('updated_at', since).order('updated_at', { ascending: false }).limit(5))]);
-  const live = a => a.active && a.publish_from <= todayStr() && (!a.publish_to || a.publish_to >= todayStr());
-  const list = can.hr() ? ann : ann.filter(live);
-  const items = [
-    ...list.map(a => ({ at: a.created_at, html: `<div class="an" data-an="${a.id}"><span class="mi" style="${a.priority === 'IMPORTANT' ? 'background:#fee2e2;color:#b91c1c' : ''}">${ic('mega')}</span><div class="grow" style="min-width:0"><div style="font-weight:600">${a.priority === 'IMPORTANT' ? '<span class="badge b-bad">สำคัญ</span> ' : ''}${esc(a.title)}${can.hr() && !live(a) ? ' <span class="badge">ไม่แสดง</span>' : ''}</div>${a.body ? `<div class="small muted" style="white-space:pre-line">${esc(a.body)}</div>` : ''}<div class="tiny muted">ประกาศ · ${fD(a.publish_from)}${a.publish_to ? ' – ' + fD(a.publish_to) : ''}</div></div>${can.hr() ? `<button class="btn ghost icon sm" data-adel="${a.id}" aria-label="ลบประกาศ">${ic('trash')}</button>` : ''}</div>` })),
-    ...docs.map(d => ({ at: d.updated_at, html: `<a class="an" href="#/docs/${d.id}"><span class="mi">${ic(d.status === 'APPROVED' ? 'okc' : d.status === 'REJECTED' ? 'xc' : 'history')}</span><div class="grow" style="min-width:0"><div style="font-weight:600">${esc(dtName(d.document_type_id))} ${badge(DOC_STATUS, d.status)}</div><div class="small muted">${esc(docSummary(d))}</div><div class="tiny muted">ผลการอนุมัติ · ${fDT(d.updated_at)}</div></div>${ic('chev')}</a>` }))];
-  host.innerHTML = `<div class="row" style="margin-bottom:6px"><h3 style="margin:0">${ic('mega')} ประกาศ และผลการอนุมัติ</h3><span class="grow"></span>${can.hr() ? `<button class="btn sm" id="annadd">${ic('plus')} ประกาศ</button>` : ''}</div>
-   <div class="anlist">${items.length ? items.map(x => x.html).join('') : emptyBox('ยังไม่มีประกาศหรือผลการอนุมัติใหม่', 'bell')}</div>`;
-  if ($('#annadd', host)) $('#annadd', host).onclick = () => formModal({ title: 'เพิ่มประกาศ', fields: [
-      { k: 'title', label: 'หัวข้อ', req: true, full: true }, { k: 'body', label: 'รายละเอียด', type: 'textarea', full: true },
-      { k: 'priority', label: 'ระดับ', type: 'select', opts: [['NORMAL', 'ทั่วไป'], ['IMPORTANT', 'สำคัญ']], def: 'NORMAL' },
-      { k: 'publish_from', label: 'แสดงตั้งแต่', type: 'date', req: true, def: todayStr() }, { k: 'publish_to', label: 'ถึง (เว้นว่าง = ไม่กำหนด)', type: 'date' }],
-    onSubmit: async v => { await q(sb.from('announcements').insert({ title: v.title, body: v.body || null, priority: v.priority || 'NORMAL', publish_from: v.publish_from, publish_to: v.publish_to || null })); toast('เผยแพร่ประกาศแล้ว', 'good'); annCard(host); } });
-  $$('[data-adel]', host).forEach(b => b.onclick = async () => { if (!await confirmDlg('ลบประกาศนี้?', { danger: true, okText: 'ลบ' })) return; await guard(() => q(sb.from('announcements').delete().eq('id', b.dataset.adel)), 'ลบแล้ว'); annCard(host); });
-}
-
-/* ===================== ChatHR — ผู้ช่วย HR ตอบจากข้อมูลจริงของพนักงาน ===================== */
-const CHAT_Q = [['มาสายกี่ครั้ง', 'late'], ['เวลาเข้างานวันนี้', 'today'], ['วันลาคงเหลือ', 'leave'], ['สถานะคำขอ', 'docs'], ['ประกาศล่าสุด', 'ann'], ['ขอลางาน', 'goleave'], ['สลิปเงินเดือน', 'slip'], ['ติดต่อ HR', 'tohr']];
-function chatIntent(t) {
-  t = t.toLowerCase();
-  if (/สาย|late/.test(t)) return 'late';
-  if (/ลา.*(เหลือ|คงเหลือ|กี่วัน|สิทธิ)|สิทธิ.*ลา|โควตา/.test(t)) return 'leave';
-  if (/ขอลา|ยื่นลา|ลางาน/.test(t)) return 'goleave';
-  if (/เข้างาน|ออกงาน|สแกน|วันนี้|เวลา/.test(t)) return 'today';
-  if (/คำขอ|เอกสาร|อนุมัติ|สถานะ/.test(t)) return 'docs';
-  if (/ประกาศ|ข่าว/.test(t)) return 'ann';
-  if (/สลิป|เงินเดือน|payslip/.test(t)) return 'slip';
-  if (/ติดต่อ\s*hr|คุยกับ\s*hr|ถาม\s*hr|แอดมิน|admin/.test(t)) return 'tohr';
-  if (/สวัสดี|hello|hi\b/.test(t)) return 'hi';
-  return '';
-}
-async function chatAnswer(k) {
-  const e = me();
-  if (k === 'hi') return `สวัสดีครับคุณ${e.first_name} มีอะไรให้ HR Agent ช่วยครับ เลือกคำถามด้านบนหรือพิมพ์ถามได้เลย`;
-  if (k === 'late' || k === 'today') {
-    const a = await hrAgentData(); if (a.sys) return 'บัญชีระบบไม่มีข้อมูลเวลาเข้างานครับ';
-    if (k === 'today') { const v = hrAgentVerdict(a); const td = a.today; return `${v.h}\n${v.d}${td && td.last_out ? `\nออกงาน ${fT(td.last_out)} น.` : ''}`; }
-    if (!a.rows.some(r => r.scheduled_start)) return 'เดือนนี้ยังไม่มีข้อมูลกะการทำงานของคุณ จึงยังนับการมาสายไม่ได้ครับ';
-    if (!a.late.length) return `เดือนนี้คุณยังไม่เคยมาสายเลยครับ 👏 ตรงเวลาแล้ว ${a.onTime} วัน`;
-    return `เดือนนี้คุณมาสาย ${a.late.length} ครั้ง รวม ${num(a.lateMin)} นาที\n` + a.late.map(r => `• ${fD(r.work_date)} เข้า ${fT(r.first_in)} น. (สาย ${num(r.late_minutes)} นาที)`).join('\n');
-  }
-  if (k === 'leave') { const d = await rpc('dash_stats'); const m = d.me || {}; return `วันลาคงเหลือรวมทุกประเภทปีนี้ ${num(m.leave_remaining || 0, 1)} วัน\nดูแยกตามประเภทได้ที่เมนู “วันลาคงเหลือ” ครับ`; }
-  if (k === 'docs') {
-    if (e.is_system) return 'บัญชีระบบไม่มีคำขอครับ';
-    const r = await q(sb.from('document_requests').select('*').eq('requester_employee_id', e.id).neq('status', 'DRAFT').order('updated_at', { ascending: false }).limit(5));
-    return r.length ? 'คำขอล่าสุดของคุณ\n' + r.map(d => `• ${dtName(d.document_type_id)} — ${(DOC_STATUS[d.status] || [d.status])[0]}`).join('\n') : 'คุณยังไม่มีคำขอที่ยื่นไว้ครับ';
-  }
-  if (k === 'ann') { const r = await q(sb.from('announcements').select('title,publish_from,active,publish_to').order('created_at', { ascending: false }).limit(5)); const l = r.filter(a => a.active && (!a.publish_to || a.publish_to >= todayStr())); return l.length ? 'ประกาศล่าสุด\n' + l.map(a => `• ${a.title}`).join('\n') : 'ตอนนี้ยังไม่มีประกาศครับ'; }
-  if (k === 'goleave') { setTimeout(() => location.hash = '#/docs/new/LEAVE', 900); return 'กำลังพาไปหน้าขอลางานครับ…'; }
-  if (k === 'slip') { setTimeout(() => location.hash = '#/payroll', 900); return 'กำลังพาไปหน้าสลิปเงินเดือนครับ…'; }
-  return 'ขออภัยครับ ยังไม่เข้าใจคำถาม ลองถามเรื่อง การมาสาย เวลาเข้างาน วันลาคงเหลือ สถานะคำขอ ประกาศ หรือสลิปเงินเดือน';
-}
-const TH_ST = { NEW: ['ใหม่', 'b-warn'], IN_PROGRESS: ['กำลังตอบ', 'b-info'], CLOSED: ['ปิดแล้ว', ''] };
-const chatTabs = cur => me().is_system ? '' : `<div class="seg" style="margin-bottom:10px"><a class="btn sm ${cur === 'bot' ? 'on' : ''}" href="#/chat">${ic('bot')} HR Agent</a><a class="btn sm ${cur === 'hr' ? 'on' : ''}" href="#/chat/hr">${ic('chat')} ข้อความถึง HR${S.empChat ? ` <span class="badge b-bad">${S.empChat}</span>` : ''}</a></div>`;
-async function newHrThread(prefill = '') {
-  if (me().is_system) return toast('บัญชีระบบ (admin) ไม่ใช่พนักงาน — ส่งข้อความถึง HR ไม่ได้', 'bad');
-  await formModal({ title: 'ส่งข้อความถึง HR', okText: 'ส่ง', intro: '<div class="tiny muted" style="margin-bottom:8px">ข้อความจะส่งถึงผู้มีสิทธิ์ HR ทุกคน · เห็นได้เฉพาะคุณกับ HR · แนบไฟล์ได้ในหน้าสนทนาหลังส่ง</div>',
-    fields: [{ k: 'subject', label: 'เรื่อง', full: true, ph: 'เช่น สอบถามสลิปเดือนนี้' }, { k: 'body', label: 'ข้อความ', type: 'textarea', req: true, full: true }], values: { body: prefill },
-    onSubmit: async v => { const id = await rpc('hr_thread_open', { p_subject: v.subject || '', p_body: v.body }); toast('ส่งถึง HR แล้ว', 'good'); location.hash = '#/chat/t/' + id; } });
-}
-const thItem = (t, href, who) => `<a class="ritem" href="${href}"><span class="rti" style="color:${t.status === 'CLOSED' ? '#94a3b8' : '#0369a1'}">${ic('chat')}</span><span class="grow" style="min-width:0"><b>${esc(t.subject)}</b><span class="tiny muted" style="display:block">${who ? esc(who) + ' · ' : ''}${fDT(t.last_message_at)}${t.last_sender ? ` · ล่าสุดโดย${t.last_sender === 'HR' ? ' HR' : 'พนักงาน'}` : ''}</span></span>${(who ? t.hr_unread : t.emp_unread) ? '<span class="badge b-bad">ใหม่</span>' : ''}<span class="badge ${TH_ST[t.status][1]}">${TH_ST[t.status][0]}</span>${ic('chev')}</a>`;
-async function hrThreadView(el, id, back, hrSide) {
-  const load = async () => {
-    const [t, ms] = await Promise.all([q(sb.from('hr_threads').select('*').eq('id', id).maybeSingle()), q(sb.from('hr_messages').select('*').eq('thread_id', id).order('created_at'))]);
-    return { t, ms };
-  };
-  let { t, ms } = await load();
-  if (!t) { el.innerHTML = pageHead('ข้อความถึง HR', '', back) + emptyBox('ไม่พบเรื่องนี้ หรือไม่มีสิทธิ์'); return; }
-  const mine = t.employee_id === me().id; const asHr = hrSide && can.hr() && !mine;
-  rpc('hr_thread_read', { p_thread: id }).then(refreshCounters).catch(() => { });
-  const bub = m => { const self = m.sender_employee_id === me().id;
-    return `<div class="msg ${self ? 'me' : 'bot'}">${self ? '' : `<div class="tiny" style="opacity:.75;margin-bottom:2px">${m.sender_side === 'HR' ? 'HR · ' : ''}${esc(empName(m.sender_employee_id))}</div>`}${m.body ? esc(m.body) : ''}${m.file_path ? `<div><a href="#" data-f="${esc(m.file_path)}" style="color:inherit;text-decoration:underline">${ic('clip')} ${esc(m.file_name || 'ไฟล์แนบ')}</a></div>` : ''}<div class="tiny" style="opacity:.65;margin-top:3px;text-align:right">${fDT(m.created_at)}</div></div>`; };
-  const acts = () => [asHr && t.status !== 'IN_PROGRESS' && t.status !== 'CLOSED' ? `<button class="btn sm" data-st="IN_PROGRESS">กำลังตอบ</button>` : '', t.status !== 'CLOSED' && (asHr || mine) ? `<button class="btn sm" data-st="CLOSED">${ic('check')} ปิดเรื่อง</button>` : '', asHr && t.status === 'CLOSED' ? `<button class="btn sm" data-st="IN_PROGRESS">เปิดเรื่องอีกครั้ง</button>` : ''].join('');
-  const draw = () => {
-    el.innerHTML = pageHead(t.subject, `<span class="badge ${TH_ST[t.status][1]}">${TH_ST[t.status][0]}</span>${acts()}`, back, 'chat') + `
-     ${asHr ? `<div class="card" style="margin-bottom:10px"><div class="row" style="flex-wrap:nowrap">${avatar(S.dirMap?.[t.employee_id] || { first_name: empName(t.employee_id) })}<div><b>${esc(empName(t.employee_id, true))}</b><div class="tiny muted">เริ่มเรื่อง ${fDT(t.created_at)}</div></div></div></div>` : ''}
-     <div class="chatbox" id="tbx" style="min-height:40vh">${ms.map(bub).join('')}</div>
-     ${t.status === 'CLOSED' && !mine ? `<div class="notice info" style="margin-top:10px">เรื่องนี้ปิดแล้ว — กด “เปิดเรื่องอีกครั้ง” เพื่อตอบต่อ</div>` : `
-     <form class="chatin" id="tfm" style="flex-wrap:wrap"><textarea class="inp" id="tin" rows="1" placeholder="${asHr ? 'ตอบกลับพนักงาน…' : 'พิมพ์ข้อความถึง HR…'}" style="flex:1;min-height:44px;resize:vertical"></textarea>
-      <label class="btn icon" title="แนบไฟล์" style="cursor:pointer">${ic('clip')}<input type="file" id="tfile" hidden></label><button class="btn pri" aria-label="ส่ง">${ic('send')}</button>
-      <div class="tiny muted" id="tfn" style="width:100%"></div></form>${mine && t.status === 'CLOSED' ? '<div class="tiny muted">ส่งข้อความใหม่เพื่อเปิดเรื่องนี้อีกครั้ง</div>' : ''}`}`;
-    const last = $('#tbx').lastElementChild; last && last.scrollIntoView({ block: 'end' });
-    if ($('#tfile')) $('#tfile').onchange = e => { const f = e.target.files[0]; $('#tfn').textContent = f ? '📎 ' + f.name : ''; };
-    if ($('#tfm')) $('#tfm').onsubmit = async ev => { ev.preventDefault(); const body = $('#tin').value.trim(), f = $('#tfile').files[0]; if (!body && !f) return;
-      const bt = $('#tfm button'); bt.disabled = true;
-      try { let fp = null; if (f) { fp = `chat/${t.employee_id}/${t.id}/${Date.now()}_${safeName(f.name)}`; await uploadFile(fp, f); }
-        await rpc('hr_msg_send', { p_thread: id, p_body: body, p_file_path: fp, p_file_name: f ? f.name : null, p_content_type: f ? f.type : null });
-        ({ t, ms } = await load()); draw(); refreshCounters(); } catch (e) { toast(errMsg(e), 'bad'); bt.disabled = false; } };
-  };
-  el.onclick = async e => {
-    const a = e.target.closest('[data-f]'); if (a) { e.preventDefault(); try { window.open(await signedUrl(a.dataset.f), '_blank'); } catch (err) { toast(errMsg(err), 'bad'); } return; }
-    const b = e.target.closest('[data-st]'); if (b) { if (b.dataset.st === 'CLOSED' && !await confirmDlg('ปิดเรื่องนี้?')) return; try { await rpc('hr_thread_status', { p_thread: id, p_status: b.dataset.st }); ({ t, ms } = await load()); draw(); refreshCounters(); } catch (err) { toast(errMsg(err), 'bad'); } }
-  };
-  draw();
-  const tm = setInterval(async () => { if (!el.isConnected || !$('#tbx') || !S.route.includes(id)) return clearInterval(tm); if ($('#tin') && $('#tin').value) return;
-    const r = await load().catch(() => null); if (r && r.ms.length !== ms.length) { ({ t, ms } = r); draw(); rpc('hr_thread_read', { p_thread: id }).then(refreshCounters).catch(() => { }); } }, 15000);
-}
-PAGES.inbox = async (el, id) => {
-  el.onclick = null;
-  if (id) return hrThreadView(el, id, '#/inbox', true);
-  const rows = await q(sb.from('hr_threads').select('*').order('last_message_at', { ascending: false }).limit(300));
-  const F = [['OPEN', 'ยังไม่ปิด'], ['NEW', 'ใหม่'], ['IN_PROGRESS', 'กำลังตอบ'], ['CLOSED', 'ปิดแล้ว'], ['', 'ทั้งหมด']];
-  let f = 'OPEN';
-  el.innerHTML = pageHead('กล่องข้อความ HR', '', '', 'chat') + `<div class="card"><div class="seg" id="ixs" style="margin-bottom:10px;overflow-x:auto">${F.map(([k, l]) => `<button data-s="${k}">${l} (${rows.filter(t => !k || (k === 'OPEN' ? t.status !== 'CLOSED' : t.status === k)).length})</button>`).join('')}</div><div id="ixl"></div></div>`;
-  const draw = () => { $$('#ixs button').forEach(b => b.classList.toggle('on', b.dataset.s === f)); const r = rows.filter(t => !f || (f === 'OPEN' ? t.status !== 'CLOSED' : t.status === f));
-    $('#ixl').innerHTML = r.length ? r.map(t => thItem(t, '#/inbox/' + t.id, empName(t.employee_id, true))).join('') : emptyBox('ไม่มีข้อความ', 'okc'); };
-  $('#ixs').onclick = e => { const b = e.target.closest('button'); if (b) { f = b.dataset.s; draw(); } };
-  draw();
-};
-PAGES.chat = async (el, a, b) => {
-  el.onclick = null;
-  if (a === 't' && b) return hrThreadView(el, b, '#/chat/hr', false);
-  if (a === 'hr') {
-    const rows = me().is_system ? [] : await q(sb.from('hr_threads').select('*').eq('employee_id', me().id).order('last_message_at', { ascending: false }));
-    el.innerHTML = pageHead('ChatHR', `<button class="btn pri" id="nth">${ic('plus')} ข้อความใหม่</button>`, '', 'chat') + chatTabs('hr') + `<div class="card">${rows.length ? rows.map(t => thItem(t, '#/chat/t/' + t.id)).join('') : emptyBox('ยังไม่มีข้อความถึง HR — กด “ข้อความใหม่” เพื่อเริ่มสอบถาม')}</div>`;
-    $('#nth').onclick = () => newHrThread();
-    return;
-  }
-  el.innerHTML = pageHead('ChatHR', '', '', 'chat') + chatTabs('bot') + `<div class="chips2" id="cq">${CHAT_Q.map(([l, k]) => `<button data-k="${k}">${l}</button>`).join('')}</div>
-   <div class="chatbox" id="cbx"></div>
-   <form class="chatin" id="cfm"><input class="inp" id="cin" placeholder="พิมพ์คำถามถึง HR…" autocomplete="off"><button class="btn pri" aria-label="ส่ง">${ic('send')}</button></form>`;
-  const bx = $('#cbx');
-  const add = (who, txt) => { const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = txt; bx.appendChild(d); d.scrollIntoView({ block: 'end', behavior: 'smooth' }); return d; };
-  const ask = async (label, k) => { add('me', label); if (k === 'tohr') { add('bot', 'เปิดหน้าส่งข้อความถึง HR ให้แล้วครับ'); return newHrThread(); }
-    const w = add('bot', '…'); try { w.textContent = await chatAnswer(k); } catch (err) { w.textContent = 'ดึงข้อมูลไม่สำเร็จ ลองใหม่อีกครั้งครับ'; }
-    if (!k && !me().is_system) { const bt = document.createElement('button'); bt.className = 'btn sm pri'; bt.style.marginTop = '8px'; bt.innerHTML = `${ic('send')} ส่งคำถามนี้ถึง HR`; bt.onclick = () => newHrThread(label); w.appendChild(document.createElement('br')); w.appendChild(bt); }
-    w.scrollIntoView({ block: 'end' }); };
-  add('bot', `สวัสดีครับคุณ${me().first_name || ''} ผม HR Agent 🤖\nถามเรื่องเวลาเข้างาน การมาสาย วันลา คำขอ ประกาศ หรือสลิปได้เลยครับ`);
-  on($('#cq'), 'click', 'button', (ev, b) => ask(b.textContent, b.dataset.k));
-  $('#cfm').onsubmit = ev => { ev.preventDefault(); const t = $('#cin').value.trim(); if (!t) return; $('#cin').value = ''; ask(t, chatIntent(t)); };
 };
 
 /* ===================== REPORTS ===================== */
@@ -1800,7 +1482,6 @@ async function dashDesktop(el) {
   const scopeTxt = d.scope === 'org' ? 'ทั้งองค์กร' : d.scope === 'team' ? 'ทีมของฉัน' : 'ของฉัน';
   let html = `<div class="dhead"><div><h2>แดชบอร์ด</h2><span class="muted small">ภาพรวม${scopeTxt} · อัปเดต ${fT(new Date().toISOString())} น.</span></div><span class="grow"></span>${d.scope !== 'self' ? `<a class="btn gold" href="#/reports">${ic('report')} รายงาน</a>` : `<a class="btn gold" href="#/approve">${ic('plus')} ยื่นคำขอ</a>`}</div>
    <div class="kgrid">${(d.kpis || []).map(kc).join('')}</div>
-   ${can.hr() ? `<div class="card aa" id="adagent" style="margin:16px 0"><div class="spin"></div></div>` : ''}
    <div class="dgrid">
     ${panel('chart', 'สถิติการเข้างาน', `<div id="bch">${barChart(d.series || [])}</div>`, `<div class="gseg" id="rseg"><button class="on" data-r="month">เดือนนี้</button><button data-r="3m">3 เดือน</button><button data-r="6m">6 เดือน</button><button data-r="1y">1 ปี</button></div>`)}
     ${panel('pie', 'สรุปการลา', donut(d.leaves || []))}
@@ -1815,7 +1496,6 @@ async function dashDesktop(el) {
   }
   if (s.payroll && s.payroll.length) html += panel('wallet', 'สรุปค่าใช้จ่ายเงินเดือน', table(s.payroll, [{ label: 'งวด', fmt: r => esc(r.period_name) }, { label: 'จำนวนคน', num: 1, fmt: r => num(r.headcount) }, { label: 'รายได้รวม', num: 1, fmt: r => money(r.gross) }, { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }]), '', 'wide');
   el.innerHTML = `<div class="desk">${html}</div>`;
-  if (can.hr()) aaLoad('#adagent', true);
   on($('#rseg'), 'click', 'button', async (e, b) => { $$('#rseg button').forEach(x => x.classList.toggle('on', x === b)); const c = $('#bch'); c.style.opacity = .5;
     try { const r = await rpc('dash_desktop', { p_range: b.dataset.r }); c.innerHTML = barChart(r.series || []); } catch (er) { toast(errMsg(er), 'bad'); } c.style.opacity = 1; });
 }
@@ -2185,12 +1865,8 @@ async function crudCard(host, cfg) {
   const save = async (v, id) => { v = map(v); if (id) await q(sb.from(tbl).update(v).eq('id', id)); else await q(sb.from(tbl).insert(v)); await loadLookups(); toast('บันทึกแล้ว', 'good'); reload(); };
   if (!canEdit) return rows;
   $('[data-new]', host).onclick = () => formModal({ title: 'เพิ่ม' + title, fields: typeof fields === 'function' ? fields() : fields, values: cfg.defaults || {}, onSubmit: v => save(v) });
-  /* ผูกตัวจัดการคลิกแบบ "แทนที่" (onclick) ไม่ใช่ addEventListener — เดิมทุกครั้งที่โหลดซ้ำ/สลับแท็บจะผูกเพิ่ม ทำให้กดแก้ไขครั้งเดียวแล้วเด้งหลายการ์ด */
-  host.onclick = async e => {
-    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
-    if (ed && host.contains(ed)) { const r = rows.find(x => x.id === ed.dataset.ed); if (!r) return; formModal({ title: 'แก้ไข' + title, fields: typeof fields === 'function' ? fields(r) : fields, values: cfg.toForm ? cfg.toForm(r) : r, onSubmit: v => save(v, r.id) }); }
-    else if (dl && host.contains(dl)) { if (await confirmDlg('ลบรายการนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from(tbl).delete().eq('id', dl.dataset.del)), 'ลบแล้ว'); await loadLookups(); reload(); } }
-  };
+  on(host, 'click', '[data-ed]', (e, b) => { const r = rows.find(x => x.id === b.dataset.ed); formModal({ title: 'แก้ไข' + title, fields: typeof fields === 'function' ? fields(r) : fields, values: cfg.toForm ? cfg.toForm(r) : r, onSubmit: v => save(v, r.id) }); });
+  on(host, 'click', '[data-del]', async (e, b) => { if (await confirmDlg('ลบรายการนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from(tbl).delete().eq('id', b.dataset.del)), 'ลบแล้ว'); await loadLookups(); reload(); } });
   return rows;
 }
 const ST_OPTS = [['ACTIVE', 'ใช้งาน'], ['INACTIVE', 'ปิดใช้งาน']];
@@ -2201,7 +1877,7 @@ const countBy = k => { const c = {}; S.dir.filter(x => ['ACTIVE', 'PROBATION'].i
 PAGES.org = async (el, tab = 'chart') => {
   el.innerHTML = pageHead('โครงสร้างองค์กร') + `<div class="tabs" id="otabs"></div><div id="obody"></div>`;
   const T = [['chart', 'ผังองค์กร'], ['company', 'บริษัท'], ['branches', 'สำนักงาน/สาขา'], ['depts', 'ฝ่าย/แผนก'], ['units', 'หน่วยงาน/โครงการ'], ['positions', 'ตำแหน่ง']];
-  const show = t => { history.replaceState(null, '', '#/org/' + t); const o = $('#obody'), b = o.cloneNode(false); o.replaceWith(b); loading(b); /* กล่องใหม่ทุกครั้ง — ไม่ให้ตัวจัดการคลิกของแท็บก่อนค้างอยู่ */ ORG[t](b).catch(e => b.innerHTML = `<div class="notice bad">${esc(errMsg(e))}</div>`); };
+  const show = t => { history.replaceState(null, '', '#/org/' + t); const b = $('#obody'); loading(b); ORG[t](b).catch(e => b.innerHTML = `<div class="notice bad">${esc(errMsg(e))}</div>`); };
   tabs($('#otabs'), T, tab, show); show(tab);
 };
 const ORG = {
@@ -2442,7 +2118,7 @@ async function TM_ME(b, sub = 'today') {
   const draw = async v => {
     cv = v; history.replaceState(null, '', '#/time/me/' + v); loading(out);
     const M = await myMonth(ym); M0 = M; const st = M.st;
-    const statTiles = `<div class="stiles">${[['okc', '#22c55e', 'มาทำงาน', st.work + ' วัน'], ['cal', '#16a34a', 'ตรงเวลา', st.ontime + ' วัน'], ['clock', '#f59e0b', 'สายสะสม', num(st.lateMin) + ' นาที'], ['xc', '#ef4444', 'ขาดงาน', st.absent + ' วัน'], ['ot', '#2563eb', 'OT รวม', mins(st.otMin) + ' ชม.']].map(([i, c, l, n]) => `<div class="stile"><span style="color:${c}">${ic(i)}</span><span class="l">${l}</span><b>${n}</b></div>`).join('')}</div>`;
+    const statTiles = `<div class="stiles">${[['okc', '#22c55e', 'มาทำงาน', st.work + ' วัน'], ['cal', '#16a34a', 'ตรงเวลา', st.ontime + ' วัน'], ['clock', '#f59e0b', 'สาย', st.late + ' วัน'], ['xc', '#ef4444', 'ขาดงาน', st.absent + ' วัน'], ['ot', '#2563eb', 'OT รวม', mins(st.otMin) + ' ชม.']].map(([i, c, l, n]) => `<div class="stile"><span style="color:${c}">${ic(i)}</span><span class="l">${l}</span><b>${n}</b></div>`).join('')}</div>`;
     const monthNav = `<div class="row" style="gap:6px"><button class="btn ghost icon sm" data-mn="-1">${ic('back')}</button><b style="min-width:120px;text-align:center">${TH_MF[M.m - 1]} ${M.y + 543}</b><button class="btn ghost icon sm" data-mn="1">${ic('chev')}</button></div>`;
     if (v === 'today') {
       const r = M.by[t] || {}; const sch = (M.sch.find(s => s.work_date === t) || {}).info || {}; const sh = sch.shift_id ? S.L.shifts.find(x => x.id === sch.shift_id) : null;
@@ -2689,7 +2365,6 @@ function docSummary(d) {
 }
 PAGES.docs = async (el, a, b) => {
   if (a === 'new') return docForm(el, b);
-  if (a === 'history') return docHistory(el, b);
   if (a && a !== 'list') return docDetail(el, a);
   const rows = await q(sb.from('document_requests').select('*').eq('requester_employee_id', me().id).order('created_at', { ascending: false }).limit(300));
   el.innerHTML = pageHead('ยื่นเอกสาร') + `
@@ -2718,21 +2393,6 @@ function docFields(code) {
     MATERIAL: [{ k: 'item', label: 'วัสดุ/อุปกรณ์', req: true, rd: 1, full: true }, { k: 'quantity', label: 'จำนวน', type: 'number', min: 0.01, step: 'any', req: true, rd: 1 }, { k: 'unit', label: 'หน่วย', rd: 1 }, { k: 'branch', label: 'ใช้ที่สาขา/โครงการ', type: 'select', rd: 1, opts: opts('branches', 'branch_name', 'branch_name') }, { k: 'effective_date', label: 'ต้องการวันที่', type: 'date' }, { k: 'reason', label: 'ใช้สำหรับ', type: 'textarea', full: true, req: true }]
   };
   return F[code] || [];
-}
-/* ประวัติการขออนุมัติของฉัน — รวมคำขอที่ รออนุมัติ และ อนุมัติแล้ว */
-async function docHistory(el, f0) {
-  const rows = me().is_system ? [] : await q(sb.from('document_requests').select('*').eq('requester_employee_id', me().id).in('status', ['PENDING', 'APPROVED']).order('submitted_at', { ascending: false, nullsFirst: false }).limit(300));
-  const nP = rows.filter(d => d.status === 'PENDING').length, nA = rows.length - nP;
-  const F = [['', `ทั้งหมด (${rows.length})`], ['PENDING', `รออนุมัติ (${nP})`], ['APPROVED', `อนุมัติแล้ว (${nA})`]];
-  let f = F.some(x => x[0] === f0) ? f0 : '';
-  el.innerHTML = pageHead('ประวัติการขออนุมัติ', `<a class="btn pri" href="#/docs">${ic('plus')} ขออนุมัติ</a>`) + `
-   ${me().is_system ? `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ไม่มีประวัติคำขอ</div>` : ''}
-   <div class="card"><div class="seg" id="hseg" style="margin-bottom:10px">${F.map(([k, l]) => `<button data-s="${k}">${l}</button>`).join('')}</div><div id="hlist"></div></div>`;
-  const draw = () => { const r = rows.filter(d => !f || d.status === f);
-    $$('#hseg button', el).forEach(b => b.classList.toggle('on', b.dataset.s === f));
-    $('#hlist').innerHTML = r.length ? r.map(d => reqItem(d)).join('') : emptyBox(f === 'PENDING' ? 'ไม่มีคำขอที่รออนุมัติ' : f === 'APPROVED' ? 'ยังไม่มีคำขอที่อนุมัติแล้ว' : 'ยังไม่มีประวัติการขออนุมัติ'); };
-  on($('#hseg'), 'click', 'button', (e, b) => { f = b.dataset.s; history.replaceState(null, '', '#/docs/history' + (f ? '/' + f : '')); draw(); });
-  draw();
 }
 async function docForm(el, code, doc) {
   const t = S.L.docTypes.find(x => x.document_code === code); if (!t) { location.hash = '#/docs'; return; }
@@ -2778,7 +2438,7 @@ async function docForm(el, code, doc) {
   $('#dsave').onclick = async () => { try { const d = await save(); toast('บันทึกร่างแล้ว', 'good'); location.hash = '#/docs/' + d.id; } catch (e) { toast(errMsg(e), 'bad'); } };
   $('#dsub').onclick = async ev => {
     ev.target.disabled = true;
-    try { const d = await save(); await rpc('doc_submit', { p_doc: d.id }); toast('ส่งขออนุมัติแล้ว', 'good'); location.hash = '#/dashboard'; refreshCounters(); }
+    try { const d = await save(); await rpc('doc_submit', { p_doc: d.id }); toast('ส่งอนุมัติแล้ว', 'good'); location.hash = '#/docs/' + d.id; refreshCounters(); }
     catch (e) { toast(errMsg(e), 'bad'); ev.target.disabled = false; if (doc && !location.hash.includes(doc.id)) history.replaceState(null, '', '#/docs/' + doc.id + '/edit'); }
   };
 }
@@ -2960,10 +2620,6 @@ async function taskDetail(el, id) {
 /* ===================== M09 PAYROLL ===================== */
 PAGES.payroll = async (el, a, b) => {
   if (a === 'slip') return payslipView(el, b);
-  if (a === 'hub') return payHub(el);
-  if (a === 'summary') return paySummary(el, b);
-  if (a === 'cert') return workCert(el);
-  if (a === 'other') return payOther(el);
   if (a === 'run' && can.payroll()) return runView(el, b);
   const T = [['mine', 'สลิปของฉัน']]; if (can.payroll()) T.unshift(['periods', 'งวดเงินเดือน']);
   el.innerHTML = pageHead('เงินเดือน') + `<div class="tabs" id="ptabs"></div><div id="pbody"></div>`;
@@ -3031,75 +2687,6 @@ async function runView(el, id) {
   if ($('#pxl')) $('#pxl').onclick = () => guard(() => exportXLSX(recs.map(x => ({ 'รหัส': x.snapshot?.employee_code, 'ชื่อ': x.snapshot?.name, 'ตำแหน่ง': x.snapshot?.position, 'สาขา/โครงการ': x.snapshot?.branch, 'เงินเดือนฐาน': Number(x.base_salary), 'รายได้รวม': Number(x.gross_income), 'รายการหัก': Number(x.total_deductions), 'สุทธิ': Number(x.net_salary), 'ฐานประกันสังคม': x.snapshot?.sso_base, 'เงินได้พึงประเมิน': x.snapshot?.taxable_income, 'ตรวจสอบ': (x.warnings || []).join('; ') })), `payroll_${p.period_code}_r${r.run_number}`, 'Payroll'));
   if ($('#pbank')) $('#pbank').onclick = () => { if (!['APPROVED', 'PUBLISHED'].includes(r.status)) return toast('ส่งออกรายการโอนได้หลังอนุมัติเท่านั้น', 'bad'); guard(() => exportXLSX(recs.filter(x => Number(x.net_salary) > 0).map(x => ({ 'รหัส': x.snapshot?.employee_code, 'ชื่อ': x.snapshot?.name, 'ธนาคาร': x.bank_name || '', 'เลขบัญชี (ปกปิด)': x.bank_account_masked || '', 'ยอดโอน': Number(x.net_salary) })), `bank_${p.period_code}_r${r.run_number}`, 'Bank')); };
 }
-/* ===== เมนูเงินเดือนของฉัน (มือถือ): สรุปรายเดือน · สลิป · หนังสือรับรองการทำงาน · อื่นๆ ===== */
-async function myPayRecs() {
-  if (me().is_system) return [];
-  const recs = await q(sb.from('payroll_records').select('*').eq('employee_id', me().id));
-  const runs = recs.length ? await q(sb.from('payroll_runs').select('*').in('id', recs.map(r => r.payroll_run_id)).eq('status', 'PUBLISHED')) : [];
-  const pers = runs.length ? await q(sb.from('payroll_periods').select('*').in('id', runs.map(r => r.payroll_period_id))) : [];
-  return recs.filter(r => runs.some(x => x.id === r.payroll_run_id) && r.calculation_status !== 'EXCLUDED').map(r => { const run = runs.find(x => x.id === r.payroll_run_id); return { ...r, run, per: pers.find(p => p.id === run.payroll_period_id) }; })
-    .sort((x, y) => x.per.period_code === y.per.period_code ? y.run.run_number - x.run.run_number : x.per.period_code < y.per.period_code ? 1 : -1);
-}
-const perLabel = r => esc(r.per.period_name) + (r.run.run_number > 1 ? ` (รอบเพิ่มเติม ${r.run.run_number})` : '');
-async function payHub(el) {
-  const M = [['#/payroll/summary', 'pie', '#0ea5e9', 'สรุปเงินเดือน', 'รายละเอียดรายได้-รายการหักของเดือนนั้น'],
-    ['#/payroll/mine', 'money', '#2563eb', 'สลิปเงินเดือน', 'ดูและพิมพ์ / บันทึก PDF สลิปแต่ละงวด'],
-    ['#/payroll/cert', 'report', '#16a34a', 'หนังสือรับรองการทำงาน', 'ร่างหนังสือรับรองจากข้อมูลพนักงาน'],
-    ['#/payroll/other', 'menu', '#ea8a0c', 'อื่นๆ', 'รายได้สะสมทั้งปี · หนังสือรับรองภาษี · ติดต่อ HR']];
-  el.innerHTML = pageHead('เงินเดือนของฉัน', '', '#/dashboard', 'money') + `<div class="card">${M.map(([h, i, c, t, d]) => `<a class="ritem" href="${h}"><span class="rti" style="color:${c}">${ic(i)}</span><span class="grow" style="min-width:0"><b>${t}</b><span class="tiny muted" style="display:block">${d}</span></span>${ic('chev')}</a>`).join('')}</div>`;
-}
-async function paySummary(el, sel) {
-  const rows = await myPayRecs();
-  const head = pageHead('สรุปเงินเดือน', '', '#/payroll/hub', 'pie');
-  if (!rows.length) { el.innerHTML = head + `<div class="card">${emptyBox('ยังไม่มีเงินเดือนที่เผยแพร่')}</div>`; return; }
-  const r = rows.find(x => x.id === sel) || rows[0];
-  const items = await rpc('payslip_items', { p_record: r.id });
-  const E = items.filter(i => i.item_type === 'EARNING'), D = items.filter(i => i.item_type === 'DEDUCTION');
-  const li = i => `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:nowrap"><span class="grow">${esc(i.item_name)}${i.quantity && i.item_code !== 'SSO' ? ` <span class="tiny muted">(${num(i.quantity, 2)})</span>` : ''}</span><b class="mono">${money(i.amount)}</b></div>`;
-  el.innerHTML = head + `
-   <div class="card"><label class="f">งวดเงินเดือน<select class="inp" id="psel">${rows.map(x => `<option value="${x.id}" ${x.id === r.id ? 'selected' : ''}>${perLabel(x)}</option>`).join('')}</select></label>
-    <div style="text-align:center;margin:14px 0 6px"><div class="small muted">เงินได้สุทธิ</div><div style="font-size:32px;font-weight:700;color:var(--brand)">${money(r.net_salary)} <span style="font-size:15px">บาท</span></div><div class="tiny muted">วันจ่าย ${fD(r.per.payment_date)}</div></div>
-    <div class="grid" style="gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card kpi"><span class="v" style="color:var(--good)">${money(r.gross_income)}</span><span class="l">รายได้รวม</span></div><div class="card kpi"><span class="v" style="color:var(--bad)">${money(r.total_deductions)}</span><span class="l">รายการหักรวม</span></div></div></div>
-   <div class="card" style="margin-top:14px"><h3 style="color:var(--good)">${ic('in')} รายได้</h3>${E.length ? E.map(li).join('') : emptyBox('ไม่มีรายการ')}</div>
-   <div class="card" style="margin-top:14px"><h3 style="color:var(--bad)">${ic('out')} รายการหัก</h3>${D.length ? D.map(li).join('') : emptyBox('ไม่มีรายการ')}</div>
-   <a class="btn pri" style="width:100%;margin-top:14px;justify-content:center" href="#/payroll/slip/${r.id}">${ic('money')} ดูสลิปเงินเดือนงวดนี้</a>`;
-  $('#psel').onchange = e => { location.hash = '#/payroll/summary/' + e.target.value; };
-}
-async function workCert(el) {
-  const head = pageHead('หนังสือรับรองการทำงาน', `<button class="btn" onclick="print()">${ic('print')} พิมพ์ / PDF</button>`, '#/payroll/hub', 'report');
-  if (me().is_system) { el.innerHTML = head + `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ออกหนังสือรับรองไม่ได้</div>`; return; }
-  const [emp, rows] = await Promise.all([q(sb.from('employees').select('*').eq('id', me().id).maybeSingle()), myPayRecs()]);
-  const e = { ...me(), ...(emp || {}) }; const sal = rows[0] ? rows[0].base_salary : null;
-  const name = `${e.title_th || ''}${e.first_name} ${e.last_name || ''}`.trim();
-  const svc = (() => { if (!e.hire_date) return ''; const a = dParts(e.hire_date), b = dParts(todayStr()); let m = (b.y - a.y) * 12 + (b.m - a.m) - (b.d < a.d ? 1 : 0); if (m < 0) return ''; return `${Math.floor(m / 12) ? Math.floor(m / 12) + ' ปี ' : ''}${m % 12} เดือน`; })();
-  el.innerHTML = head + `
-   <div class="card noprint" style="margin-bottom:12px"><div class="grid g2" style="gap:10px">
-    <label class="f">วัตถุประสงค์ (ถ้ามี)<input class="inp" id="cpur" placeholder="เช่น ประกอบการขอสินเชื่อ / ขอวีซ่า"></label>
-    <label class="f row" style="align-items:center;gap:8px;margin-top:22px"><input type="checkbox" id="csal" ${sal == null ? 'disabled' : ''}> ระบุเงินเดือน${sal == null ? ' <span class="tiny muted">(ยังไม่มีเงินเดือนที่เผยแพร่)</span>' : ''}</label></div>
-    <div class="notice info" style="margin-top:10px">${ic('alert')}<div>เอกสารนี้เป็นร่างจากข้อมูลในระบบ — ใช้อ้างอิงอย่างเป็นทางการได้เมื่อผู้มีอำนาจลงนามและประทับตราบริษัทแล้ว ติดต่อ HR เพื่อขอฉบับลงนาม</div></div></div>
-   <div class="payslip" id="cdoc"></div>`;
-  const draw = () => { const pur = $('#cpur').value.trim(), ws = $('#csal').checked;
-    $('#cdoc').innerHTML = `<div class="hd">${window.__MOCK_SB__ ? '<img src="logo.png" alt="">' : `<img src="${esc(logoSrc())}" alt="" onerror="this.remove()">`}<div style="flex:1"><div style="font-weight:700;font-size:17px">${esc(S.company.company_name || '')}</div></div></div>
-     <div style="text-align:center;font-weight:700;font-size:20px;margin:22px 0 6px">หนังสือรับรองการทำงาน</div>
-     <div style="text-align:right;margin-bottom:18px">วันที่ ${fD(todayStr())}</div>
-     <p style="text-indent:48px;line-height:2">หนังสือฉบับนี้ให้ไว้เพื่อรับรองว่า <b>${esc(name)}</b> รหัสพนักงาน <b>${esc(e.employee_code || '–')}</b> เป็นพนักงานของ${esc(S.company.company_name || 'บริษัท')} ปัจจุบันดำรงตำแหน่ง <b>${esc(e.position_name || '–')}</b>${e.department_name ? ` สังกัด${esc(e.department_name)}` : ''}${e.branch_name ? ` (${esc(e.branch_name)})` : ''} เริ่มปฏิบัติงานตั้งแต่วันที่ <b>${e.hire_date ? fD(e.hire_date) : '–'}</b> จนถึงปัจจุบัน${svc ? ` รวมอายุงาน ${svc}` : ''}${ws ? ` ได้รับเงินเดือนเดือนละ <b>${money(sal)}</b> บาท` : ''}</p>
-     <p style="text-indent:48px;line-height:2">${pur ? `ออกให้เพื่อใช้${esc(pur.replace(/^เพื่อ(ใช้)?/, ''))}` : 'ออกให้ไว้เพื่อเป็นหลักฐาน'}</p>
-     <div style="margin:56px 0 0 auto;width:280px;text-align:center;line-height:2">ลงชื่อ ......................................................<br>(......................................................)<br>ตำแหน่ง ..................................................<br>ผู้มีอำนาจลงนาม</div>
-     <div style="font-size:11.5px;color:#777;margin-top:28px">ร่างจากระบบ HR Application · ต้องลงนามและประทับตราบริษัทจึงมีผลใช้อ้างอิง</div>`; };
-  $('#cpur').oninput = draw; $('#csal').onchange = draw; draw();
-}
-async function payOther(el) {
-  const rows = await myPayRecs(); const y = todayStr().slice(0, 4);
-  const yr = rows.filter(r => (r.per.payment_date || r.per.period_code || '').slice(0, 4) === y);
-  const t = yr.reduce((s, x) => ({ g: s.g + Number(x.gross_income), d: s.d + Number(x.total_deductions), n: s.n + Number(x.net_salary) }), { g: 0, d: 0, n: 0 });
-  el.innerHTML = pageHead('อื่นๆ', '', '#/payroll/hub', 'menu') + `
-   <div class="card"><h3>${ic('wallet')} รายได้สะสมปี ${Number(y) + 543}</h3>${yr.length ? `<div class="tiny muted" style="margin-bottom:8px">จาก ${yr.length} งวดที่เผยแพร่แล้ว</div>
-    ${[['รายได้รวม', t.g, 'var(--good)'], ['รายการหักรวม', t.d, 'var(--bad)'], ['เงินได้สุทธิรวม', t.n, 'var(--brand)']].map(([l, v, c]) => `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><span class="grow">${l}</span><b class="mono" style="color:${c}">${money(v)}</b></div>`).join('')}` : emptyBox('ยังไม่มีเงินเดือนที่เผยแพร่ในปีนี้')}</div>
-   <div class="card" style="margin-top:14px">
-    <div class="ritem" style="opacity:.75"><span class="rti" style="color:#64748b">${ic('shield')}</span><span class="grow" style="min-width:0"><b>หนังสือรับรองการหักภาษี ณ ที่จ่าย (50 ทวิ)</b><span class="tiny muted" style="display:block">ยังไม่เปิดใช้ — ระบบยังไม่คำนวณภาษีหัก ณ ที่จ่ายอัตโนมัติ ติดต่อ HR</span></span><span class="badge b-warn">รอเปิด</span></div>
-    <a class="ritem" href="#/docs"><span class="rti" style="color:#ea8a0c">${ic('send')}</span><span class="grow" style="min-width:0"><b>ยื่นคำขออื่นๆ</b><span class="tiny muted" style="display:block">ไปหน้ายื่นเอกสาร</span></span>${ic('chev')}</a>
-    <a class="ritem" href="#/chat"><span class="rti" style="color:#2563eb">${ic('chat')}</span><span class="grow" style="min-width:0"><b>สอบถาม HR (ChatHR)</b><span class="tiny muted" style="display:block">ถามเรื่องเงินเดือน วันลา สถานะคำขอ</span></span>${ic('chev')}</a></div>`;
-}
 async function payslipView(el, recId) {
   const rec = await q(sb.from('payroll_records').select('*').eq('id', recId).maybeSingle());
   if (!rec) { el.innerHTML = pageHead('สลิปเงินเดือน', '', '#/payroll') + emptyBox('ไม่พบสลิป หรือไม่มีสิทธิ์'); return; }
@@ -3107,7 +2694,7 @@ async function payslipView(el, recId) {
   const items = await rpc('payslip_items', { p_record: recId });
   const E = items.filter(i => i.item_type === 'EARNING'), D = items.filter(i => i.item_type === 'DEDUCTION'); const n = Math.max(E.length, D.length, 1);
   const line = i => i ? `<td>${esc(i.item_name)}${i.quantity && i.item_code !== 'SSO' ? ` <span style="color:#666;font-size:12px">(${num(i.quantity, 2)})</span>` : ''}</td><td style="text-align:right">${money(i.amount)}</td>` : '<td></td><td></td>';
-  el.innerHTML = pageHead('สลิปเงินเดือน', `<button class="btn" onclick="print()">${ic('print')} พิมพ์ / PDF</button>`, can.payroll() ? '#/payroll/run/' + run.id : simpleMode() ? '#/payroll/hub' : '#/payroll/mine') + `
+  el.innerHTML = pageHead('สลิปเงินเดือน', `<button class="btn" onclick="print()">${ic('print')} พิมพ์ / PDF</button>`, can.payroll() ? '#/payroll/run/' + run.id : '#/payroll/mine') + `
    <div class="payslip"><div class="hd">${window.__MOCK_SB__ ? '<img src="logo.png" alt="">' : `<img src="${esc(logoSrc())}" alt="" onerror="this.remove()">`}<div style="flex:1"><div style="font-weight:700;font-size:17px">${esc(S.company.company_name || '')}</div><div style="font-size:13px;color:#555">สลิปเงินเดือน (Payslip) · ${esc(per.period_name)}${run.run_number > 1 ? ' · รอบเพิ่มเติม ' + run.run_number : ''}</div></div><div style="text-align:right;font-size:13px">วันจ่าย<br><b>${per.payment_date ? fD(per.payment_date) : '–'}</b></div></div>
     <table style="margin-bottom:12px"><tr><td style="width:18%;color:#666">รหัสพนักงาน</td><td>${esc(rec.snapshot?.employee_code || '')}</td><td style="width:16%;color:#666">ตำแหน่ง</td><td>${esc(rec.snapshot?.position || '–')}</td></tr><tr><td style="color:#666">ชื่อ-นามสกุล</td><td>${esc(rec.snapshot?.name || '')}</td><td style="color:#666">สังกัด</td><td>${esc(rec.snapshot?.branch || '–')}</td></tr><tr><td style="color:#666">ธนาคาร</td><td>${esc(rec.bank_name || '–')}</td><td style="color:#666">เลขบัญชี</td><td>${esc(rec.bank_account_masked || '–')}</td></tr></table>
     <table style="border:1px solid #ccc"><tr style="background:#eef4ff"><td colspan="2"><b>รายได้</b></td><td colspan="2" style="border-left:1px solid #ccc"><b>รายการหัก</b></td></tr>
