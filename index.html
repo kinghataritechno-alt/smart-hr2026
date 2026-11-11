@@ -682,6 +682,9 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .thd-b{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent;color:var(--muted,#64748b);display:grid;place-items:center;cursor:pointer;border-radius:8px}
 .thd-b:hover{background:rgba(127,127,127,.12)}.thd-b svg{width:18px;height:18px}
 input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;height:1px!important;opacity:0;pointer-events:none;padding:0!important;border:0!important}
+/* v1.5.6 ปุ่มเลือกไฟล์ภาษาไทย */
+.thf-w{position:relative;display:flex!important;align-items:center;gap:10px;min-height:44px;padding:6px 8px!important}
+.thf-w .thf-b{flex:0 0 auto}.thf-w .thf-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:14px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -797,6 +800,9 @@ const fD = d => { if (!d) return '–'; const p = dParts(d); return `${String(p.
 const fDL = d => { if (!d) return '–'; const p = dParts(d); const wd = new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay(); return `${TH_D[wd]} ${fD(d)}`; };
 const bkk = ts => ts ? new Date(new Date(ts).toLocaleString('en-US', { timeZone: CFG.tz })) : null;
 const fT = ts => { if (!ts) return '–'; const x = bkk(ts); return String(x.getHours()).padStart(2, '0') + ':' + String(x.getMinutes()).padStart(2, '0'); };
+/* วันลา → "2 วัน 3 ชม. 26 นาที" (1 วัน = 8 ชม.) */
+const fLv = (d, short) => { if (d == null || d === '') return '–'; let m = Math.round(Math.abs(Number(d)) * 480); const sg = Number(d) < 0 && m ? '-' : ''; const dd = Math.floor(m / 480); m -= dd * 480; const h = Math.floor(m / 60); m -= h * 60;
+  const p = []; if (dd || (!h && !m)) p.push(`${dd} วัน`); if (h) p.push(`${h} ชม.`); if (m) p.push(`${m} นาที`); return sg + p.join(' '); };
 const fDT = ts => { if (!ts) return '–'; const s = new Date(ts).toLocaleDateString('en-CA', { timeZone: CFG.tz }); return fD(s) + ' ' + fT(ts); };
 const hm = t => t ? String(t).slice(0, 5) : '–';
 const money = n => n == null || n === '' ? '–' : Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1031,6 +1037,21 @@ function thdEnhance(src) {
 const thdScan = root => (root.querySelectorAll ? root : document).querySelectorAll('input[type=date]:not([data-thd])').forEach(thdEnhance);
 new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1) { if (n.matches && n.matches('input[type=date]')) thdEnhance(n); else thdScan(n); } }).observe(document.documentElement, { childList: true, subtree: true });
 
+/* ===== v1.5.6 ปุ่มเลือกไฟล์ภาษาไทย (แทน Choose Files / No file chosen) ===== */
+const FILE_VAL = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+function fileEnhance(src) {
+  if (src.dataset.thf) return; src.dataset.thf = 1;
+  const w = document.createElement('span'); w.className = 'thf-w inp';
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'btn sm thf-b'; b.innerHTML = `${ic('clip')} เลือกไฟล์`;
+  const t = document.createElement('span'); t.className = 'thf-t';
+  src.parentNode.insertBefore(w, src); w.append(b, t, src); src.classList.add('thd-src'); src.tabIndex = -1;
+  const sync = () => { const n = src.files ? src.files.length : 0; t.textContent = !n ? 'ยังไม่ได้เลือกไฟล์' : n === 1 ? src.files[0].name : `เลือกแล้ว ${n} ไฟล์`; t.classList.toggle('muted', !n); };
+  Object.defineProperty(src, 'value', { configurable: true, get() { return FILE_VAL.get.call(this); }, set(v) { FILE_VAL.set.call(this, v); sync(); } });
+  b.onclick = e => { e.preventDefault(); if (!src.disabled) src.click(); }; src.addEventListener('change', sync); sync();
+}
+const thfScan = root => (root.querySelectorAll ? root : document).querySelectorAll('input[type=file]:not([data-thf])').forEach(fileEnhance);
+new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1) { if (n.matches && n.matches('input[type=file]')) fileEnhance(n); else thfScan(n); } }).observe(document.documentElement, { childList: true, subtree: true });
+
 /* ===================== MODULES ===================== */
 const MODS = [
   { k: 'dashboard', t: 'หน้าหลัก', i: 'chart', c: 'linear-gradient(135deg,#38bdf8,#2563eb)', show: () => true },
@@ -1116,7 +1137,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.5.5</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.6</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1304,7 +1325,7 @@ PAGES.dashboard = async el => {
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
     <div><div class="l"><span style="color:var(--bad)">${ic('out')}</span>เวลาออกงาน</div><div class="v">${fT(tdy.last_out)}</div></div>
     <div><div class="l"><span style="color:var(--brand)">${ic('cal')}</span>กะการทำงาน</div><div class="v" style="font-size:16px">${shiftTxt}</div></div>
-    <div><div class="l"><span style="color:var(--brand)">${ic('umbrella')}</span>วันลาคงเหลือ</div><div class="v">${num(m.leave_remaining, 1)} <span class="small">วัน</span></div></div>
+    <div><div class="l"><span style="color:var(--brand)">${ic('umbrella')}</span>วันลาคงเหลือ</div><div class="v" style="font-size:18px">${fLv(m.leave_remaining)}</div></div>
    </div></div>
   ${simple ? `<div class="grid g2" style="margin-top:14px">
    ${kp(num((m.docs || {}).PENDING || 0), 'คำขอของฉันที่รออนุมัติ', 'upload', 'linear-gradient(135deg,#fbbf24,#ea8a0c)', '#/approve/tab/mine')}
@@ -1477,7 +1498,7 @@ async function dashDesktop(el) {
     return `<div class="kcard"><span class="kic">${ic(k.icon)}</span><div class="kb"><div class="kl">${esc(k.label)}</div><div class="kv">${k.value == null ? '–' : num(k.value, 1)} <small>${esc(k.unit)}</small></div>
       <div class="kd ${cls}">${has ? `${up ? '▲' : dv < 0 ? '↓' : '•'} ${dv > 0 ? '+' : ''}${num(dv, 1)}${k.delta_unit} <span>${esc(k.delta_txt)}</span>` : `<span>${k.value == null ? 'ยังไม่มีข้อมูล' : esc(k.delta_txt || '')}</span>`}</div></div><span class="kwm">${ic(k.icon)}</span></div>`; };
   const bal = d.balances;
-  const balHtml = bal == null ? `<div class="muted small" style="padding:14px 0">บัญชีระบบ (admin) ไม่มีสิทธิการลา</div>` : bal.length ? bal.map(b => { const [i, c] = BAL_IC[b.code] || ['cal', '#132c5e']; return `<div class="brow"><span class="bic" style="color:${c}">${ic(i)}</span><span class="grow">${esc(b.name)}</span><b>${num(b.remaining, 1)} <small>วัน</small></b></div>`; }).join('') : `<div class="muted small" style="padding:14px 0">ยังไม่มีการให้สิทธิการลา (OI-11)</div>`;
+  const balHtml = bal == null ? `<div class="muted small" style="padding:14px 0">บัญชีระบบ (admin) ไม่มีสิทธิการลา</div>` : bal.length ? bal.map(b => { const [i, c] = BAL_IC[b.code] || ['cal', '#132c5e']; return `<div class="brow"><span class="bic" style="color:${c}">${ic(i)}</span><span class="grow">${esc(b.name)}</span><b>${fLv(b.remaining)}</b></div>`; }).join('') : `<div class="muted small" style="padding:14px 0">ยังไม่มีการให้สิทธิการลา (OI-11)</div>`;
   const actRows = (d.activity || []).map(a => `<tr><td>${fDT(a.ts)}</td><td>${esc(a.title)}</td><td>${esc(a.detail)}</td><td>${esc(a.actor)}</td></tr>`).join('');
   const scopeTxt = d.scope === 'org' ? 'ทั้งองค์กร' : d.scope === 'team' ? 'ทีมของฉัน' : 'ของฉัน';
   let html = `<div class="dhead"><div><h2>แดชบอร์ด</h2><span class="muted small">ภาพรวม${scopeTxt} · อัปเดต ${fT(new Date().toISOString())} น.</span></div><span class="grow"></span>${d.scope !== 'self' ? `<a class="btn gold" href="#/reports">${ic('report')} รายงาน</a>` : `<a class="btn gold" href="#/approve">${ic('plus')} ยื่นคำขอ</a>`}</div>
@@ -1953,11 +1974,11 @@ async function balanceView(host, empId, year) {
   const quota = bal.filter(b => b.uses_quota), other = bal.filter(b => !b.uses_quota);
   const used = id => tx.filter(t => t.leave_type_id === id && ['USAGE', 'REVERSAL'].includes(t.transaction_type)).reduce((s, t) => s - Number(t.units), 0);
   host.innerHTML = `<div class="grid g4">${quota.map(b => { const tot = Number(b.entitlement) + Number(b.carried_forward) + Number(b.adjusted); const pct = tot > 0 ? Math.min(100, (Number(b.used) / tot) * 100) : 0;
-    return `<div class="card kpi"><span class="l">${esc(b.leave_name)} ${b.paid_status ? '' : '<span class="badge">ไม่รับค่าจ้าง</span>'}</span><span class="v">${num(b.remaining, 1)} <span class="small muted">/ ${num(tot, 1)} วัน</span></span>
-     <div class="hbar" style="grid-template-columns:1fr"><span class="b"><i style="width:${pct}%"></i></span></div><span class="tiny muted">ใช้ไป ${num(b.used, 1)} · รออนุมัติ ${num(b.pending, 1)}${Number(b.carried_forward) ? ' · ยกยอด ' + num(b.carried_forward, 1) : ''}</span></div>`; }).join('')}</div>
+    return `<div class="card kpi"><span class="l">${esc(b.leave_name)} ${b.paid_status ? '' : '<span class="badge">ไม่รับค่าจ้าง</span>'}</span><span class="v" style="font-size:20px">${fLv(b.remaining)}</span><span class="small muted">จากสิทธิ์ ${fLv(tot)}</span>
+     <div class="hbar" style="grid-template-columns:1fr"><span class="b"><i style="width:${pct}%"></i></span></div><span class="tiny muted">ใช้ไป ${fLv(b.used)} · รออนุมัติ ${fLv(b.pending)}${Number(b.carried_forward) ? ' · ยกยอด ' + fLv(b.carried_forward) : ''}</span></div>`; }).join('')}</div>
    ${!quota.some(b => Number(b.entitlement) > 0) ? `<div class="notice" style="margin-top:12px">${ic('alert')}<div>ยังไม่มีการให้สิทธิการลาปี ${year + 543} — HR ต้องตั้ง “นโยบายการลา” (OI-11) แล้วกด “ให้สิทธิประจำปี”</div></div>` : ''}
-   <div class="card" style="margin-top:14px"><h3>วันลาที่ไม่ใช้โควตา (ปี ${year + 543})</h3><div class="row">${other.map(b => `<span class="badge">${esc(b.leave_name)}: ${num(used(b.leave_type_id), 1)} วัน</span>`).join('')}</div></div>
-   <div class="card" style="margin-top:14px"><h3>${ic('history')} รายการเคลื่อนไหว (Ledger)</h3>${table(tx, [{ label: 'วันที่', fmt: r => fD(r.effective_date) }, { label: 'ประเภทการลา', fmt: r => esc(nameOf('leaveTypes', r.leave_type_id, 'leave_name')) }, { label: 'รายการ', fmt: r => esc(TX_NAME[r.transaction_type]) }, { label: 'จำนวน (วัน)', num: 1, fmt: r => `<b style="color:${Number(r.units) < 0 ? 'var(--bad)' : 'var(--good)'}">${Number(r.units) > 0 ? '+' : ''}${num(r.units, 2)}</b>` }, { label: 'รายละเอียด', fmt: r => esc(r.reason || '') }], { empty: 'ยังไม่มีรายการ' })}</div>`;
+   <div class="card" style="margin-top:14px"><h3>วันลาที่ไม่ใช้โควตา (ปี ${year + 543})</h3><div class="row">${other.map(b => `<span class="badge">${esc(b.leave_name)}: ${fLv(used(b.leave_type_id))}</span>`).join('')}</div></div>
+   <div class="card" style="margin-top:14px"><h3>${ic('history')} รายการเคลื่อนไหว (Ledger)</h3>${table(tx, [{ label: 'วันที่', fmt: r => fD(r.effective_date) }, { label: 'ประเภทการลา', fmt: r => esc(nameOf('leaveTypes', r.leave_type_id, 'leave_name')) }, { label: 'รายการ', fmt: r => esc(TX_NAME[r.transaction_type]) }, { label: 'จำนวน', num: 1, fmt: r => `<b style="color:${Number(r.units) < 0 ? 'var(--bad)' : 'var(--good)'}">${Number(r.units) > 0 ? '+' : ''}${fLv(r.units)}</b>` }, { label: 'รายละเอียด', fmt: r => esc(r.reason || '') }], { empty: 'ยังไม่มีรายการ' })}</div>`;
 }
 const LV = {
   async mine(b) {
@@ -2349,7 +2370,7 @@ const dtCode = id => (S.L.docTypes.find(x => x.id === id) || {}).document_code;
 const dtName = id => (S.L.docTypes.find(x => x.id === id) || {}).document_name || '–';
 function docSummary(d) {
   const c = dtCode(d.document_type_id);
-  if (c === 'LEAVE') return `${nameOf('leaveTypes', d.leave_type_id, 'leave_name')} ${fD(d.date_from)}${d.date_to && d.date_to !== d.date_from ? ' – ' + fD(d.date_to) : ''}${d.half_day ? (d.half_day === 'AM' ? ' (ครึ่งเช้า)' : ' (ครึ่งบ่าย)') : ''}${d.units ? ` · ${num(d.units, 1)} วัน` : ''}`;
+  if (c === 'LEAVE') return `${nameOf('leaveTypes', d.leave_type_id, 'leave_name')} ${fD(d.date_from)}${d.date_to && d.date_to !== d.date_from ? ' – ' + fD(d.date_to) : ''}${d.half_day === 'AM' ? ' ครึ่งเช้า' : d.half_day === 'PM' ? ' ครึ่งบ่าย' : d.half_day === 'HOURS' ? ` เวลา ${fT(d.time_in)}–${fT(d.time_out)}` : ''}${d.units ? ` · ${fLv(d.units)}` : ''}`;
   if (c === 'SHIFT_CHANGE') return `${fD(d.date_from)}${d.date_to ? ' – ' + fD(d.date_to) : ''} → ${nameOf('shifts', d.shift_id, 'shift_name')}`;
   if (c === 'DAYOFF_CHANGE') return `วันหยุดเดิม ${fD(d.date_from)} → วันหยุดใหม่ ${fD(d.date_to)}`;
   if (c === 'TIME_ADD') return `${fD(d.date_from)} เข้า ${fT(d.time_in)} ออก ${fT(d.time_out)}`;
@@ -2379,7 +2400,7 @@ PAGES.docs = async (el, a, b) => {
 function docFields(code) {
   const sh = opts('shifts', 'id', r => `${r.shift_name} (${hm(r.start_time)}–${hm(r.end_time)})`);
   const F = {
-    LEAVE: [{ k: 'leave_type_id', label: 'ประเภทการลา', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.status === 'ACTIVE' && x.leave_code !== 'ABSENT').map(x => [x.id, x.leave_name]) }, { k: 'half_day', label: 'ลาครึ่งวัน', type: 'select', opts: [['AM', 'ครึ่งเช้า'], ['PM', 'ครึ่งบ่าย']], hint: 'ใช้ได้เมื่อลาวันเดียว' }, { k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่', type: 'date', req: true }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true }],
+    LEAVE: [{ k: 'leave_type_id', label: 'ประเภทการลา', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.status === 'ACTIVE' && x.leave_code !== 'ABSENT').map(x => [x.id, x.leave_name]) }, { k: 'half_day', label: 'รูปแบบการลา', type: 'select', opts: [['AM', 'ครึ่งวันเช้า'], ['PM', 'ครึ่งวันบ่าย'], ['HOURS', 'ลาเป็นชั่วโมง']], hint: 'ไม่เลือก = ลาเต็มวัน · ครึ่งวัน/ชั่วโมง ใช้ได้เมื่อลาวันเดียว' }, { k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่', type: 'date', req: true }, { k: 'lv_from', label: 'เวลาเริ่มลา', type: 'time' }, { k: 'lv_to', label: 'ถึงเวลา', type: 'time' }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true }],
     SHIFT_CHANGE: [{ k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่ (ถ้ามี)', type: 'date' }, { k: 'shift_id', label: 'กะที่ต้องการ', type: 'select', req: true, opts: sh }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true, req: true }],
     DAYOFF_CHANGE: [{ k: 'date_from', label: 'วันหยุดเดิม (จะมาทำงาน)', type: 'date', req: true }, { k: 'date_to', label: 'วันหยุดใหม่', type: 'date', req: true }, { k: 'shift_id', label: 'กะที่ทำในวันหยุดเดิม (ถ้าต่างจากปกติ)', type: 'select', opts: sh }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true, req: true }],
     TIME_ADD: [{ k: 'date_from', label: 'วันทำงาน', type: 'date', req: true }, { k: 'in_t', label: 'เวลาเข้า', type: 'time' }, { k: 'out_d', label: 'วันที่ออก (กะข้ามวัน)', type: 'date' }, { k: 'out_t', label: 'เวลาออก', type: 'time' }, { k: 'reason', label: 'เหตุผล (เช่น ลืมสแกน)', type: 'textarea', full: true, req: true }],
@@ -2400,24 +2421,30 @@ async function docForm(el, code, doc) {
   if (code === 'OT' && !(await rpc('ot_can_request').catch(() => false))) { el.innerHTML = pageHead('ขอค่าล่วงเวลา (OT)', '', '#/approve') + `<div class="card"><div class="notice info">${ic('alert')}<div>การขอ OT ทำได้เฉพาะระดับหัวหน้างานขึ้นไป (SUP / ASM / MGR / DIR) โดยหัวหน้าเป็นผู้ขอให้ลูกทีม — กรุณาแจ้งหัวหน้างานของท่าน</div></div></div>`; return; }
   const otTeam = code === 'OT' ? await rpc('ot_team') : [];
   const fields = docFields(code); if (code === 'OT') fields.unshift({ k: 'ot_emps', label: 'ขอ OT ให้ลูกทีม (เลือกได้หลายคน)', type: 'checks', req: true, full: true, opts: otTeam.map(x => [x.id, `${x.employee_code} ${x.name}`]) });
-  const v = doc ? { ...doc, ...(doc.request_data || {}), ot_emps: (doc.request_data || {}).employees || [], in_t: doc.time_in ? fT(doc.time_in) : '', out_t: doc.time_out ? fT(doc.time_out) : '', out_d: doc.time_out ? new Date(doc.time_out).toLocaleDateString('en-CA', { timeZone: CFG.tz }) : '' } : {};
+  const v = doc ? { ...doc, ...(doc.request_data || {}), ot_emps: (doc.request_data || {}).employees || [], in_t: doc.time_in ? fT(doc.time_in) : '', lv_from: doc.time_in ? fT(doc.time_in) : '', lv_to: doc.time_out ? fT(doc.time_out) : '', out_t: doc.time_out ? fT(doc.time_out) : '', out_d: doc.time_out ? new Date(doc.time_out).toLocaleDateString('en-CA', { timeZone: CFG.tz }) : '' } : {};
   const atts = doc ? await q(sb.from('document_attachments').select('*').eq('document_id', doc.id)) : [];
   let extra = '';
-  if (code === 'LEAVE') { const bal = await rpc('leave_balances', { p_emp: me().id, p_year: Number(todayStr().slice(0, 4)) }); extra = `<div class="row" style="margin-bottom:12px">${bal.filter(x => x.uses_quota).map(x => `<span class="badge b-info">${esc(x.leave_name)} คงเหลือ ${num(x.remaining - x.pending, 1)} วัน</span>`).join('')}</div>`; }
+  if (code === 'LEAVE') { const bal = await rpc('leave_balances', { p_emp: me().id, p_year: Number(todayStr().slice(0, 4)) }); extra = `<div class="row" style="margin-bottom:12px">${bal.filter(x => x.uses_quota).map(x => `<span class="badge b-info">${esc(x.leave_name)} คงเหลือ ${fLv(x.remaining - x.pending)}</span>`).join('')}</div>`; }
   if (code === 'FACE_PHOTO' && S.settings.face_data_enabled !== true) extra = `<div class="notice">${ic('shield')}<div>ระบบยังไม่เปิดรับข้อมูลใบหน้า (รอประเมิน PDPA ม.26 — OI-12) ส่งคำร้องไม่ได้ในขณะนี้</div></div>`;
   if (code === 'RESIGN') extra = `<div class="notice">${ic('alert')}<div>เมื่ออนุมัติครบทุกขั้น ระบบจะบันทึกวันที่ลาออกและเปลี่ยนสถานะเป็น “ลาออก” ในวันที่มีผล</div></div>`;
   el.innerHTML = pageHead((doc ? 'แก้ไข: ' : '') + t.document_name, '', doc ? '#/docs/' + doc.id : '#/docs') + `<div class="card" style="max-width:820px">${doc && doc.status === 'RETURNED' ? `<div class="notice info">${ic('alert')} เอกสารถูกส่งกลับให้แก้ไข — แก้แล้วกด “ส่งอนุมัติ” อีกครั้ง</div>` : ''}${extra}
     <div class="fgrid" id="dform">${fields.map(f => fieldHtml(f, v[f.k])).join('')}
-     <label class="f full">ไฟล์แนบ ${code === 'FACE_PHOTO' ? '(รูปถ่ายใบหน้าตรง)' : '(ถ้ามี เช่น ใบรับรองแพทย์)'}<input class="inp" type="file" id="datt" multiple ${code === 'FACE_PHOTO' ? 'accept="image/*"' : ''}></label>
+     <label class="f full">${code === 'FACE_PHOTO' ? 'รูปถ่ายใบหน้าตรง' : 'ไฟล์แนบ'}<input class="inp" type="file" id="datt" multiple ${code === 'FACE_PHOTO' ? 'accept="image/*"' : ''}></label>
      ${atts.length ? `<div class="full small">${atts.map(a => `<span class="badge">${ic('clip')} ${esc(a.file_name)}</span>`).join(' ')}</div>` : ''}</div>
     <div id="dcalc" class="small muted" style="margin-top:10px"></div>
     <div class="row" style="margin-top:16px"><span class="grow"></span><button class="btn" id="dsave">${ic('file')} บันทึกร่าง</button><button class="btn pri" id="dsub">${ic('check')} ส่งอนุมัติ</button></div></div>`;
   const calc = debounce(async () => {
     if (code !== 'LEAVE' || !$('#f_date_from')) return; const f = $('#f_date_from').value, to = $('#f_date_to').value || f; if (!f) return;
     if (!$('#f_date_to').value) $('#f_date_to').value = f;
-    try { const n = await rpc('leave_count_days', { p_emp: me().id, p_from: f, p_to: to, p_half: $('#f_half_day').value || null }); $('#dcalc').innerHTML = `จำนวนวันลา (ไม่นับวันหยุดตามตารางกะ): <b>${num(n, 1)} วัน</b>`; } catch (e) { }
+    const hrs = $('#f_half_day').value === 'HOURS';
+    if (hrs) { if ($('#f_date_to').value !== f) $('#f_date_to').value = f; const a = $('#f_lv_from').value, z = $('#f_lv_to').value; if (!a || !z) { $('#dcalc').innerHTML = 'ระบุเวลาเริ่มและเวลาสิ้นสุดการลา'; return; }
+      try { const h = await rpc('leave_hours', { p_emp: me().id, p_date: f, p_in: localTs(f, a), p_out: localTs(f, z) }); $('#dcalc').innerHTML = `จำนวนที่ลา หักเวลาพักตามกะแล้ว: <b>${fLv(h / 8)}</b>${h >= 8 ? ' — <span style="color:var(--bad)">ตั้งแต่ 8 ชม. ให้เลือกลาเต็มวัน</span>' : ''}`; } catch (e) { } return; }
+    try { const n = await rpc('leave_count_days', { p_emp: me().id, p_from: f, p_to: to, p_half: $('#f_half_day').value || null }); $('#dcalc').innerHTML = `จำนวนวันลา ไม่นับวันหยุดตามตารางกะ: <b>${fLv(n)}</b>`; } catch (e) { }
   }, 300);
-  if (code === 'LEAVE') ['#f_date_from', '#f_date_to', '#f_half_day'].forEach(s => $(s).addEventListener('change', calc));
+  if (code === 'LEAVE') {
+    const tg = () => { const on = $('#f_half_day').value === 'HOURS'; ['#f_lv_from', '#f_lv_to'].forEach(s => { $(s).closest('label').style.display = on ? '' : 'none'; }); $('#f_date_to').closest('label').style.display = on ? 'none' : ''; if (on && $('#f_date_from').value) $('#f_date_to').value = $('#f_date_from').value; };
+    ['#f_date_from', '#f_date_to', '#f_half_day', '#f_lv_from', '#f_lv_to'].forEach(s => $(s).addEventListener('change', calc)); $('#f_half_day').addEventListener('change', tg); tg();
+  }
   if (code === 'OT') ['#f_ot_from', '#f_ot_to'].forEach(s => $(s).addEventListener('change', () => { const a = $('#f_ot_from').value, b = $('#f_ot_to').value; if (a && b) { let m = (+b.slice(0, 2) * 60 + +b.slice(3)) - (+a.slice(0, 2) * 60 + +a.slice(3)); if (m < 0) m += 1440; $('#f_hours').value = (m / 60).toFixed(2); } }));
   if (code === 'TIME_ADD') $('#f_date_from').addEventListener('change', () => { if (!$('#f_out_d').value) $('#f_out_d').value = $('#f_date_from').value; });
   calc();
@@ -2429,6 +2456,8 @@ async function docForm(el, code, doc) {
     if (code === 'FACE_PHOTO') row.request_data = { consent: !!x.consent };
     if (RD_TYPES.includes(code)) row.request_data = Object.fromEntries(fields.filter(f => f.rd).map(f => [f.k, x[f.k]]));
     if (code === 'LEAVE' && x.date_to && x.date_from && x.date_to < x.date_from) throw new Error('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม');
+    if (code === 'LEAVE') { row.time_in = null; row.time_out = null;
+      if (x.half_day === 'HOURS') { if (!x.lv_from || !x.lv_to) throw new Error('กรุณาระบุเวลาเริ่มและเวลาสิ้นสุดการลา'); if (x.lv_to <= x.lv_from) throw new Error('เวลาสิ้นสุดต้องหลังเวลาเริ่ม'); row.date_to = row.date_from; row.time_in = localTs(x.date_from, x.lv_from); row.time_out = localTs(x.date_from, x.lv_to); } }
     const d = doc ? await q(sb.from('document_requests').update(row).eq('id', doc.id).select().single()) : await q(sb.from('document_requests').insert(row).select().single());
     doc = d;
     for (const f of $('#datt').files) { const p = `doc/${me().id}/${d.id}/${Date.now()}_${safeName(f.name)}`; await uploadFile(p, f); await q(sb.from('document_attachments').insert({ document_id: d.id, file_path: p, file_name: f.name, content_type: f.type })); }
