@@ -685,6 +685,11 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 /* v1.5.6 ปุ่มเลือกไฟล์ภาษาไทย */
 .thf-w{position:relative;display:flex!important;align-items:center;gap:10px;min-height:44px;padding:6px 8px!important}
 .thf-w .thf-b{flex:0 0 auto}.thf-w .thf-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:14px}
+/* v1.5.7 กระดิ่งแจ้งเตือน: กดตรงตัวเลขได้ + กล่องแจ้งเตือนไม่ล้นจอมือถือ */
+.bell .dot{pointer-events:none}
+@media (max-width:699px),(max-width:999px) and (max-height:499px){
+  .drop{position:fixed;left:12px;right:12px;top:64px;width:auto;max-width:none;max-height:calc(100dvh - 150px)}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1137,7 +1142,7 @@ function renderShell() {
   const e = me();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.5.6</div>
+      <div class="sbver">Smart Terminal HR<br>v1.5.7</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1198,7 +1203,7 @@ async function openNotif(btn) {
     await sb.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', it.dataset.id);
     d.remove(); refreshCounters();
     const ref = it.dataset.ref, rid = it.dataset.rid;
-    if (ref === 'document') location.hash = S.pendingCount ? '#/approve' : '#/docs/' + rid;
+    if (ref === 'document') location.hash = it.querySelector('.grow') && /รออนุมัติ/.test(it.textContent) && S.pendingCount ? '#/approve/tab/pending' : '#/docs/' + rid;
     else if (ref === 'task') location.hash = '#/tasks/' + rid;
     else if (ref === 'payroll_run') location.hash = '#/payroll';
     else if (ref === 'employee') location.hash = '#/employee/' + rid;
