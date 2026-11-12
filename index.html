@@ -769,19 +769,19 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   /* ฉากภาพประกอบด้านบน */
   :root:not(#_):has(.shell) .main{background:none;position:relative}
   :root:not(#_):has(.shell) .main::before{content:"";position:absolute;left:0;right:0;top:0;height:270px;z-index:0;pointer-events:none;
-    background:linear-gradient(180deg,rgba(28,43,75,.32),rgba(28,43,75,.22) 45%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center 60%/cover no-repeat}
-  :root:not(#_)[data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(28,43,75,0) 40%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center 45%/cover no-repeat}
-  :root:not(#_)[data-page=dashboard]:has(.shell) .main::before{height:560px;background:linear-gradient(180deg,rgba(28,43,75,0) 62%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center top/cover no-repeat}
-  :root:not(#_)[data-page=dashboard][data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(28,43,75,0) 62%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center top/cover no-repeat}
-  /* v1.14.2 ภาพ 7 วันถูกปิด (ผู้ใช้ไม่ชอบ) — กลับไปใช้ hr-morning/hr-night; ตั้ง --scene-d/--scene-n ต่อวันได้ที่นี่ถ้าจะใช้ภาพชุดใหม่ */
+    background:linear-gradient(180deg,rgba(12,26,56,.55) 0%,rgba(12,26,56,.30) 38%,rgba(28,43,75,.45) 70%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center 55%/cover no-repeat}
+  :root:not(#_)[data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(12,26,56,.55) 0%,rgba(12,26,56,.30) 38%,rgba(28,43,75,.45) 70%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center 55%/cover no-repeat}
+  :root:not(#_)[data-page=dashboard]:has(.shell) .main::before{height:560px;background:linear-gradient(180deg,rgba(12,26,56,.55) 0%,rgba(12,26,56,.30) 38%,rgba(28,43,75,.45) 70%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center/cover no-repeat}
+  :root:not(#_)[data-page=dashboard][data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(12,26,56,.55) 0%,rgba(12,26,56,.30) 38%,rgba(28,43,75,.45) 70%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center/cover no-repeat}
+  /* v1.15 ภาพถ่ายจากผู้ใช้ 9 ภาพ สลับรายวัน: bg-d1..d6 (กลางวัน) · bg-n1..n3 (เย็น/กลางคืน) — ตั้งค่าใน setTod() · (เดิม v1.14.2 ภาพ 7 วันถูกปิด) — กลับไปใช้ hr-morning/hr-night; ตั้ง --scene-d/--scene-n ต่อวันได้ที่นี่ถ้าจะใช้ภาพชุดใหม่ */
   :root:not(#_):has(.shell) .content{position:relative;z-index:1;padding-bottom:calc(112px + env(safe-area-inset-bottom))}
   :root:not(#_):has(.shell) .mtop{background:none;color:#fff}
   :root:not(#_):has(.shell) .pagehead,:root:not(#_):has(.shell) .pagehead h2{color:#fff;text-shadow:0 1px 8px rgba(28,43,75,.6)}
   :root:not(#_):has(.shell) .pagehead>.btn.ghost{background:rgba(28,43,75,.45);border-radius:50%;color:#fff}
   :root:not(#_):has(.shell) .pagehead .pha .btn{background:rgba(28,43,75,.55);border-color:transparent;color:#fff}
-  /* หน้าหลักตอนเช้า: ท้องฟ้าสว่าง ตัวอักษรส่วนบนเป็นสีกรมท่า */
+  /* v1.15 ใช้ภาพถ่าย + ฟิล์มกรมท่า → ตัวอักษรส่วนบนเป็นสีขาวทุกช่วงเวลา */
   :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop,:root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .btn.ghost,
-  :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline *,:root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .hero .hi{color:#1c2b4b}
+  :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline *,:root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .hero .hi{color:#ffffff}
   :root:not(#_):has(.shell) .hero{background:transparent;color:#fff}
   /* ปุ่มลัด = การ์ดเลื่อนซ้าย-ขวา ใต้ภาพประกอบ */
   :root:not(#_)[data-page=dashboard]:has(.shell) .hero .tiles{display:flex;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:12px;margin:220px -14px 0;padding:0 14px 6px;scrollbar-width:none;background:none;border:0}
@@ -844,7 +844,7 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   :root:not(#_):has(.shell) .mtop .brandline img.lgcu{width:auto;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
   :root:not(#_):has(.shell) .mtop .brandline .sep{background:rgba(255,255,255,.45);height:30px}
   :root:not(#_):has(.shell) .mtop .brandline .t1{letter-spacing:1.5px;font-weight:600}
-  :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline .sep{background:rgba(28,43,75,.35)}
+  :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline .sep{background:rgba(255,255,255,.45)}
   :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline img.lgcu{filter:none}
   :root:not(#_)[data-page=dashboard]:has(.shell) .content::after,:root:not(#_)[data-page=profile]:has(.shell) .content::after{content:"SMART TERMINAL";display:block;margin:30px auto 0;padding-top:50px;text-align:center;
     background:url(logo-copper.png) center top/auto 42px no-repeat;color:#9fb0cf;font-size:11px;letter-spacing:3px;opacity:.75}
@@ -1322,7 +1322,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.14.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.15.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1395,7 +1395,7 @@ async function openNotif(btn) {
 
 /* ===================== ROUTER ===================== */
 /* v1.11 ฉากภาพประกอบมือถือ: เช้า (06:00–16:59 เวลาไทย) / กลางคืน — อัปเดตทุก 5 นาที */
-function setTod() { let h = 12; try { h = Number(new Date().toLocaleString('en-US', { timeZone: CFG.tz, hour: 'numeric', hour12: false })) % 24; } catch (e) { } document.documentElement.dataset.tod = h >= 6 && h < 17 ? 'day' : 'night'; let w = ''; try { w = new Date().toLocaleDateString('en-US', { timeZone: CFG.tz, weekday: 'short' }).slice(0, 3).toLowerCase(); } catch (e) { } if (/^(sun|mon|tue|wed|thu|fri|sat)$/.test(w)) document.documentElement.dataset.wd = w; }
+function setTod() { let h = 12; try { h = Number(new Date().toLocaleString('en-US', { timeZone: CFG.tz, hour: 'numeric', hour12: false })) % 24; } catch (e) { } document.documentElement.dataset.tod = h >= 6 && h < 17 ? 'day' : 'night'; try { const n = Math.floor(Date.parse(new Date().toLocaleDateString('en-CA', { timeZone: CFG.tz })) / 864e5); const D = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6'], N = ['n1', 'n2', 'n3']; const st = document.documentElement.style; st.setProperty('--scene-d', `url(bg-${D[n % D.length]}.jpg)`); st.setProperty('--scene-n', `url(bg-${N[n % N.length]}.jpg)`); } catch (e) { } let w = ''; try { w = new Date().toLocaleDateString('en-US', { timeZone: CFG.tz, weekday: 'short' }).slice(0, 3).toLowerCase(); } catch (e) { } if (/^(sun|mon|tue|wed|thu|fri|sat)$/.test(w)) document.documentElement.dataset.wd = w; }
 setInterval(setTod, 300000);
 async function route() {
   const h = (location.hash || '#/dashboard').slice(2) || 'dashboard';
