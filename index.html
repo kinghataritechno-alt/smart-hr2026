@@ -729,6 +729,35 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 @media (max-width:699px),(max-width:999px) and (max-height:499px){
   .drop{position:fixed;left:12px;right:12px;top:64px;width:auto;max-width:none;max-height:calc(100dvh - 150px)}
 }
+
+/* v1.13 การ์ด HR Agent (ทุกหน้าจอ) */
+:root:not(#_):not(#__) .card:has(>.hra){padding:0;background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;overflow:visible;margin-top:40px!important;text-shadow:none}
+.hra{text-shadow:none;position:relative;border-radius:22px;padding:14px 16px 16px;color:#1c2b4b;background:linear-gradient(140deg,#e6efff 0%,#ffffff 72%);box-shadow:0 12px 30px rgba(15,29,51,.16);border:1px solid rgba(58,111,216,.18)}
+.hra.ok{background:linear-gradient(140deg,#d7f5e3 0%,#ffffff 72%);border-color:rgba(31,122,69,.22)}
+.hra.bad{background:linear-gradient(140deg,#ffe0d4 0%,#ffffff 72%);border-color:rgba(194,65,12,.25)}
+.hra-top{display:flex;gap:10px;align-items:flex-end}
+.hra-bot{width:112px;height:auto;flex:none;margin:-48px 0 -6px -8px;filter:drop-shadow(0 10px 14px rgba(28,43,75,.28))}
+.hra-body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.hra-tag{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;letter-spacing:.2px;padding:3px 10px;border-radius:999px;background:#1c2b4b;color:#fff;white-space:nowrap}
+.hra-h{font-size:21px;font-weight:700;line-height:1.25;color:#1c2b4b}
+.hra.ok .hra-h{color:#13703f}.hra.bad .hra-h{color:#c2410c}
+.hra-say{position:relative;background:#ffffff;border-radius:14px;padding:8px 12px;font-size:14px;line-height:1.45;color:#1c2b4b;box-shadow:0 4px 12px rgba(28,43,75,.08)}
+.hra-say::before{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#ffffff;border-left:0}
+.hra-time{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 12px;border-radius:12px;background:rgba(28,43,75,.06);font-size:14.5px;font-weight:600;color:#1c2b4b}
+.hra-time svg{width:18px;height:18px;flex:none}
+.hra.bad .hra-time{background:rgba(194,65,12,.10);color:#9a3412}.hra.ok .hra-time{background:rgba(31,122,69,.10);color:#13703f}
+.hra-sub{margin-top:8px;font-size:12.5px;color:#5d6b86}
+.hra-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.hra-stats>div{background:#ffffff;border-radius:14px;padding:9px 6px;text-align:center;box-shadow:0 2px 8px rgba(28,43,75,.06)}
+.hra-stats b{display:block;font-size:22px;font-weight:700;line-height:1.15;color:#1c2b4b}
+.hra-stats span{font-size:11.5px;color:#5d6b86}
+.hra-stats .warn b{color:#c2410c}
+.hra-more{margin-top:10px;font-size:13px;color:#1c2b4b}
+.hra-more summary{cursor:pointer;color:#3a6fd8;font-weight:500}
+.hra-more .row{padding:6px 0;border-top:1px solid #e6ebf3;gap:8px}
+.hra-chat{display:flex;align-items:center;gap:12px;margin:2px 0 12px;padding:10px 14px 10px 6px;border-radius:18px;background:linear-gradient(140deg,#e6efff,#ffffff 75%);color:#1c2b4b}
+.hra-chat img{width:64px;height:auto;flex:none;margin:-14px 0 -6px;filter:drop-shadow(0 6px 10px rgba(28,43,75,.25))}
+.hra-chat b{display:block;font-size:16px}.hra-chat span{font-size:12.5px;color:#5d6b86}
 /* ===================== v1.11 — ดีไซน์ E เฉพาะมือถือ (หลังเข้าสู่ระบบ): ภาพประกอบฉากสำนักงาน เช้า/เย็น + พื้นกรมท่า + จุดเน้นส้ม =====================
    ใช้เฉพาะหน้าจอมือถือ (MQ_PHONE) และเฉพาะเมื่อเข้าสู่ระบบแล้ว (.shell) — แท็บเล็ต/PC และหน้า Login ไม่เปลี่ยน
    data-tod (day/night) ตั้งจากเวลาไทย 06:00–16:59 = ฉากเช้า, นอกนั้น = ฉากกลางคืน · data-page = หน้าปัจจุบัน */
@@ -769,7 +798,7 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   :root:not(#_):has(.shell) .muted,:root:not(#_):has(.shell) .small.muted,:root:not(#_):has(.shell) .tiny.muted{color:#b3c2dc}
   :root:not(#_):has(.shell) .avatar{background:linear-gradient(135deg,#fff,#d9e3f4);color:#1c2b4b}
   /* การ์ด HR Agent = การ์ดสีขาว (ตามแบบ) */
-  :root:not(#_):has(.shell) #hragent{background:#ffffff;color:#1c2b4b;--ink:#1c2b4b;--ink-2:#5d6b86;--ink-3:#8a97ad;--panel-2:#eef2f9;--line:#e6ebf3;box-shadow:0 12px 28px rgba(0,0,0,.25)}
+  :root:not(#_):has(.shell) #hragent:not(:has(>.hra)){background:#ffffff;color:#1c2b4b;--ink:#1c2b4b;--ink-2:#5d6b86;--ink-3:#8a97ad;--panel-2:#eef2f9;--line:#e6ebf3;box-shadow:0 12px 28px rgba(0,0,0,.25)}
   :root:not(#_):has(.shell) #hragent .muted{color:#5d6b86}
   :root:not(#_):has(.shell) #hragent .agent .ab{background:#f08a3c;color:#fff}
   :root:not(#_):has(.shell) #hragent .agent.good .ab{background:linear-gradient(135deg,#34d399,#0f9f6e)}
@@ -1292,7 +1321,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.12.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.13.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1691,13 +1720,21 @@ function hrAgentVerdict(a) {
   return { k: 'good', bn: 'ok', bi: 'calok', h: 'เยี่ยมมาก! มาตรงเวลา 🎉', m: a.streak > 1 ? `ตรงเวลาต่อเนื่อง ${a.streak} วันทำงานแล้ว ขอบคุณที่เป็นแบบอย่างที่ดี` : 'ขอบคุณที่ตรงต่อเวลา พร้อมลุยงานอย่างเต็มที่', s: 'ตรงเวลาในทุกวัน สร้างความสำเร็จไปด้วยกัน!',
     d: `วันนี้เข้างาน ${fT(td.first_in)} น.` };
 }
+/* v1.13 การ์ด HR Agent ใหม่: หุ่นยนต์ HR AI (hr-agent.webp) + หัวข้อใหญ่ตามผลตรวจ + กล่องคำพูด + สถิติ 3 ช่อง */
 async function hrAgentCard(host) {
   const a = await hrAgentData(); const v = hrAgentVerdict(a);
-  host.innerHTML = v.bn ? `<div class="tiny muted" style="margin-bottom:6px">HR Agent · ตรวจเวลาเข้างาน</div><div class="agbn ${v.bn}"><span class="bi">${ic(v.bi)}</span><h4>${esc(v.h)}</h4><div class="bm">${esc(v.m)}</div><div class="bs">${esc(v.s)}</div><div class="bt">${esc(v.d)}</div></div><div><div>`
-   : `<div class="agent ${v.k}"><span class="ab">${ic(v.k === 'good' ? 'star' : v.k === 'warn' ? 'alert' : 'bot')}</span><div class="grow"><div class="tiny muted">HR Agent · ตรวจเวลาเข้างาน</div><h4>${esc(v.h)}</h4><div class="ad">${esc(v.d)}</div>
-   ${a.sys ? '' : `<div class="lstat"><span>ตรงเวลา <b>${num(a.onTime)}</b> วัน</span><span>มาสาย <b style="color:${a.late.length ? 'var(--bad)' : 'inherit'}">${num(a.late.length)}</b> ครั้ง</span><span>สายสะสม <b>${num(a.lateMin)}</b> นาที</span></div>
-   ${a.late.length ? `<details style="margin-top:8px"><summary class="small" style="cursor:pointer;color:var(--brand)">รายละเอียดการมาสายเดือนนี้</summary><div class="small" style="margin-top:6px">${a.late.map(r => `<div class="row" style="padding:4px 0;border-top:1px solid var(--line)"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</div></details>` : ''}`}
-   </div></div>`;
+  const tone = v.bn === 'ok' ? 'ok' : v.bn === 'bad' ? 'bad' : 'info';
+  const msg = v.m || v.d; const time = v.m ? v.d : '';
+  host.innerHTML = `<div class="hra ${tone}">
+   <div class="hra-top"><img class="hra-bot" src="hr-agent.webp" alt="HR Agent หุ่นยนต์ผู้ช่วย HR"><div class="hra-body">
+    <span class="hra-tag">HR Agent · ตรวจเวลาเข้างาน</span>
+    <div class="hra-h">${esc(v.h)}</div>
+    <div class="hra-say">${esc(msg)}</div></div></div>
+   ${time ? `<div class="hra-time">${ic('clock')}<span>${esc(time)}</span></div>` : ''}
+   ${v.s ? `<div class="hra-sub">${esc(v.s)}</div>` : ''}
+   ${a.sys ? '' : `<div class="hra-stats"><div><b>${num(a.onTime)}</b><span>ตรงเวลา (วัน)</span></div><div class="${a.late.length ? 'warn' : ''}"><b>${num(a.late.length)}</b><span>มาสาย (ครั้ง)</span></div><div class="${a.lateMin ? 'warn' : ''}"><b>${num(a.lateMin)}</b><span>สายสะสม (นาที)</span></div></div>
+   ${a.late.length ? `<details class="hra-more"><summary>ดูรายละเอียดการมาสายเดือนนี้</summary>${a.late.map(r => `<div class="row"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</details>` : ''}`}
+  </div>`;
 }
 
 /* ===================== ประกาศ + ผลการอนุมัติ ===================== */
@@ -1823,7 +1860,7 @@ PAGES.chat = async (el, a, b) => {
     $('#nth').onclick = () => newHrThread();
     return;
   }
-  el.innerHTML = pageHead('ChatHR', '', '', 'chat') + chatTabs('bot') + `<div class="chips2" id="cq">${CHAT_Q.map(([l, k]) => `<button data-k="${k}">${l}</button>`).join('')}</div>
+  el.innerHTML = pageHead('ChatHR', '', '', 'chat') + chatTabs('bot') + `<div class="hra-chat"><img src="hr-agent.webp" alt="HR Agent"><div><b>HR Agent</b><span>ผู้ช่วย HR อัตโนมัติ · ตอบจากข้อมูลจริงของคุณ</span></div></div><div class="chips2" id="cq">${CHAT_Q.map(([l, k]) => `<button data-k="${k}">${l}</button>`).join('')}</div>
    <div class="chatbox" id="cbx"></div>
    <form class="chatin" id="cfm"><input class="inp" id="cin" placeholder="พิมพ์คำถามถึง HR…" autocomplete="off"><button class="btn pri" aria-label="ส่ง">${ic('send')}</button></form>`;
   const bx = $('#cbx');
