@@ -809,6 +809,15 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   :root:not(#_):has(.shell) .msg.me{background:#f08a3c;color:#2a1400}
   :root:not(#_):has(.shell) .chips2 button{background:#283a60;border-color:rgba(255,255,255,.16);color:#fff}
   :root:not(#_):has(.shell) .chatin{background:transparent;bottom:calc(100px + env(safe-area-inset-bottom))}
+  /* v1.12 โลโก้ SMART TERMINAL สีทองแดง: แถบบนทุกหน้า + ตราท้ายหน้าหลัก/โปรไฟล์ */
+  :root:not(#_):has(.shell) .mtop .brandline{gap:10px}
+  :root:not(#_):has(.shell) .mtop .brandline img.lgcu{width:auto;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+  :root:not(#_):has(.shell) .mtop .brandline .sep{background:rgba(255,255,255,.45);height:30px}
+  :root:not(#_):has(.shell) .mtop .brandline .t1{letter-spacing:1.5px;font-weight:600}
+  :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline .sep{background:rgba(28,43,75,.35)}
+  :root:not(#_)[data-page=dashboard][data-tod=day]:has(.shell) .mtop .brandline img.lgcu{filter:none}
+  :root:not(#_)[data-page=dashboard]:has(.shell) .content::after,:root:not(#_)[data-page=profile]:has(.shell) .content::after{content:"SMART TERMINAL";display:block;margin:30px auto 0;padding-top:50px;text-align:center;
+    background:url(logo-copper.png) center top/auto 42px no-repeat;color:#9fb0cf;font-size:11px;letter-spacing:3px;opacity:.75}
   /* เมนูล่าง: แถบกรมท่าเข้ม มุมบนโค้ง ไอคอนอย่างเดียว — หน้าที่เปิดอยู่เป็นสีส้มพร้อมจุด */
   :root:not(#_):has(.shell) .bnav{left:0;right:0;transform:none;bottom:0;width:auto;max-width:none;gap:0;padding:6px 6px calc(8px + env(safe-area-inset-bottom));
     border-radius:30px 30px 0 0;border:0;background:#16233f;box-shadow:0 -8px 24px rgba(0,0,0,.25)}
@@ -1132,7 +1141,8 @@ const empOptsAll = () => S.dir.map(e => [e.id, `${e.employee_code} · ${e.first_
 /* ===================== LOGO ===================== */
 function logoSrc() { return `${CFG.url}/storage/v1/object/public/branding/${encodeURIComponent((S.settings.logo_path || S.company.logo_path || 'logo.png'))}?v=${S.logoV || 1}`; }
 function logoImg(cls = '') { return `<img class="${cls}" src="${esc(window.__MOCK_SB__ ? 'logo.png' : logoSrc())}" alt="SMART TERMINAL" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='logo.png';return;}this.outerHTML='<svg class=&quot;logo-fb&quot; viewBox=&quot;0 0 100 100&quot;><path d=&quot;M50 4 90 27v46L50 96 10 73V27z&quot; fill=&quot;none&quot; stroke=&quot;#f39a2e&quot; stroke-width=&quot;6&quot;/></svg>'">`; }
-const brandLine = () => `<div class="brandline">${logoImg()}<span class="sep"></span><div><div class="t1">SMART TERMINAL</div><div class="t2">${esc(S.company.company_name || 'บริษัท สมาร์ทเทอร์มินอล คอร์ปอเรชั่น จำกัด')}</div></div></div>`;
+/* v1.12: แถบบนมือถือใช้โลโก้สีทองแดง (logo-copper.png พื้นใส) — อ่านได้ทั้งบนฉากเช้าและพื้นกรมท่า */
+const brandLine = (mob) => `<div class="brandline">${mob ? '<img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL">' : logoImg()}<span class="sep"></span><div><div class="t1">SMART TERMINAL</div><div class="t2">${esc(S.company.company_name || 'บริษัท สมาร์ทเทอร์มินอล คอร์ปอเรชั่น จำกัด')}</div></div></div>`;
 
 /* ===================== THEME ===================== */
 function applyTheme() { let t = null, k = null; try { t = localStorage.getItem('hr_theme'); k = localStorage.getItem('hr_skin'); } catch (e) { } if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; document.documentElement.dataset.skin = k === 'classic' ? 'classic' : 'glass'; }
@@ -1282,7 +1292,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.11.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.12.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1293,7 +1303,7 @@ function renderShell() {
         <div class="umenu" style="position:relative"><button class="ubtn" id="ubtn">${avatar(e)}<span class="chev">${ic('down')}</span></button>
           <div class="drop hidden" id="udrop" style="width:250px"><div style="padding:12px 14px;border-bottom:1px solid var(--line)"><b>${esc(e.first_name)} ${esc(e.last_name || '')}</b><div class="tiny muted">${esc(e.employee_code)} · ${esc((S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
           <a class="it" href="#/profile">${ic('user')} ข้อมูลของฉัน</a><a class="it" href="#/payroll">${ic('money')} สลิปเงินเดือน</a><a class="it" data-act="skin">${ic('dash')} สลับธีม กระจก / คลาสสิก</a><a class="it" data-act="theme">${ic('moon')} โหมดสี</a><a class="it" data-act="viewprev">${ic('dash')} ดูตัวอย่างมุมมอง มือถือ/แท็บเล็ต</a><a class="it" data-act="logout" style="color:var(--bad)">${ic('logout')} ออกจากระบบ</a></div></div></header>
-      <header class="mtop">${brandLine()}<span class="grow"></span><div class="bell" style="position:relative"><button class="btn ghost icon" data-act="notif" aria-label="การแจ้งเตือน">${ic('bell')}</button><span class="dot hidden" id="ndot2"></span></div><a class="btn ghost icon" href="#/profile" aria-label="โปรไฟล์">${ic('user')}</a></header>
+      <header class="mtop">${brandLine(true)}<span class="grow"></span><div class="bell" style="position:relative"><button class="btn ghost icon" data-act="notif" aria-label="การแจ้งเตือน">${ic('bell')}</button><span class="dot hidden" id="ndot2"></span></div><a class="btn ghost icon" href="#/profile" aria-label="โปรไฟล์">${ic('user')}</a></header>
       <main class="content" id="page"></main>
     </div></div>
     <nav class="bnav" id="bnav"></nav>`;
