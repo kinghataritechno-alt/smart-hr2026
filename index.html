@@ -1321,7 +1321,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.13.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.13.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -3000,7 +3000,7 @@ async function docForm(el, code, doc) {
   $('#dsave').onclick = async () => { try { const d = await save(); toast('บันทึกร่างแล้ว', 'good'); location.hash = '#/docs/' + d.id; } catch (e) { toast(errMsg(e), 'bad'); } };
   $('#dsub').onclick = async ev => {
     ev.target.disabled = true;
-    try { const d = await save(); await rpc('doc_submit', { p_doc: d.id }); toast('ส่งขออนุมัติแล้ว', 'good'); location.hash = '#/dashboard'; refreshCounters(); }
+    try { const d = await save(); const r = await rpc('doc_submit', { p_doc: d.id }); toast(r && r.auto ? 'บันทึกแล้ว — กรรมการบริษัทไม่ต้องขออนุมัติ' : 'ส่งขออนุมัติแล้ว', 'good'); location.hash = '#/dashboard'; refreshCounters(); }
     catch (e) { toast(errMsg(e), 'bad'); ev.target.disabled = false; if (doc && !location.hash.includes(doc.id)) history.replaceState(null, '', '#/docs/' + doc.id + '/edit'); }
   };
 }
@@ -3030,7 +3030,7 @@ async function docDetail(el, id, opt = {}) {
         return `<div class="${st}"><b>ขั้นที่ ${i + 1} · ${esc(s.name)}</b><div class="small muted">${(s.approvers || []).map(a => esc(empName(a))).slice(0, 4).join(', ')}${(s.approvers || []).length > 4 ? ` และอีก ${(s.approvers || []).length - 4} คน` : ''}${s.backup ? ` · สำรอง: ${esc(empName(s.backup))}` : ''}</div>${done ? `<div class="small">${esc(ACT[done.action])} โดย ${esc(empName(done.actor_employee_id))}${done.acting_as_backup ? ' (สำรอง)' : ''} · ${fDT(done.action_at)}${done.comments ? `<div class="muted">“${esc(done.comments)}”</div>` : ''}</div>` : st === 'cur' ? '<div class="small" style="color:var(--warn)">รอดำเนินการ</div>' : ''}</div>`; }).join('')}</div>` : '<div class="muted small">ยังไม่ได้ส่งอนุมัติ</div>'}
      <h3 style="margin-top:16px">${ic('history')} ประวัติการดำเนินการ</h3><div class="tl">${acts.map(a => `<div class="${a.action === 'APPROVE' ? 'ok' : ['REJECT', 'CANCEL'].includes(a.action) ? 'no' : ''}"><b>${esc(ACT[a.action] || a.action)}</b>${a.step_order ? ` <span class="tiny muted">ขั้นที่ ${a.step_order}</span>` : ''}<div class="small muted">${esc(empName(a.actor_employee_id))} · ${fDT(a.action_at)}</div>${a.comments ? `<div class="small">“${esc(a.comments)}”</div>` : ''}</div>`).join('') || '<div class="muted small">–</div>'}</div></div></div>`;
   on(el, 'click', '[data-dl]', async (e, b) => { const u = await guard(() => signedUrl(b.dataset.dl)); window.open(u, '_blank', 'noopener'); });
-  if ($('#xsub')) $('#xsub').onclick = async () => { await guard(() => rpc('doc_submit', { p_doc: d.id }), 'ส่งอนุมัติแล้ว'); docDetail(el, id, opt); };
+  if ($('#xsub')) $('#xsub').onclick = async () => { const r = await guard(() => rpc('doc_submit', { p_doc: d.id })); toast(r && r.auto ? 'บันทึกแล้ว — กรรมการบริษัทไม่ต้องขออนุมัติ' : 'ส่งอนุมัติแล้ว', 'good'); docDetail(el, id, opt); };
   if ($('#xdel')) $('#xdel').onclick = async () => { if (await confirmDlg('ลบร่างเอกสารนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from('document_requests').delete().eq('id', d.id)), 'ลบแล้ว'); location.hash = '#/docs'; } };
   if ($('#xcan')) $('#xcan').onclick = async () => { const r = await confirmDlg(d.status === 'APPROVED' ? 'ยกเลิกเอกสารที่อนุมัติแล้ว — ระบบจะกลับรายการที่เกี่ยวข้อง (เช่น คืนวันลา)' : 'ยกเลิกเอกสารนี้?', { danger: true, okText: 'ยกเลิกเอกสาร', input: { label: 'เหตุผล', required: true } }); if (r) { await guard(() => rpc('doc_cancel', { p_doc: d.id, p_reason: r }), 'ยกเลิกแล้ว'); docDetail(el, id, opt); } };
   on(el, 'click', '[data-a]', async (e, b) => {
