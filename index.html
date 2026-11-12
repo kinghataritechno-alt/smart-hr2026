@@ -1410,7 +1410,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.16.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.16.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1731,14 +1731,15 @@ PAGES.dashboard = async el => {
   const kp = (v, l, i, c, href) => `<a class="card kpi" ${href ? `href="${href}"` : ''} style="color:inherit"><span class="ic" style="background:${c}">${ic(i)}</span><span class="v">${v}</span><span class="l">${l}</span></a>`;
   const bars = (list, max) => (list || []).slice(0, 12).map(x => `<div class="hbar"><span class="t" title="${esc(x.name)}">${esc(x.name)}</span><span class="b"><i style="width:${Math.max(3, (x.n / (max || 1)) * 100)}%"></i></span><span class="n">${num(x.n)}</span></div>`).join('') || emptyBox('ยังไม่มีข้อมูล');
   const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
+  const bod = e.position_name === 'กรรมการบริษัท'; /* v1.16.1 กรรมการบริษัทไม่ใช้การ์ดเวลาเข้า-ออก */
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
    <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
-  <div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
+  ${bod ? '' : `<div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
     <div><div class="l"><span style="color:var(--bad)">${ic('out')}</span>เวลาออกงาน</div><div class="v">${fT(tdy.last_out)}</div></div>
-   </div></div>
+   </div></div>`}
   <div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div>
   <div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>
   ${simple ? `<div class="grid g2" style="margin-top:14px">
@@ -1777,7 +1778,7 @@ PAGES.dashboard = async el => {
     { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }], { empty: 'ยังไม่มีงวดที่อนุมัติ' })}</div>`;
   html += `<a class="svc" href="#/docs"><div><b>HR Services</b>บริการ HR สำหรับพนักงาน — ยื่นลา ขอ OT ขอปรับเวลา</div><div class="chips"><span>${ic('file')}</span><span>${ic('users')}</span><span>${ic('cal')}</span></div></a>`;
   el.innerHTML = html;
-  hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+  hrAgentCard($('#hragent'), m.pending_approvals || 0).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
   annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
 };
 
@@ -1796,7 +1797,7 @@ async function hrAgentData() {
   return { today, rows, late, lateMin: late.reduce((a, r) => a + (r.late_minutes || 0), 0), onTime: judged.length - late.length, streak };
 }
 function hrAgentVerdict(a) {
-  if (a.bod) return { k: '', h: 'สวัสดีครับ ท่านกรรมการ', d: 'กรรมการบริษัทไม่ต้องตรวจเวลาเข้างาน — เอกสารที่รอท่านอนุมัติอยู่ที่เมนู อนุมัติเอกสาร' };
+  if (a.bod) return { k: '', h: 'สวัสดีครับ ท่านกรรมการ', d: 'กรรมการบริษัทไม่ต้องบันทึกเวลาเข้า-ออก ผมจะคอยแจ้งเอกสารที่รอท่านอนุมัติให้ครับ' };
   if (a.sys) return { k: '', h: 'HR Agent', d: 'บัญชีระบบไม่มีข้อมูลเวลาเข้างาน' };
   const td = a.today;
   if (td && td.leave_type_code) return { k: '', h: 'วันนี้คุณลางาน', d: 'ขอให้พักผ่อนให้เต็มที่ แล้วพบกันวันทำงานถัดไปครับ' };
@@ -1812,7 +1813,7 @@ function hrAgentVerdict(a) {
     d: `วันนี้เข้างาน ${fT(td.first_in)} น.` };
 }
 /* v1.13 การ์ด HR Agent ใหม่: หุ่นยนต์ HR AI (hr-agent.webp) + หัวข้อใหญ่ตามผลตรวจ + กล่องคำพูด + สถิติ 3 ช่อง */
-async function hrAgentCard(host) {
+async function hrAgentCard(host, pend = 0) {
   const a = await hrAgentData(); const v = hrAgentVerdict(a);
   const tone = v.bn === 'ok' ? 'ok' : v.bn === 'bad' ? 'bad' : 'info';
   const msg = v.m || v.d; const time = v.m ? v.d : '';
@@ -1822,6 +1823,7 @@ async function hrAgentCard(host) {
     <div class="hra-h">${esc(v.h)}</div>
     <div class="hra-say">${esc(msg)}</div></div></div>
    ${time ? `<div class="hra-time">${ic('clock')}<span>${esc(time)}</span></div>` : ''}
+   ${a.bod ? `<a class="hra-time" href="#/approve/tab/pending" style="text-decoration:none">${ic('approve')}<span class="grow">${pend ? `มีเอกสารรอท่านอนุมัติ ${num(pend)} รายการ` : 'ไม่มีเอกสารรอท่านอนุมัติ'}</span>${ic('chev')}</a>` : ''}
    ${v.s ? `<div class="hra-sub">${esc(v.s)}</div>` : ''}
    ${a.sys || a.bod ? '' : `<div class="hra-stats"><div><b>${num(a.onTime)}</b><span>ตรงเวลา (วัน)</span></div><div class="${a.late.length ? 'warn' : ''}"><b>${num(a.late.length)}</b><span>มาสาย (ครั้ง)</span></div><div class="${a.lateMin ? 'warn' : ''}"><b>${num(a.lateMin)}</b><span>สายสะสม (นาที)</span></div></div>
    ${a.late.length ? `<details class="hra-more"><summary>ดูรายละเอียดการมาสายเดือนนี้</summary>${a.late.map(r => `<div class="row"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</details>` : ''}`}
@@ -2120,7 +2122,7 @@ async function dashDesktop(el) {
   if (s.payroll && s.payroll.length) html += panel('wallet', 'สรุปค่าใช้จ่ายเงินเดือน', table(s.payroll, [{ label: 'งวด', fmt: r => esc(r.period_name) }, { label: 'จำนวนคน', num: 1, fmt: r => num(r.headcount) }, { label: 'รายได้รวม', num: 1, fmt: r => money(r.gross) }, { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }]), '', 'wide');
   el.innerHTML = `<div class="desk">${html}</div>`;
   if (can.hr()) aaLoad('#adagent', true);
-  if ($('#hragent')) hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+  if ($('#hragent')) hrAgentCard($('#hragent'), (s.me || {}).pending_approvals || 0).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
   on($('#rseg'), 'click', 'button', async (e, b) => { $$('#rseg button').forEach(x => x.classList.toggle('on', x === b)); const c = $('#bch'); c.style.opacity = .5;
     try { const r = await rpc('dash_desktop', { p_range: b.dataset.r }); c.innerHTML = barChart(r.series || []); } catch (er) { toast(errMsg(er), 'bad'); } c.style.opacity = 1; });
 }
