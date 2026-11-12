@@ -769,10 +769,18 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   /* ฉากภาพประกอบด้านบน */
   :root:not(#_):has(.shell) .main{background:none;position:relative}
   :root:not(#_):has(.shell) .main::before{content:"";position:absolute;left:0;right:0;top:0;height:270px;z-index:0;pointer-events:none;
-    background:linear-gradient(180deg,rgba(28,43,75,.32),rgba(28,43,75,.22) 45%,#1c2b4b 100%),url(hr-morning.svg) center 60%/cover no-repeat}
-  :root:not(#_)[data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(28,43,75,0) 40%,#1c2b4b 100%),url(hr-night.svg) center 45%/cover no-repeat}
-  :root:not(#_)[data-page=dashboard]:has(.shell) .main::before{height:560px;background:linear-gradient(180deg,rgba(28,43,75,0) 62%,#1c2b4b 100%),url(hr-morning.svg) center top/cover no-repeat}
-  :root:not(#_)[data-page=dashboard][data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(28,43,75,0) 62%,#1c2b4b 100%),url(hr-night.svg) center top/cover no-repeat}
+    background:linear-gradient(180deg,rgba(28,43,75,.32),rgba(28,43,75,.22) 45%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center 60%/cover no-repeat}
+  :root:not(#_)[data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(28,43,75,0) 40%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center 45%/cover no-repeat}
+  :root:not(#_)[data-page=dashboard]:has(.shell) .main::before{height:560px;background:linear-gradient(180deg,rgba(28,43,75,0) 62%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center top/cover no-repeat}
+  :root:not(#_)[data-page=dashboard][data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(28,43,75,0) 62%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center top/cover no-repeat}
+  /* v1.14 ภาพพื้นหลัง 7 วันตามสีประจำวัน (อา แดง · จ เหลือง · อ ชมพู · พ เขียว · พฤ ส้ม · ศ ฟ้า · ส ม่วง) — แต่ละวันมีกลางวัน/กลางคืน */
+  :root[data-wd=sun]{--scene-d:url(hr-sun-day.svg);--scene-n:url(hr-sun-night.svg)}
+  :root[data-wd=mon]{--scene-d:url(hr-mon-day.svg);--scene-n:url(hr-mon-night.svg)}
+  :root[data-wd=tue]{--scene-d:url(hr-tue-day.svg);--scene-n:url(hr-tue-night.svg)}
+  :root[data-wd=wed]{--scene-d:url(hr-wed-day.svg);--scene-n:url(hr-wed-night.svg)}
+  :root[data-wd=thu]{--scene-d:url(hr-thu-day.svg);--scene-n:url(hr-thu-night.svg)}
+  :root[data-wd=fri]{--scene-d:url(hr-fri-day.svg);--scene-n:url(hr-fri-night.svg)}
+  :root[data-wd=sat]{--scene-d:url(hr-sat-day.svg);--scene-n:url(hr-sat-night.svg)}
   :root:not(#_):has(.shell) .content{position:relative;z-index:1;padding-bottom:calc(112px + env(safe-area-inset-bottom))}
   :root:not(#_):has(.shell) .mtop{background:none;color:#fff}
   :root:not(#_):has(.shell) .pagehead,:root:not(#_):has(.shell) .pagehead h2{color:#fff;text-shadow:0 1px 8px rgba(28,43,75,.6)}
@@ -1321,7 +1329,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.13.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.14.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1394,7 +1402,7 @@ async function openNotif(btn) {
 
 /* ===================== ROUTER ===================== */
 /* v1.11 ฉากภาพประกอบมือถือ: เช้า (06:00–16:59 เวลาไทย) / กลางคืน — อัปเดตทุก 5 นาที */
-function setTod() { let h = 12; try { h = Number(new Date().toLocaleString('en-US', { timeZone: CFG.tz, hour: 'numeric', hour12: false })) % 24; } catch (e) { } document.documentElement.dataset.tod = h >= 6 && h < 17 ? 'day' : 'night'; }
+function setTod() { let h = 12; try { h = Number(new Date().toLocaleString('en-US', { timeZone: CFG.tz, hour: 'numeric', hour12: false })) % 24; } catch (e) { } document.documentElement.dataset.tod = h >= 6 && h < 17 ? 'day' : 'night'; let w = ''; try { w = new Date().toLocaleDateString('en-US', { timeZone: CFG.tz, weekday: 'short' }).slice(0, 3).toLowerCase(); } catch (e) { } if (/^(sun|mon|tue|wed|thu|fri|sat)$/.test(w)) document.documentElement.dataset.wd = w; }
 setInterval(setTod, 300000);
 async function route() {
   const h = (location.hash || '#/dashboard').slice(2) || 'dashboard';
