@@ -863,6 +863,89 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   :root:not(#_):has(.shell) .bnav a.on::after{content:"";width:5px;height:5px;border-radius:50%;background:#f08a3c}
   :root:not(#_):has(.shell) .bnav a .cnt{top:6px;left:calc(50% + 6px);right:auto}
 }
+/* ===================== v1.16 — ดีไซน์ E สำหรับแท็บเล็ตและ PC (หลังเข้าสู่ระบบ) =====================
+   ภาพถ่ายสลับรายวันด้านบน + ฟิล์มกรมท่า · เมนูซ้ายกรมท่าเข้ม + โลโก้ทองแดง · การ์ดกรมท่า · จุดเน้นส้ม — แทนธีมกระจก/คลาสสิกเดิม */
+@media (min-width:1000px), (min-width:700px) and (min-height:500px){
+  :root:not(#_):not(#__):has(.shell){--bg:#1c2b4b;--panel:#283a60;--panel-2:#22324f;--ink:#ffffff;--ink-2:#c9d6ee;--ink-3:#9fb0cf;--line:rgba(255,255,255,.10);
+    --brand:#f08a3c;--brand-2:#f5a160;--brand-3:rgba(240,138,60,.16);--gold:#f08a3c;--shadow:0 8px 22px rgba(0,0,0,.18);
+    --good:#7ee2ab;--good-bg:rgba(34,197,94,.20);--warn:#fcd38a;--warn-bg:rgba(245,158,11,.22);--bad:#fca5a5;--bad-bg:rgba(239,68,68,.22);--info:#a8d1ff;--info-bg:rgba(56,140,240,.24);color-scheme:dark}
+  :root:not(#_):not(#__):has(.shell) body{background:#1c2b4b;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .shell{background:linear-gradient(90deg,#16233f var(--sbw),transparent var(--sbw))}
+  /* เมนูซ้าย */
+  :root:not(#_):not(#__):has(.shell) .sb{background:#16233f;margin:0;top:0;height:100dvh;border-radius:0;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}
+  :root:not(#_):not(#__):has(.shell) .sb::after{display:none}
+  :root:not(#_):not(#__):has(.shell) .sblogo{border:0;border-image:none}
+  :root:not(#_):not(#__):has(.shell) .sblogo img.lgcu{width:auto;height:84px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+  :root:not(#_):not(#__):has(.shell) .sblogo span{color:#f5a160;letter-spacing:2.5px}
+  :root:not(#_):not(#__):has(.shell) .sb a.nav{color:#c9d6ee;border:0;background:none;box-shadow:none}
+  :root:not(#_):not(#__):has(.shell) .sb a.nav:hover{background:rgba(255,255,255,.06);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .sb a.nav.on{background:rgba(240,138,60,.16);color:#f5a160;box-shadow:none;text-shadow:none}
+  :root:not(#_):not(#__):has(.shell) .sb a.nav .cnt{background:#ef4444;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .sbver{color:#8597b8}
+  /* ภาพถ่ายด้านบน */
+  :root:not(#_):not(#__):has(.shell) .main{background:none;position:relative}
+  :root:not(#_):not(#__):has(.shell) .main::before{content:"";position:absolute;left:0;right:0;top:0;height:300px;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(12,26,56,.55) 0%,rgba(12,26,56,.30) 40%,rgba(28,43,75,.5) 72%,#1c2b4b 100%),var(--scene-d,url(hr-morning.svg)) center 55%/cover no-repeat}
+  :root:not(#_):not(#__)[data-tod=night]:has(.shell) .main::before{background:linear-gradient(180deg,rgba(12,26,56,.55) 0%,rgba(12,26,56,.30) 40%,rgba(28,43,75,.5) 72%,#1c2b4b 100%),var(--scene-n,url(hr-night.svg)) center 55%/cover no-repeat}
+  :root:not(#_):not(#__)[data-page=dashboard]:has(.shell) .main::before{height:380px}
+  :root:not(#_):not(#__):has(.shell) .content{position:relative;z-index:1}
+  :root:not(#_):not(#__):has(.shell) .top{position:sticky;z-index:20;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:0;margin:0;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .ttl b,:root:not(#_):not(#__):has(.shell) .ttl>span,:root:not(#_):not(#__):has(.shell) .top .btn.ghost,:root:not(#_):not(#__):has(.shell) .top button svg{color:#fff}
+  :root:not(#_):not(#__):has(.shell) .search input{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .tdate{border-color:rgba(255,255,255,.25);color:#fff;background:rgba(255,255,255,.10)}
+  :root:not(#_):not(#__):has(.shell) .tdate svg{color:#f5a160}
+  :root:not(#_):not(#__):has(.shell) .ubtn .chev{border-color:rgba(255,255,255,.6);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .pagehead,:root:not(#_):not(#__):has(.shell) .pagehead h2,:root:not(#_):not(#__):has(.shell) .dhead h2{color:#fff;text-shadow:0 1px 8px rgba(12,26,56,.55)}
+  :root:not(#_):not(#__):has(.shell) .dhead .muted{color:#dbe5f5}
+  /* การ์ด/แผง */
+  :root:not(#_):not(#__):has(.shell) .card,:root:not(#_):not(#__):has(.shell) .panel,:root:not(#_):not(#__):has(.shell) .kcard,:root:not(#_):not(#__):has(.shell) .tbl-wrap,
+  :root:not(#_):not(#__):has(.shell) .gtabs,:root:not(#_):not(#__):has(.shell) .org-node,:root:not(#_):not(#__):has(.shell) .os-div{
+    background:#283a60;border:1px solid rgba(255,255,255,.06);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 10px 26px rgba(0,8,30,.22);color:#fff;text-shadow:none}
+  :root:not(#_):not(#__):has(.shell) .card,:root:not(#_):not(#__):has(.shell) .panel,:root:not(#_):not(#__):has(.shell) .kcard{border-radius:18px}
+  :root:not(#_):not(#__):has(.shell) .panel>header{background:transparent;border-bottom:1px solid rgba(255,255,255,.08)}
+  :root:not(#_):not(#__):has(.shell) .kic{background:#3a6fd8;border:0;box-shadow:none;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .kwm{color:rgba(255,255,255,.08)}
+  :root:not(#_):not(#__):has(.shell) .kv,:root:not(#_):not(#__):has(.shell) .blist .brow b{color:#fff}
+  :root:not(#_):not(#__):has(.shell) .kl,:root:not(#_):not(#__):has(.shell) .kd,:root:not(#_):not(#__):has(.shell) .muted,:root:not(#_):not(#__):has(.shell) .small.muted,:root:not(#_):not(#__):has(.shell) .tiny.muted{color:#b3c2dc}
+  :root:not(#_):not(#__):has(.shell) .bic{color:#f5a160!important}
+  :root:not(#_):not(#__):has(.shell) .hbar .b i{background:linear-gradient(90deg,#f08a3c,#f5a160)}
+  :root:not(#_):not(#__):has(.shell) .avatar{background:linear-gradient(135deg,#fff,#d9e3f4);color:#1c2b4b}
+  :root:not(#_):not(#__):has(.shell) a{color:#f5a160}
+  :root:not(#_):not(#__):has(.shell) .sb a,:root:not(#_):not(#__):has(.shell) .btn,:root:not(#_):not(#__):has(.shell) .blist .brow,:root:not(#_):not(#__):has(.shell) .ritem,:root:not(#_):not(#__):has(.shell) .rtile,:root:not(#_):not(#__):has(.shell) .qtile,:root:not(#_):not(#__):has(.shell) .drop .it,:root:not(#_):not(#__):has(.shell) .card a.kpi{color:#fff}
+  :root:not(#_):not(#__):has(.shell) .sb a.nav.on{color:#f5a160}
+  /* ปุ่ม ช่องกรอก ตาราง แท็บ */
+  :root:not(#_):not(#__):has(.shell) .btn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .btn:hover{background:rgba(255,255,255,.14)}
+  :root:not(#_):not(#__):has(.shell) .btn.pri,:root:not(#_):not(#__):has(.shell) .btn.gold{background:#f08a3c;border-color:transparent;color:#2a1400;box-shadow:0 8px 18px rgba(240,138,60,.28)}
+  :root:not(#_):not(#__):has(.shell) .btn.bad{background:#d9534f;border-color:transparent;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .btn.ghost{background:transparent;border-color:transparent}
+  :root:not(#_):not(#__):has(.shell) .inp,:root:not(#_):not(#__):has(.shell) select.inp,:root:not(#_):not(#__):has(.shell) textarea.inp{background:#1c2b4b;border-color:rgba(255,255,255,.16);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .inp::placeholder{color:#8597b8}
+  :root:not(#_):not(#__):has(.shell) option,:root:not(#_):not(#__):has(.shell) optgroup{background:#1c2b4b;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .tbl th,:root:not(#_):not(#__):has(.shell) .atbl th{background:#22324f;color:#c9d6ee}
+  :root:not(#_):not(#__):has(.shell) .tbl td,:root:not(#_):not(#__):has(.shell) .atbl td{color:#fff}
+  :root:not(#_):not(#__):has(.shell) .tbl tr.click:hover td{background:rgba(255,255,255,.05)}
+  :root:not(#_):not(#__):has(.shell) .tab.on{color:#f5a160;border-color:#f08a3c}
+  :root:not(#_):not(#__):has(.shell) .tabs{background:#283a60;border-color:transparent;border-radius:14px;padding:0 6px}
+  :root:not(#_):not(#__):has(.shell) .seg,:root:not(#_):not(#__):has(.shell) .gseg{background:#22324f;border-color:transparent}
+  :root:not(#_):not(#__):has(.shell) .seg button,:root:not(#_):not(#__):has(.shell) .gseg button{color:#c9d6ee}
+  :root:not(#_):not(#__):has(.shell) .seg button.on,:root:not(#_):not(#__):has(.shell) .seg a.btn.on,:root:not(#_):not(#__):has(.shell) .gseg button.on{background:#f08a3c;color:#2a1400;box-shadow:none}
+  :root:not(#_):not(#__):has(.shell) .pillbtn{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.2)}
+  :root:not(#_):not(#__):has(.shell) .notice{background:rgba(245,158,11,.18);color:#ffe2a8;border:1px solid rgba(245,158,11,.35)}
+  :root:not(#_):not(#__):has(.shell) .notice.info{background:rgba(58,111,216,.22);color:#d6e4ff;border-color:rgba(120,160,255,.4)}
+  :root:not(#_):not(#__):has(.shell) .notice.bad{background:rgba(239,68,68,.18);color:#ffd0d0;border-color:rgba(239,68,68,.4)}
+  :root:not(#_):not(#__):has(.shell) .notice.good{background:rgba(34,197,94,.16);color:#c9f7da;border-color:rgba(34,197,94,.4)}
+  /* หน้าต่างลอย */
+  :root:not(#_):not(#__):has(.shell) .modal,:root:not(#_):not(#__):has(.shell) .drop,:root:not(#_):not(#__):has(.shell) .search .res{background:#1f3054;border:1px solid rgba(255,255,255,.12);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .modal .card,:root:not(#_):not(#__):has(.shell) .modal .tbl-wrap{box-shadow:none}
+  :root:not(#_):not(#__):has(.shell) .drop .it.unread{background:rgba(240,138,60,.12)}
+  /* ChatHR */
+  :root:not(#_):not(#__):has(.shell) .msg.bot{background:#283a60;border-color:transparent;color:#fff}
+  :root:not(#_):not(#__):has(.shell) .msg.me{background:#f08a3c;color:#2a1400}
+  :root:not(#_):not(#__):has(.shell) .chips2 button{background:#283a60;border-color:rgba(255,255,255,.16);color:#fff}
+  :root:not(#_):not(#__):has(.shell) .hra{background:linear-gradient(150deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.07) 60%),rgba(28,43,75,.55)}
+  :root:not(#_):not(#__):has(.shell) #hragent{margin:44px 0 16px!important}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1326,8 +1409,8 @@ function renderShell() {
   const e = me();
   setTod();
   document.body.innerHTML = `<div class="shell">
-    <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.15.1</div>
+    <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
+      <div class="sbver">Smart Terminal HR<br>v1.16.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -2020,6 +2103,7 @@ async function dashDesktop(el) {
   const scopeTxt = d.scope === 'org' ? 'ทั้งองค์กร' : d.scope === 'team' ? 'ทีมของฉัน' : 'ของฉัน';
   let html = `<div class="dhead"><div><h2>แดชบอร์ด</h2><span class="muted small">ภาพรวม${scopeTxt} · อัปเดต ${fT(new Date().toISOString())} น.</span></div><span class="grow"></span>${d.scope !== 'self' ? `<a class="btn gold" href="#/reports">${ic('report')} รายงาน</a>` : `<a class="btn gold" href="#/approve">${ic('plus')} ยื่นคำขอ</a>`}</div>
    <div class="kgrid">${(d.kpis || []).map(kc).join('')}</div>
+   ${me().is_system ? '' : `<div class="card" id="hragent"><div class="spin"></div></div>`}
    ${can.hr() ? `<div class="card aa" id="adagent" style="margin:16px 0"><div class="spin"></div></div>` : ''}
    <div class="dgrid">
     ${panel('chart', 'สถิติการเข้างาน', `<div id="bch">${barChart(d.series || [])}</div>`, `<div class="gseg" id="rseg"><button class="on" data-r="month">เดือนนี้</button><button data-r="3m">3 เดือน</button><button data-r="6m">6 เดือน</button><button data-r="1y">1 ปี</button></div>`)}
@@ -2036,6 +2120,7 @@ async function dashDesktop(el) {
   if (s.payroll && s.payroll.length) html += panel('wallet', 'สรุปค่าใช้จ่ายเงินเดือน', table(s.payroll, [{ label: 'งวด', fmt: r => esc(r.period_name) }, { label: 'จำนวนคน', num: 1, fmt: r => num(r.headcount) }, { label: 'รายได้รวม', num: 1, fmt: r => money(r.gross) }, { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }]), '', 'wide');
   el.innerHTML = `<div class="desk">${html}</div>`;
   if (can.hr()) aaLoad('#adagent', true);
+  if ($('#hragent')) hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
   on($('#rseg'), 'click', 'button', async (e, b) => { $$('#rseg button').forEach(x => x.classList.toggle('on', x === b)); const c = $('#bch'); c.style.opacity = .5;
     try { const r = await rpc('dash_desktop', { p_range: b.dataset.r }); c.innerHTML = barChart(r.series || []); } catch (er) { toast(errMsg(er), 'bad'); } c.style.opacity = 1; });
 }
