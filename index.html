@@ -6,9 +6,9 @@
 <title>SMART TERMINAL HR</title>
 <meta name="description" content="HR Application — บริษัท สมาร์ทเทอร์มินอล คอร์ปอเรชั่น จำกัด">
 <meta name="theme-color" content="#0a3489">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json?v=2">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="app-icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/Kanit-Regular.woff" as="font" type="font/woff" crossorigin>
 <style>@font-face{font-family:'Kanit';font-style:normal;font-weight:300;font-display:swap;src:url('fonts/Kanit-Light.woff') format('woff')}
 @font-face{font-family:'Kanit';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Kanit-Regular.woff') format('woff')}
@@ -1329,7 +1329,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.14.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.14.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
