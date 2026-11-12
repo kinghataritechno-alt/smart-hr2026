@@ -1410,7 +1410,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.16.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.16.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1797,7 +1797,12 @@ async function hrAgentData() {
   return { today, rows, late, lateMin: late.reduce((a, r) => a + (r.late_minutes || 0), 0), onTime: judged.length - late.length, streak };
 }
 function hrAgentVerdict(a) {
-  if (a.bod) return { k: '', h: 'สวัสดีครับ ท่านกรรมการ', d: 'กรรมการบริษัทไม่ต้องบันทึกเวลาเข้า-ออก ผมจะคอยแจ้งเอกสารที่รอท่านอนุมัติให้ครับ' };
+  if (a.bod) { /* v1.16.2 ข้อความทักทายกรรมการตามช่วงเวลา สลับข้อความรายวัน */
+    const hr = +new Date().toLocaleString('en-GB', { timeZone: CFG.tz, hour: '2-digit', hourCycle: 'h23' }); const dn = Math.floor(Date.now() / 864e5);
+    const G = hr < 12 ? ['สวัสดีตอนเช้าครับ', ['ขอให้วันนี้เป็นวันที่สดใส และงานราบรื่นทุกเรื่องครับ', 'เริ่มต้นวันใหม่อย่างมีพลัง ขอให้เป็นวันที่ดีครับ', 'ขอบคุณที่นำทีม SMART TERMINAL ด้วยกันครับ']]
+      : hr < 17 ? ['สวัสดีตอนบ่ายครับ', ['ขอให้ช่วงบ่ายนี้ทุกอย่างเป็นไปด้วยดีครับ', 'อย่าลืมพักดื่มน้ำ ดูแลสุขภาพด้วยนะครับ', 'ขอให้ทุกการตัดสินใจวันนี้ราบรื่นครับ']]
+      : ['สวัสดีตอนเย็นครับ', ['ขอบคุณสำหรับอีกวันที่ทุ่มเทครับ พักผ่อนให้เต็มที่นะครับ', 'ขอให้ค่ำคืนนี้ได้พักผ่อนอย่างมีความสุขครับ', 'เหนื่อยมาทั้งวันแล้ว ขอให้ได้พักผ่อนเต็มที่ครับ']];
+    return { k: '', h: `${G[0]} ท่านกรรมการ`, d: G[1][dn % G[1].length] }; }
   if (a.sys) return { k: '', h: 'HR Agent', d: 'บัญชีระบบไม่มีข้อมูลเวลาเข้างาน' };
   const td = a.today;
   if (td && td.leave_type_code) return { k: '', h: 'วันนี้คุณลางาน', d: 'ขอให้พักผ่อนให้เต็มที่ แล้วพบกันวันทำงานถัดไปครับ' };
