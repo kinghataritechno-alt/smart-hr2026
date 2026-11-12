@@ -1321,7 +1321,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.13.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.13.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1698,6 +1698,7 @@ async function hrAgentData() {
   const e = me(); const t = todayStr(); const p = dParts(t);
   const from = `${p.y}-${String(p.m).padStart(2, '0')}-01`;
   if (e.is_system) return { sys: true };
+  if (e.position_name === 'กรรมการบริษัท') return { bod: true }; /* v1.13.1 กรรมการบริษัท (BOD) ไม่ตรวจเวลาเข้างาน */
   const rows = await q(sb.from('attendance_daily_summaries').select('work_date,first_in,last_out,scheduled_start,late_minutes,attendance_status,leave_type_code').eq('employee_id', e.id).gte('work_date', from).lte('work_date', t).order('work_date'));
   const today = rows.find(r => r.work_date === t) || null;
   const late = rows.filter(r => (r.late_minutes || 0) > 0);
@@ -1706,6 +1707,7 @@ async function hrAgentData() {
   return { today, rows, late, lateMin: late.reduce((a, r) => a + (r.late_minutes || 0), 0), onTime: judged.length - late.length, streak };
 }
 function hrAgentVerdict(a) {
+  if (a.bod) return { k: '', h: 'สวัสดีครับ ท่านกรรมการ', d: 'กรรมการบริษัทไม่ต้องตรวจเวลาเข้างาน — เอกสารที่รอท่านอนุมัติอยู่ที่เมนู อนุมัติเอกสาร' };
   if (a.sys) return { k: '', h: 'HR Agent', d: 'บัญชีระบบไม่มีข้อมูลเวลาเข้างาน' };
   const td = a.today;
   if (td && td.leave_type_code) return { k: '', h: 'วันนี้คุณลางาน', d: 'ขอให้พักผ่อนให้เต็มที่ แล้วพบกันวันทำงานถัดไปครับ' };
@@ -1732,7 +1734,7 @@ async function hrAgentCard(host) {
     <div class="hra-say">${esc(msg)}</div></div></div>
    ${time ? `<div class="hra-time">${ic('clock')}<span>${esc(time)}</span></div>` : ''}
    ${v.s ? `<div class="hra-sub">${esc(v.s)}</div>` : ''}
-   ${a.sys ? '' : `<div class="hra-stats"><div><b>${num(a.onTime)}</b><span>ตรงเวลา (วัน)</span></div><div class="${a.late.length ? 'warn' : ''}"><b>${num(a.late.length)}</b><span>มาสาย (ครั้ง)</span></div><div class="${a.lateMin ? 'warn' : ''}"><b>${num(a.lateMin)}</b><span>สายสะสม (นาที)</span></div></div>
+   ${a.sys || a.bod ? '' : `<div class="hra-stats"><div><b>${num(a.onTime)}</b><span>ตรงเวลา (วัน)</span></div><div class="${a.late.length ? 'warn' : ''}"><b>${num(a.late.length)}</b><span>มาสาย (ครั้ง)</span></div><div class="${a.lateMin ? 'warn' : ''}"><b>${num(a.lateMin)}</b><span>สายสะสม (นาที)</span></div></div>
    ${a.late.length ? `<details class="hra-more"><summary>ดูรายละเอียดการมาสายเดือนนี้</summary>${a.late.map(r => `<div class="row"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</details>` : ''}`}
   </div>`;
 }
@@ -1777,7 +1779,7 @@ async function chatAnswer(k) {
   const e = me();
   if (k === 'hi') return `สวัสดีครับคุณ${e.first_name} มีอะไรให้ HR Agent ช่วยครับ เลือกคำถามด้านบนหรือพิมพ์ถามได้เลย`;
   if (k === 'late' || k === 'today') {
-    const a = await hrAgentData(); if (a.sys) return 'บัญชีระบบไม่มีข้อมูลเวลาเข้างานครับ';
+    const a = await hrAgentData(); if (a.sys) return 'บัญชีระบบไม่มีข้อมูลเวลาเข้างานครับ'; if (a.bod) return 'กรรมการบริษัทไม่ต้องตรวจเวลาเข้างานครับ';
     if (k === 'today') { const v = hrAgentVerdict(a); const td = a.today; return `${v.h}\n${v.d}${td && td.last_out ? `\nออกงาน ${fT(td.last_out)} น.` : ''}`; }
     if (!a.rows.some(r => r.scheduled_start)) return 'เดือนนี้ยังไม่มีข้อมูลกะการทำงานของคุณ จึงยังนับการมาสายไม่ได้ครับ';
     if (!a.late.length) return `เดือนนี้คุณยังไม่เคยมาสายเลยครับ 👏 ตรงเวลาแล้ว ${a.onTime} วัน`;
