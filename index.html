@@ -730,31 +730,36 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   .drop{position:fixed;left:12px;right:12px;top:64px;width:auto;max-width:none;max-height:calc(100dvh - 150px)}
 }
 
-/* v1.13 การ์ด HR Agent (ทุกหน้าจอ) */
+/* v1.13 การ์ด HR Agent (ทุกหน้าจอ) — v1.15.1: พื้นกระจก + ช่องสถิติสี (เขียว=ตรงเวลา · ส้ม=มาสาย · แดง=สายสะสม) + ตัวอักษรใหญ่ขึ้น */
 :root:not(#_):not(#__) .card:has(>.hra){padding:0;background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;overflow:visible;margin-top:40px!important;text-shadow:none}
-.hra{text-shadow:none;position:relative;border-radius:22px;padding:14px 16px 16px;color:#1c2b4b;background:linear-gradient(140deg,#e6efff 0%,#ffffff 72%);box-shadow:0 12px 30px rgba(15,29,51,.16);border:1px solid rgba(58,111,216,.18)}
-.hra.ok{background:linear-gradient(140deg,#d7f5e3 0%,#ffffff 72%);border-color:rgba(31,122,69,.22)}
-.hra.bad{background:linear-gradient(140deg,#ffe0d4 0%,#ffffff 72%);border-color:rgba(194,65,12,.25)}
+.hra{text-shadow:none;position:relative;border-radius:24px;padding:16px 16px 18px;color:#ffffff;
+  background:linear-gradient(150deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.07) 60%),rgba(28,43,75,.55);
+  backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 14px 34px rgba(0,8,30,.30)}
+@media (min-width:700px) and (min-height:500px){:root:not([data-skin=glass]) .hra{background:linear-gradient(150deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.04) 60%),rgba(22,38,72,.94)}}
+.hra.ok{border-color:rgba(126,226,171,.55)}.hra.bad{border-color:rgba(255,160,100,.6)}
 .hra-top{display:flex;gap:10px;align-items:flex-end}
-.hra-bot{width:112px;height:auto;flex:none;margin:-48px 0 -6px -8px;filter:drop-shadow(0 10px 14px rgba(28,43,75,.28))}
-.hra-body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-.hra-tag{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;letter-spacing:.2px;padding:3px 10px;border-radius:999px;background:#1c2b4b;color:#fff;white-space:nowrap}
-.hra-h{font-size:21px;font-weight:700;line-height:1.25;color:#1c2b4b}
-.hra.ok .hra-h{color:#13703f}.hra.bad .hra-h{color:#c2410c}
-.hra-say{position:relative;background:#ffffff;border-radius:14px;padding:8px 12px;font-size:14px;line-height:1.45;color:#1c2b4b;box-shadow:0 4px 12px rgba(28,43,75,.08)}
+.hra-bot{width:118px;height:auto;flex:none;margin:-52px 0 -6px -8px;filter:drop-shadow(0 10px 16px rgba(0,8,30,.45))}
+.hra-body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.hra-tag{display:inline-flex;align-items:center;font-size:12.5px;font-weight:600;letter-spacing:.2px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap}
+.hra-h{font-size:25px;font-weight:700;line-height:1.2;color:#ffffff}
+.hra.ok .hra-h{color:#8ef0b5}.hra.bad .hra-h{color:#ffb27a}
+.hra-say{position:relative;background:#ffffff;border-radius:14px;padding:9px 13px;font-size:15.5px;line-height:1.45;color:#1c2b4b;box-shadow:0 4px 14px rgba(0,8,30,.18)}
 .hra-say::before{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#ffffff;border-left:0}
-.hra-time{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 12px;border-radius:12px;background:rgba(28,43,75,.06);font-size:14.5px;font-weight:600;color:#1c2b4b}
-.hra-time svg{width:18px;height:18px;flex:none}
-.hra.bad .hra-time{background:rgba(194,65,12,.10);color:#9a3412}.hra.ok .hra-time{background:rgba(31,122,69,.10);color:#13703f}
-.hra-sub{margin-top:8px;font-size:12.5px;color:#5d6b86}
-.hra-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
-.hra-stats>div{background:#ffffff;border-radius:14px;padding:9px 6px;text-align:center;box-shadow:0 2px 8px rgba(28,43,75,.06)}
-.hra-stats b{display:block;font-size:22px;font-weight:700;line-height:1.15;color:#1c2b4b}
-.hra-stats span{font-size:11.5px;color:#5d6b86}
-.hra-stats .warn b{color:#c2410c}
-.hra-more{margin-top:10px;font-size:13px;color:#1c2b4b}
-.hra-more summary{cursor:pointer;color:#3a6fd8;font-weight:500}
-.hra-more .row{padding:6px 0;border-top:1px solid #e6ebf3;gap:8px}
+.hra-time{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 13px;border-radius:13px;background:rgba(255,255,255,.12);font-size:16px;font-weight:600;color:#fff}
+.hra-time svg{width:20px;height:20px;flex:none}
+.hra-sub{margin-top:8px;font-size:13.5px;color:#d6e2f5}
+.hra-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.hra-stats>div{border-radius:16px;padding:12px 6px 11px;text-align:center;color:#fff;box-shadow:0 8px 18px rgba(0,8,30,.25);border:1px solid rgba(255,255,255,.22)}
+.hra-stats>div:nth-child(1){background:linear-gradient(160deg,#34c77b,#16934f)}
+.hra-stats>div:nth-child(2){background:linear-gradient(160deg,#ffa55a,#e8731f)}
+.hra-stats>div:nth-child(3){background:linear-gradient(160deg,#f2615a,#c62828)}
+.hra-stats b{display:block;font-size:34px;font-weight:700;line-height:1.1;color:#fff}
+.hra-stats span{font-size:13.5px;font-weight:500;color:rgba(255,255,255,.95)}
+.hra-stats .warn b{color:#fff}
+.hra-more{margin-top:12px;font-size:14px;color:#fff}
+.hra-more summary{cursor:pointer;color:#ffd2a8;font-weight:500}
+.hra-more .row{padding:7px 0;border-top:1px solid rgba(255,255,255,.14);gap:8px}
 .hra-chat{display:flex;align-items:center;gap:12px;margin:2px 0 12px;padding:10px 14px 10px 6px;border-radius:18px;background:linear-gradient(140deg,#e6efff,#ffffff 75%);color:#1c2b4b}
 .hra-chat img{width:64px;height:auto;flex:none;margin:-14px 0 -6px;filter:drop-shadow(0 6px 10px rgba(28,43,75,.25))}
 .hra-chat b{display:block;font-size:16px}.hra-chat span{font-size:12.5px;color:#5d6b86}
@@ -1322,7 +1327,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard">${logoImg()}<span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.15.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.15.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
