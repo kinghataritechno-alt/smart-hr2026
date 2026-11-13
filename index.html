@@ -1410,7 +1410,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.16.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.16.3</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -2630,8 +2630,8 @@ const LV = {
   },
   async types(b) {
     await crudCard(b, { title: 'ประเภทการลา', tbl: 'leave_types', order: 'sort',
-      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.leave_code)}</span>` }, { label: 'ชื่อ', k: 'leave_name' }, { label: 'ได้รับค่าจ้าง', fmt: r => r.paid_status ? '<span class="badge b-good">ได้รับ</span>' : '<span class="badge b-bad">ไม่ได้รับ</span>' }, { label: 'ใช้โควตา', fmt: r => r.uses_quota ? 'ใช่' : 'ไม่' }, { label: 'ลาครึ่งวัน', fmt: r => r.allow_half_day ? 'ได้' : 'ไม่ได้' }, { label: 'ต้องแนบเอกสาร', fmt: r => r.requires_attachment ? 'ใช่' : '–' }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
-      fields: [{ k: 'leave_code', label: 'รหัส', req: true }, { k: 'leave_name', label: 'ชื่อ', req: true }, { k: 'paid_status', label: 'ได้รับค่าจ้าง', type: 'check' }, { k: 'uses_quota', label: 'ใช้โควตาวันลา', type: 'check' }, { k: 'allow_half_day', label: 'ลาครึ่งวันได้', type: 'check' }, { k: 'requires_attachment', label: 'ต้องแนบเอกสาร', type: 'check' }, { k: 'sort', label: 'ลำดับ', type: 'number' }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, noEmpty: true, req: true }] });
+      cols: [{ label: 'รหัส', fmt: r => `<span class="mono">${esc(r.leave_code)}</span>` }, { label: 'ชื่อ', k: 'leave_name' }, { label: 'ได้รับค่าจ้าง', fmt: r => r.paid_status ? '<span class="badge b-good">ได้รับ</span>' : '<span class="badge b-bad">ไม่ได้รับ</span>' }, { label: 'ใช้โควตา', fmt: r => r.uses_quota ? 'ใช่' : 'ไม่' }, { label: 'ลาครึ่งวัน', fmt: r => r.allow_half_day ? 'ได้' : 'ไม่ได้' }, { label: 'ต้องแนบเอกสาร', fmt: r => r.requires_attachment ? 'ใช่' : r.attachment_min_days != null ? `ตั้งแต่ ${num(r.attachment_min_days, 0)} วัน` : '–' }, { label: 'สถานะ', fmt: r => stBadge(r.status) }],
+      fields: [{ k: 'leave_code', label: 'รหัส', req: true }, { k: 'leave_name', label: 'ชื่อ', req: true }, { k: 'paid_status', label: 'ได้รับค่าจ้าง', type: 'check' }, { k: 'uses_quota', label: 'ใช้โควตาวันลา', type: 'check' }, { k: 'allow_half_day', label: 'ลาครึ่งวันได้', type: 'check' }, { k: 'requires_attachment', label: 'ต้องแนบเอกสารทุกครั้ง', type: 'check' }, { k: 'attachment_min_days', label: 'ต้องแนบเอกสารเมื่อลาตั้งแต่ (วัน) — เว้นว่าง = ไม่บังคับ', type: 'number', step: '0.5', min: 0 }, { k: 'sort', label: 'ลำดับ', type: 'number' }, { k: 'status', label: 'สถานะ', type: 'select', opts: ST_OPTS, noEmpty: true, req: true }] });
   }
 };
 
@@ -3070,11 +3070,11 @@ async function docForm(el, code, doc) {
     const hrs = $('#f_half_day').value === 'HOURS';
     if (hrs) { if ($('#f_date_to').value !== f) $('#f_date_to').value = f; const a = $('#f_lv_from').value, z = $('#f_lv_to').value; if (!a || !z) { $('#dcalc').innerHTML = 'ระบุเวลาเริ่มและเวลาสิ้นสุดการลา'; return; }
       try { const h = await rpc('leave_hours', { p_emp: me().id, p_date: f, p_in: localTs(f, a), p_out: localTs(f, z) }); $('#dcalc').innerHTML = `จำนวนที่ลา หักเวลาพักตามกะแล้ว: <b>${fLv(h / 8)}</b>${h >= 8 ? ' — <span style="color:var(--bad)">ตั้งแต่ 8 ชม. ให้เลือกลาเต็มวัน</span>' : ''}`; } catch (e) { } return; }
-    try { const n = await rpc('leave_count_days', { p_emp: me().id, p_from: f, p_to: to, p_half: $('#f_half_day').value || null }); $('#dcalc').innerHTML = `จำนวนวันลา ไม่นับวันหยุดตามตารางกะ: <b>${fLv(n)}</b>`; } catch (e) { }
+    try { const n = await rpc('leave_count_days', { p_emp: me().id, p_from: f, p_to: to, p_half: $('#f_half_day').value || null }); const lt = S.L.leaveTypes.find(x => x.id === ($('#f_leave_type_id') || {}).value); const need = lt && lt.attachment_min_days != null && n >= Number(lt.attachment_min_days); $('#dcalc').innerHTML = `จำนวนวันลา ไม่นับวันหยุดตามตารางกะ: <b>${fLv(n)}</b>` + (need ? ` — <span style="color:var(--bad)">${esc(lt.leave_name)}ตั้งแต่ ${num(lt.attachment_min_days, 0)} วันขึ้นไป ต้องแนบเอกสาร (เช่น ใบรับรองแพทย์)</span>` : ''); } catch (e) { }
   }, 300);
   if (code === 'LEAVE') {
     const tg = () => { const on = $('#f_half_day').value === 'HOURS'; ['#f_lv_from', '#f_lv_to'].forEach(s => { $(s).closest('label').style.display = on ? '' : 'none'; }); $('#f_date_to').closest('label').style.display = on ? 'none' : ''; if (on && $('#f_date_from').value) $('#f_date_to').value = $('#f_date_from').value; };
-    ['#f_date_from', '#f_date_to', '#f_half_day', '#f_lv_from', '#f_lv_to'].forEach(s => $(s).addEventListener('change', calc)); $('#f_half_day').addEventListener('change', tg); tg();
+    ['#f_date_from', '#f_date_to', '#f_half_day', '#f_lv_from', '#f_lv_to', '#f_leave_type_id'].forEach(s => $(s) && $(s).addEventListener('change', calc)); $('#f_half_day').addEventListener('change', tg); tg();
   }
   if (code === 'OT') ['#f_ot_from', '#f_ot_to'].forEach(s => $(s).addEventListener('change', () => { const a = $('#f_ot_from').value, b = $('#f_ot_to').value; if (a && b) { let m = (+b.slice(0, 2) * 60 + +b.slice(3)) - (+a.slice(0, 2) * 60 + +a.slice(3)); if (m < 0) m += 1440; $('#f_hours').value = (m / 60).toFixed(2); } }));
   if (code === 'TIME_ADD') $('#f_date_from').addEventListener('change', () => { if (!$('#f_out_d').value) $('#f_out_d').value = $('#f_date_from').value; });
