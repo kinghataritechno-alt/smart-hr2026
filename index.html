@@ -1090,6 +1090,19 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 .login .lfoot .lk::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--lg-spec);pointer-events:none}
 .login .lfoot .lk svg{position:relative;width:30px;height:30px;stroke-width:1.9;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.login .glass,.login .lfoot .lk{background:rgba(22,36,68,.85)}}
+/* ===================== v1.17.4 เมนูยื่นคำขอแบบการ์ดอวตาร (Liquid Glass) ===================== */
+.dtgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:16px}
+.dtcard{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-height:196px;padding:12px 10px 14px;border-radius:26px;text-align:center;text-decoration:none;color:#fff;overflow:hidden;
+  background:var(--lg-bg,rgba(22,36,68,.85));border:1px solid var(--lg-bd,rgba(255,255,255,.3));box-shadow:var(--lg-sh,0 10px 24px rgba(0,0,0,.25));-webkit-backdrop-filter:var(--lg-f,none);backdrop-filter:var(--lg-f,none);transition:transform .15s}
+.dtcard::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--lg-spec,none);pointer-events:none}
+.dtcard>*{position:relative}
+.dtcard:hover{transform:translateY(-2px)}.dtcard:active{transform:scale(.97);filter:brightness(1.1)}
+.dtcard .dtav{width:100%;max-width:200px;height:132px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.dtcard .dtic{width:96px;height:96px;margin:18px 0 18px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--dc) 80%,#fff 20%),var(--dc) 70%);border:2px solid rgba(255,255,255,.55);box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 0 22px color-mix(in srgb,var(--dc) 60%,transparent),0 8px 16px rgba(0,0,0,.3)}
+.dtcard .dtic svg{width:44px;height:44px;stroke-width:1.9;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+.dtcard b{color:#fff!important;font-size:16.5px;font-weight:700;line-height:1.25;text-shadow:0 0 2px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.8),0 0 10px rgba(0,0,0,.45)}
+@media (max-width:699px){.dtgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.dtcard{min-height:176px}.dtcard .dtav{height:112px}.dtcard .dtic{width:84px;height:84px;margin:14px 0}.dtcard b{font-size:15px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1555,7 +1568,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.3</div>
+      <div class="sbver">Smart Terminal HR<br>v1.17.4</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -3143,6 +3156,8 @@ const DT_ICON = { LEAVE: 'plane', SHIFT_CHANGE: 'swap', DAYOFF_CHANGE: 'swap', D
 const RD_TYPES = ['DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
 const REQ_GRID = ['LEAVE', 'OT', 'DAYOFF_CHANGE', 'DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
 const REQ_SIMPLE = ['LEAVE', 'OT', 'TIME_ADD', 'SHIFT_CHANGE', 'DAYOFF_CHANGE'], REQ_SIMPLE_MORE = ['RESIGN'];  /* คำขอของพนักงานทั่วไปบนมือถือ */
+/* v1.17.4 อวตารประจำประเภทคำขอ (ภาพจากผู้ใช้ ตัดพื้นหลังแล้ว) — ประเภทที่ไม่มีอวตารใช้ไอคอนในวงกระจก */
+const DT_AVATAR = { LEAVE: 'av-leave.webp', DAYOFF_CHANGE: 'av-dayoff-swap.webp', DAYOFF_PATTERN: 'av-dayoff-change.webp', MANPOWER: 'av-manpower.webp', TRAINING_REQ: 'av-training.webp', PR: 'av-pr.webp', MATERIAL: 'av-material.webp' };
 const DT_COLOR = { LEAVE: '#16a34a', SHIFT_CHANGE: '#2563eb', DAYOFF_CHANGE: '#7c3aed', TIME_ADD: '#0e7490', OT: '#ea8a0c', FACE_PHOTO: '#db2777', RESIGN: '#b91c1c', DAYOFF_PATTERN: '#7c3aed', MANPOWER: '#0891b2', TRAINING_REQ: '#4f46e5', PR: '#0d9488', MATERIAL: '#a16207' };
 const WD = ['', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'];
 const OT_DAY = { WORKDAY: 'OT วันทำงาน', HOLIDAY_WORK: 'ทำงานวันหยุด', HOLIDAY_OT: 'OT วันหยุด' };
@@ -3170,7 +3185,7 @@ PAGES.docs = async (el, a, b) => {
   if (a && a !== 'list') return docDetail(el, a);
   const rows = await q(sb.from('document_requests').select('*').eq('requester_employee_id', me().id).order('created_at', { ascending: false }).limit(300));
   el.innerHTML = pageHead('ยื่นเอกสาร') + `
-   <div class="grid g4" style="margin-bottom:16px">${S.L.docTypes.filter(t => t.active_status === 'ACTIVE').map(t => `<a class="card row" href="#/docs/new/${t.document_code}" style="color:var(--ink);flex-wrap:nowrap"><span class="kpi" style="padding:0"><span class="ic" style="background:${DT_COLOR[t.document_code] || '#2563eb'};margin:0">${ic(DT_ICON[t.document_code] || 'file')}</span></span><b style="font-weight:500">${esc(t.document_name)}</b></a>`).join('')}</div>
+   <div class="dtgrid">${S.L.docTypes.filter(t => t.active_status === 'ACTIVE').map(t => `<a class="dtcard" href="#/docs/new/${t.document_code}">${DT_AVATAR[t.document_code] ? `<img class="dtav" src="${DT_AVATAR[t.document_code]}" alt="" loading="lazy">` : `<span class="dtic" style="--dc:${DT_COLOR[t.document_code] || '#2563eb'}">${ic(DT_ICON[t.document_code] || 'file')}</span>`}<b>${esc(t.document_name)}</b></a>`).join('')}</div>
    <div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">เอกสารของฉัน</h3><span class="grow"></span><div class="seg" id="dseg"><button class="on" data-s="">ทั้งหมด</button><button data-s="DRAFT">ร่าง</button><button data-s="PENDING">รออนุมัติ</button><button data-s="DONE">เสร็จสิ้น</button></div></div><div id="dlist"></div></div>`;
   const draw = s => { const r = rows.filter(d => !s || (s === 'DONE' ? ['APPROVED', 'REJECTED', 'CANCELLED'].includes(d.status) : s === 'DRAFT' ? ['DRAFT', 'RETURNED'].includes(d.status) : d.status === s));
     $('#dlist').innerHTML = table(r, [{ label: 'เลขที่', fmt: d => `<span class="mono">${esc(d.document_no || '(ร่าง)')}</span>` }, { label: 'ประเภท', fmt: d => esc(dtName(d.document_type_id)) }, { label: 'รายละเอียด', fmt: d => esc(docSummary(d)) }, { label: 'ยื่นเมื่อ', fmt: d => d.submitted_at ? fDT(d.submitted_at) : '–' }, { label: 'สถานะ', fmt: d => badge(DOC_STATUS, d.status) }], { click: true, empty: 'ยังไม่มีเอกสาร' });
