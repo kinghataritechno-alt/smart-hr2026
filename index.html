@@ -1410,7 +1410,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.16.3</div>
+      <div class="sbver">Smart Terminal HR<br>v1.16.4</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1735,7 +1735,7 @@ PAGES.dashboard = async el => {
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
    <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
-  ${bod ? '' : `<div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
+  ${bod || e.is_system ? `<div class="card" id="tdyorg"><div class="spin"></div></div>` : `<div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
     <div><div class="l"><span style="color:var(--bad)">${ic('out')}</span>เวลาออกงาน</div><div class="v">${fT(tdy.last_out)}</div></div>
@@ -1778,10 +1778,30 @@ PAGES.dashboard = async el => {
     { label: 'รายการหัก', num: 1, fmt: r => money(r.deductions) }, { label: 'สุทธิ', num: 1, fmt: r => `<b>${money(r.net)}</b>` }], { empty: 'ยังไม่มีงวดที่อนุมัติ' })}</div>`;
   html += `<a class="svc" href="#/docs"><div><b>HR Services</b>บริการ HR สำหรับพนักงาน — ยื่นลา ขอ OT ขอปรับเวลา</div><div class="chips"><span>${ic('file')}</span><span>${ic('users')}</span><span>${ic('cal')}</span></div></a>`;
   el.innerHTML = html;
+  if ($('#tdyorg')) orgTodayCard($('#tdyorg')).catch(() => { $('#tdyorg').innerHTML = '<div class="small muted">โหลดสรุปเวลาเข้างานไม่สำเร็จ</div>'; });
   hrAgentCard($('#hragent'), m.pending_approvals || 0).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
   annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
 };
 
+/* v1.16.4 การ์ด "สรุปวันนี้" ของกรรมการบริษัท/ผู้ดูแลระบบ — สรุปเวลาเข้างานของพนักงานวันนี้ (ไม่แสดงเวลาออกงาน) */
+async function orgTodayCard(host) {
+  const rows = await rpc('today_checkins') || []; const t = todayStr();
+  const isLeave = r => r.attendance_status === 'LEAVE' || !!r.leave_type_code;
+  const inn = rows.filter(r => r.first_in), late = inn.filter(r => (r.late_minutes || 0) > 0);
+  const leave = rows.filter(r => !r.first_in && isLeave(r)), wait = rows.filter(r => !r.first_in && !isLeave(r) && !['DAY_OFF', 'HOLIDAY'].includes(r.attendance_status));
+  const row = r => { const lt = (r.late_minutes || 0) > 0;
+    const v = r.first_in ? `<span class="badge ${lt ? 'b-warn' : 'b-good'}">${fT(r.first_in)}${lt ? ` · สาย ${num(r.late_minutes)} น.` : ''}</span>` : isLeave(r) ? '<span class="badge b-info">ลา</span>' : ['DAY_OFF', 'HOLIDAY'].includes(r.attendance_status) ? '<span class="badge">วันหยุด</span>' : '<span class="badge">ยังไม่เข้างาน</span>';
+    return `<div class="row" style="padding:8px 0;border-top:1px solid var(--line);gap:8px;${r.first_in ? '' : 'opacity:.72'}"><div class="grow" style="min-width:0"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.name)}</div>${r.department_name ? `<div class="tiny muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.department_name)}</div>` : ''}</div>${v}</div>`; };
+  const N = 8;
+  host.innerHTML = `<div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span>${can.hr() ? `<a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a>` : ''}</div>
+   <div class="small muted" style="margin-bottom:8px">${ic('in')} เวลาเข้างานของพนักงาน</div>
+   <div class="today" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div><div class="l">เข้างานแล้ว</div><div class="v" style="color:var(--good)">${num(inn.length)}<span class="tiny muted">/${num(rows.length)}</span></div></div>
+    <div><div class="l">สาย</div><div class="v" style="color:var(--warn,#f59e0b)">${num(late.length)}</div></div>
+    <div><div class="l">ยังไม่เข้า</div><div class="v">${num(wait.length)}</div></div>
+    <div><div class="l">ลา</div><div class="v">${num(leave.length)}</div></div></div>
+   <div style="margin-top:10px">${rows.length ? rows.slice(0, N).map(row).join('') + (rows.length > N ? `<details class="more"><summary>ดูทั้งหมด ${num(rows.length)} คน</summary>${rows.slice(N).map(row).join('')}</details>` : '') : '<div class="small muted">ยังไม่มีข้อมูลพนักงาน</div>'}</div>`;
+}
 /* ===================== HR AGENT — ตรวจเวลาเข้างานจากเครื่องสแกน แล้วชมเชย/เตือน =====================
    ใช้ข้อมูลจริงจาก attendance_daily_summaries เท่านั้น — ถ้ายังไม่มีกะ (OI-05) จะไม่ตัดสินว่าสาย/ตรงเวลา */
 async function hrAgentData() {
