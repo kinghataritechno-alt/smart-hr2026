@@ -1050,6 +1050,9 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
   :root:not(#_):not(#__):not(#___):has(.shell) .sb a.nav:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
   :root:not(#_):not(#__):not(#___):has(.shell) .sb a.nav.on{background:var(--lg-in);border:1px solid rgba(255,255,255,.28);border-radius:16px;color:#fff;font-weight:600;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),0 6px 14px rgba(0,0,0,.18)}
   :root:not(#_):not(#__):not(#___):has(.shell) .sb .sbver{color:rgba(255,255,255,.7)}
+  /* v1.17.3 โลโก้ SMART TERMINAL ในแถบเมนูซ้าย = สีขาว (logo-white.png สร้างจาก logo-copper.png คงรูปทรงเดิม) */
+  :root:not(#_):not(#__):not(#___):has(.shell) .sblogo span{color:#fff;text-shadow:var(--lg-ts)}
+  :root:not(#_):not(#__):not(#___):has(.shell) .sblogo img.lgcu{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
   :root:not(#_):not(#__):not(#___):has(.shell) .sb a.nav.on svg{color:#ffb070}
   :root:not(#_):not(#__):not(#___):has(.shell) .search input{background:var(--lg-in);border-color:rgba(255,255,255,.3);-webkit-backdrop-filter:var(--lg-f);backdrop-filter:var(--lg-f)}
 }
@@ -1551,8 +1554,8 @@ function renderShell() {
   const e = me();
   setTod();
   document.body.innerHTML = `<div class="shell">
-    <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-copper.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.2</div>
+    <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
+      <div class="sbver">Smart Terminal HR<br>v1.17.3</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
