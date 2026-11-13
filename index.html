@@ -1103,6 +1103,10 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 .dtcard .dtic svg{width:44px;height:44px;stroke-width:1.9;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
 .dtcard b{color:#fff!important;font-size:16.5px;font-weight:700;line-height:1.25;text-shadow:0 0 2px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.8),0 0 10px rgba(0,0,0,.45)}
 @media (max-width:699px){.dtgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.dtcard{min-height:176px}.dtcard .dtav{height:47px;max-width:60px;margin:28px 0 24px}.dtcard .dtic{width:84px;height:84px;margin:14px 0}.dtcard b{font-size:15px}}
+/* v1.17.8 การ์ด "สร้างคำขออนุมัติ" ใช้ไอคอนกระจกขาวชุดเดียวกับหน้ายื่นเอกสาร */
+.rtile .rtimg{width:auto;max-width:64px;height:50px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,255,255,.35)) drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+.btn .rtchip{width:22px;height:22px;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+@media (max-width:699px){.rtile .rtimg{height:40px;max-width:52px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1568,7 +1572,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.7</div>
+      <div class="sbver">Smart Terminal HR<br>v1.17.8</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -3324,7 +3328,7 @@ const ST_PILL = { PENDING: ['clock', 'รออนุมัติ', 'b-warn'], A
 const reqItem = (d, href, extra = '') => { const c = dtCode(d.document_type_id); const st = ST_PILL[d.status] || ['file', d.status, ''];
   return `<a class="ritem" href="${href || '#/docs/' + d.id}"><span class="rti" style="color:${DT_COLOR[c] || '#2563eb'}">${ic(DT_ICON[c] || 'file')}</span><span class="grow" style="min-width:0"><b>${esc(dtName(d.document_type_id))}</b><span>${esc(docSummary(d))}</span>${extra}</span><span class="pill ${st[2]}">${ic(st[0])} ${st[1]}</span>${ic('chev')}</a>`; };
 const reqTile = c => { const t = S.L.docTypes.find(x => x.document_code === c && x.active_status === 'ACTIVE'); if (!t) return '';
-  return `<a class="rtile" href="#/docs/new/${c}"><span class="rti" style="color:${DT_COLOR[c]}">${ic(DT_ICON[c] || 'file')}</span><span>${TILE_LBL[c] || esc(t.document_name)}</span></a>`; };
+  return `<a class="rtile" href="#/docs/new/${c}">${DT_AVATAR[c] ? `<img class="rtimg" src="${DT_AVATAR[c]}" alt="">` : `<span class="rti" style="color:${DT_COLOR[c]}">${ic(DT_ICON[c] || 'file')}</span>`}<span>${TILE_LBL[c] || esc(t.document_name)}</span></a>`; };
 const TILE_LBL = { LEAVE: 'ขอลา', TIME_ADD: 'ขอปรับ<br>เวลา', SHIFT_CHANGE: 'ขอเปลี่ยน<br>กะ', OT: 'ขอล่วงเวลา<br>(OT)', DAYOFF_CHANGE: 'ขอสลับ<br>วันหยุด', DAYOFF_PATTERN: 'ขอเปลี่ยน<br>วันหยุด', MANPOWER: 'ขอเพิ่ม<br>อัตรากำลัง', TRAINING_REQ: 'ขอเข้ารับ<br>การอบรม', PR: 'ขอซื้อ/ขอจ้าง<br>(PR)', MATERIAL: 'ขอเบิก<br>วัสดุ/อุปกรณ์' };
 PAGES.approve = async (el, a, tab) => {
   if (a && a !== 'tab') return docDetail(el, a, { back: '#/approve' });
@@ -3340,7 +3344,7 @@ PAGES.approve = async (el, a, tab) => {
     if (t === 'request') {
       const [mine, otOk] = await Promise.all([myDocs(), rpc('ot_can_request').catch(() => false)]); const SIMPLE = simpleMode(), grid = (SIMPLE ? REQ_SIMPLE : REQ_GRID).filter(c => c !== 'OT' || otOk); const others = S.L.docTypes.filter(x => x.active_status === 'ACTIVE' && !grid.includes(x.document_code) && (x.document_code !== 'OT' || otOk) && (!SIMPLE || REQ_SIMPLE_MORE.includes(x.document_code))).map(x => x.document_code);
       b.innerHTML = `<div class="card"><h3>${ic('upload')} สร้างคำขออนุมัติ</h3>${me().is_system ? `<div class="notice info">บัญชีระบบ (admin) ไม่ใช่พนักงาน — ยื่นคำขอไม่ได้ แต่ดู/อนุมัติเอกสารได้</div>` : ''}
-        <div class="rgrid">${grid.map(reqTile).join('')}</div>${others.length ? `<div class="row" style="margin-top:12px">${others.map(c => `<a class="btn sm" href="#/docs/new/${c}">${ic(DT_ICON[c] || 'file')} ${esc(dtName(S.L.docTypes.find(x => x.document_code === c).id))}</a>`).join('')}</div>` : ''}</div>
+        <div class="rgrid">${grid.map(reqTile).join('')}</div>${others.length ? `<div class="row" style="margin-top:12px">${others.map(c => `<a class="btn sm" href="#/docs/new/${c}">${DT_AVATAR[c] ? `<img class="rtchip" src="${DT_AVATAR[c]}" alt="">` : ic(DT_ICON[c] || 'file')} ${esc(dtName(S.L.docTypes.find(x => x.document_code === c).id))}</a>`).join('')}</div>` : ''}</div>
         <div class="card" style="margin-top:14px"><div class="row" style="margin-bottom:6px"><h3 style="margin:0">${ic('list')} รายการคำขอของฉัน</h3><span class="grow"></span><button class="btn ghost sm" data-go="mine">ดูทั้งหมด ${ic('chev')}</button></div>
         ${mine.length ? mine.slice(0, 5).map(d => reqItem(d)).join('') : emptyBox('ยังไม่มีคำขอ')}</div>`;
       on(b, 'click', '[data-go]', (e, x) => $(`#atabs [data-t="${x.dataset.go}"]`).click());
