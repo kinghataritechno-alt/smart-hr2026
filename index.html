@@ -1097,12 +1097,12 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 .dtcard::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--lg-spec,none);pointer-events:none}
 .dtcard>*{position:relative}
 .dtcard:hover{transform:translateY(-2px)}.dtcard:active{transform:scale(.97);filter:brightness(1.1)}
-.dtcard .dtav{width:100%;max-width:200px;height:132px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.dtcard .dtav{width:100%;max-width:150px;height:118px;margin:6px 0 4px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(70,150,255,.45)) drop-shadow(0 6px 10px rgba(0,0,0,.35))}
 .dtcard .dtic{width:96px;height:96px;margin:18px 0 18px;border-radius:50%;display:grid;place-items:center;color:#fff;
   background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--dc) 80%,#fff 20%),var(--dc) 70%);border:2px solid rgba(255,255,255,.55);box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 0 22px color-mix(in srgb,var(--dc) 60%,transparent),0 8px 16px rgba(0,0,0,.3)}
 .dtcard .dtic svg{width:44px;height:44px;stroke-width:1.9;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
 .dtcard b{color:#fff!important;font-size:16.5px;font-weight:700;line-height:1.25;text-shadow:0 0 2px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.8),0 0 10px rgba(0,0,0,.45)}
-@media (max-width:699px){.dtgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.dtcard{min-height:176px}.dtcard .dtav{height:112px}.dtcard .dtic{width:84px;height:84px;margin:14px 0}.dtcard b{font-size:15px}}
+@media (max-width:699px){.dtgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.dtcard{min-height:176px}.dtcard .dtav{height:96px}.dtcard .dtic{width:84px;height:84px;margin:14px 0}.dtcard b{font-size:15px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 </head>
@@ -1568,7 +1568,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.4</div>
+      <div class="sbver">Smart Terminal HR<br>v1.17.5</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -3156,8 +3156,8 @@ const DT_ICON = { LEAVE: 'plane', SHIFT_CHANGE: 'swap', DAYOFF_CHANGE: 'swap', D
 const RD_TYPES = ['DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
 const REQ_GRID = ['LEAVE', 'OT', 'DAYOFF_CHANGE', 'DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
 const REQ_SIMPLE = ['LEAVE', 'OT', 'TIME_ADD', 'SHIFT_CHANGE', 'DAYOFF_CHANGE'], REQ_SIMPLE_MORE = ['RESIGN'];  /* คำขอของพนักงานทั่วไปบนมือถือ */
-/* v1.17.4 อวตารประจำประเภทคำขอ (ภาพจากผู้ใช้ ตัดพื้นหลังแล้ว) — ประเภทที่ไม่มีอวตารใช้ไอคอนในวงกระจก */
-const DT_AVATAR = { LEAVE: 'av-leave.webp', DAYOFF_CHANGE: 'av-dayoff-swap.webp', DAYOFF_PATTERN: 'av-dayoff-change.webp', MANPOWER: 'av-manpower.webp', TRAINING_REQ: 'av-training.webp', PR: 'av-pr.webp', MATERIAL: 'av-material.webp' };
+/* v1.17.5 ไอคอน 3D กระจกฟ้าประจำประเภทคำขอ (แบบที่ผู้ใช้เลือก แทนอวตาร v1.17.4) — ประเภทที่ไม่มีไฟล์ใช้ไอคอนเส้นในวงเรืองแสง */
+const DT_AVATAR = { LEAVE: 'ic-leave.webp', SHIFT_CHANGE: 'ic-shift-change.webp', DAYOFF_CHANGE: 'ic-dayoff-change.webp', TIME_ADD: 'ic-time-add.webp', OT: 'ic-ot.webp', FACE_PHOTO: 'ic-face-photo.webp', RESIGN: 'ic-resign.webp', DAYOFF_PATTERN: 'ic-dayoff-pattern.webp', MANPOWER: 'ic-manpower.webp', TRAINING_REQ: 'ic-training-req.webp', PR: 'ic-pr.webp', MATERIAL: 'ic-material.webp' };
 const DT_COLOR = { LEAVE: '#16a34a', SHIFT_CHANGE: '#2563eb', DAYOFF_CHANGE: '#7c3aed', TIME_ADD: '#0e7490', OT: '#ea8a0c', FACE_PHOTO: '#db2777', RESIGN: '#b91c1c', DAYOFF_PATTERN: '#7c3aed', MANPOWER: '#0891b2', TRAINING_REQ: '#4f46e5', PR: '#0d9488', MATERIAL: '#a16207' };
 const WD = ['', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'];
 const OT_DAY = { WORKDAY: 'OT วันทำงาน', HOLIDAY_WORK: 'ทำงานวันหยุด', HOLIDAY_OT: 'OT วันหยุด' };
