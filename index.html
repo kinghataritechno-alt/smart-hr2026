@@ -1592,7 +1592,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.10</div>
+      <div class="sbver">Smart Terminal HR<br>v1.17.11</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1667,6 +1667,30 @@ async function openNotif(btn) {
 /* v1.11 ฉากภาพประกอบมือถือ: เช้า (06:00–16:59 เวลาไทย) / กลางคืน — อัปเดตทุก 5 นาที */
 function setTod() { let h = 12; try { h = Number(new Date().toLocaleString('en-US', { timeZone: CFG.tz, hour: 'numeric', hour12: false })) % 24; } catch (e) { } document.documentElement.dataset.tod = h >= 6 && h < 17 ? 'day' : 'night'; try { const n = Math.floor(Date.parse(new Date().toLocaleDateString('en-CA', { timeZone: CFG.tz })) / 864e5); const D = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6'], N = ['n1', 'n2', 'n3']; const st = document.documentElement.style; st.setProperty('--scene-d', `url(bg-${D[n % D.length]}.jpg?v=2)`); st.setProperty('--scene-n', `url(bg-${N[n % N.length]}.jpg?v=2)`); } catch (e) { } let w = ''; try { w = new Date().toLocaleDateString('en-US', { timeZone: CFG.tz, weekday: 'short' }).slice(0, 3).toLowerCase(); } catch (e) { } if (/^(sun|mon|tue|wed|thu|fri|sat)$/.test(w)) document.documentElement.dataset.wd = w; }
 setInterval(setTod, 300000);
+/* ===== v1.17.11 รีเฟรชอัตโนมัติ =====
+   1) อัปเดตแอปเอง: ตรวจเวอร์ชันบนเซิร์ฟเวอร์ทุก 3 นาที และเมื่อกลับมาเปิดแอป — ถ้ามีเวอร์ชันใหม่จะโหลดใหม่ทันทีเมื่อไม่ได้กรอกข้อมูลค้างอยู่
+   2) ข้อมูลล่าสุด: กลับมาเปิดแอปหลังพักเกิน 1 นาที หรืออยู่หน้าหลัก/อนุมัติ โดยไม่ได้ใช้งานเกิน 2 นาที → ดึงข้อมูลหน้าปัจจุบันใหม่ */
+const VER_RX = /class="sbver">Smart Terminal HR<br>(v[\d.]+)</;
+const APP_VER = ((document.documentElement.innerHTML.match(VER_RX)) || [])[1] || '';
+let lastAct = Date.now(), hiddenAt = 0, pendingUpd = false;
+['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(ev => addEventListener(ev, () => { lastAct = Date.now(); }, { passive: true, capture: true }));
+const busy = () => !!document.querySelector('.ov') || [...document.querySelectorAll('input:not([type=hidden]):not([type=checkbox]):not([type=radio]),textarea')].some(x => x === document.activeElement || (x.value && !x.readOnly && !x.closest('.search') && x.type !== 'date' && x.type !== 'month' && x.tagName === 'TEXTAREA'));
+async function checkUpdate() {
+  try {
+    if (!APP_VER) return;
+    const t = await (await fetch('index.html?_=' + Date.now(), { cache: 'no-store' })).text();
+    const v = (t.match(VER_RX) || [])[1];
+    if (v && v !== APP_VER) { pendingUpd = true; if (!busy()) { try { toast('มีเวอร์ชันใหม่ ' + v + ' — กำลังอัปเดต…'); } catch (e) { } setTimeout(() => location.reload(), 900); } }
+  } catch (e) { }
+}
+setInterval(() => { checkUpdate(); if (pendingUpd) return;
+  if (S.ctx && !document.hidden && Date.now() - lastAct > 120000 && !busy() && /^(dashboard|approve|hrwork|docs)/.test(document.documentElement.dataset.page || '')) { lastAct = Date.now(); try { route(); } catch (e) { } } }, 180000);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { hiddenAt = Date.now(); return; }
+  checkUpdate();
+  if (S.ctx && hiddenAt && Date.now() - hiddenAt > 60000 && !busy()) { try { route(); } catch (e) { } }
+  hiddenAt = 0;
+});
 async function route() {
   const h = (location.hash || '#/dashboard').slice(2) || 'dashboard';
   S.route = h; const [k, ...params] = h.split('/');
@@ -3317,8 +3341,13 @@ async function docDetail(el, id, opt = {}) {
   const curStep = inst && inst.status === 'PENDING' ? steps[inst.current_step - 1] : null;
   const iAmApprover = curStep && ((curStep.approvers || []).includes(me().id) || curStep.backup === me().id) && !mine;
   const ACT = { SUBMIT: 'ส่งอนุมัติ', RESUBMIT: 'ส่งอนุมัติอีกครั้ง', APPROVE: 'อนุมัติ', REJECT: 'ไม่อนุมัติ', RETURN: 'ส่งกลับแก้ไข', CANCEL: 'ยกเลิก' };
+  /* v1.17.11 ขั้นสุดท้ายที่เป็น HR = "HR รับทราบ" (ไม่เรียกว่าอนุมัติ) */
+  const isAck = n => { const s = steps[n - 1]; return !!s && s.resolver === 'HR_ROLE' && n === steps.length; };
+  const stepName = (s, n) => isAck(n) ? 'HR รับทราบ' : s.name;
+  const actName = (a, n) => a === 'APPROVE' && isAck(n) ? 'รับทราบ' : (ACT[a] || a);
+  const ackNow = inst && inst.status === 'PENDING' && isAck(inst.current_step);
   const back = opt.back || (mine ? '#/docs' : '#/approve');
-  el.innerHTML = pageHead(`${dtName(d.document_type_id)}`, badge(DOC_STATUS, d.status), back) + `<div class="grid g2" style="align-items:start">
+  el.innerHTML = pageHead(`${dtName(d.document_type_id)}`, ackNow && d.status === 'PENDING' ? '<span class="badge b-warn">รอ HR รับทราบ</span>' : badge(DOC_STATUS, d.status), back) + `<div class="grid g2" style="align-items:start">
     <div class="card"><h3>${ic(DT_ICON[code] || 'file')} รายละเอียด</h3>${kv([['เลขที่เอกสาร', `<span class="mono">${esc(d.document_no || '(ร่าง)')}</span>`], ['ผู้ยื่น', `${esc(empName(d.requester_employee_id, true))}<div class="tiny muted">${esc((S.dirMap[d.requester_employee_id] || {}).position_name || '')} · ${esc((S.dirMap[d.requester_employee_id] || {}).branch_name || '')}</div>`], ['รายการ', esc(docSummary(d))], ['เหตุผล', esc(d.reason || '–')], ['ยื่นเมื่อ', d.submitted_at ? fDT(d.submitted_at) : '–'], ['เสร็จสิ้นเมื่อ', d.completed_at ? fDT(d.completed_at) : '–'],
       ['ไฟล์แนบ', atts.length ? atts.map(a => `<button class="btn sm" data-dl="${esc(a.file_path)}">${ic('clip')} ${esc(a.file_name)}</button>`).join(' ') : '–']])}
      <div class="row" style="margin-top:16px">
@@ -3326,12 +3355,12 @@ async function docDetail(el, id, opt = {}) {
       ${mine && d.status === 'DRAFT' ? `<button class="btn ghost" id="xdel">${ic('trash')} ลบร่าง</button>` : ''}
       ${(mine && ['PENDING', 'RETURNED'].includes(d.status)) || (can.hr() && ['PENDING', 'APPROVED', 'RETURNED'].includes(d.status)) ? `<button class="btn bad" id="xcan">${ic('x')} ยกเลิกเอกสาร</button>` : ''}
      </div>
-     ${iAmApprover ? `<div class="card" style="margin-top:16px;background:var(--brand-3);border-color:transparent"><b>ขั้นที่ ${inst.current_step}: ${esc(curStep.name)}</b>${curStep.backup === me().id && !(curStep.approvers || []).includes(me().id) ? ' <span class="badge b-warn">ในฐานะผู้อนุมัติสำรอง</span>' : ''}
-       <textarea class="inp" id="xcm" placeholder="ความเห็น (จำเป็นเมื่อไม่อนุมัติ/ส่งกลับ)" style="margin:10px 0"></textarea>
-       <div class="row"><button class="btn good" data-a="APPROVE">${ic('check')} อนุมัติ</button><button class="btn" data-a="RETURN">${ic('back')} ส่งกลับแก้ไข</button><button class="btn bad" data-a="REJECT">${ic('x')} ไม่อนุมัติ</button></div></div>` : ''}</div>
+     ${iAmApprover ? `<div class="card" style="margin-top:16px;background:var(--brand-3);border-color:transparent"><b>ขั้นที่ ${inst.current_step}: ${esc(stepName(curStep, inst.current_step))}</b>${curStep.backup === me().id && !(curStep.approvers || []).includes(me().id) ? ' <span class="badge b-warn">ในฐานะผู้อนุมัติสำรอง</span>' : ''}
+       <textarea class="inp" id="xcm" placeholder="${ackNow ? 'หมายเหตุ (จำเป็นเมื่อส่งกลับ/ไม่รับ)' : 'ความเห็น (จำเป็นเมื่อไม่อนุมัติ/ส่งกลับ)'}" style="margin:10px 0"></textarea>
+       <div class="row"><button class="btn good" data-a="APPROVE">${ic('check')} ${ackNow ? 'รับทราบ' : 'อนุมัติ'}</button><button class="btn" data-a="RETURN">${ic('back')} ส่งกลับแก้ไข</button><button class="btn bad" data-a="REJECT">${ic('x')} ไม่อนุมัติ</button></div></div>` : ''}</div>
     <div class="card"><h3>${ic('stamp')} สายอนุมัติ</h3>${steps.length ? `<div class="tl">${steps.map((s, i) => { const done = acts.filter(a => a.step_order === i + 1 && a.action_at >= (inst.started_at || '')).pop(); const st = done ? (done.action === 'APPROVE' ? 'ok' : 'no') : (inst.status === 'PENDING' && inst.current_step === i + 1 ? 'cur' : '');
-        return `<div class="${st}"><b>ขั้นที่ ${i + 1} · ${esc(s.name)}</b><div class="small muted">${(s.approvers || []).map(a => esc(empName(a))).slice(0, 4).join(', ')}${(s.approvers || []).length > 4 ? ` และอีก ${(s.approvers || []).length - 4} คน` : ''}${s.backup ? ` · สำรอง: ${esc(empName(s.backup))}` : ''}</div>${done ? `<div class="small">${esc(ACT[done.action])} โดย ${esc(empName(done.actor_employee_id))}${done.acting_as_backup ? ' (สำรอง)' : ''} · ${fDT(done.action_at)}${done.comments ? `<div class="muted">“${esc(done.comments)}”</div>` : ''}</div>` : st === 'cur' ? '<div class="small" style="color:var(--warn)">รอดำเนินการ</div>' : ''}</div>`; }).join('')}</div>` : '<div class="muted small">ยังไม่ได้ส่งอนุมัติ</div>'}
-     <h3 style="margin-top:16px">${ic('history')} ประวัติการดำเนินการ</h3><div class="tl">${acts.map(a => `<div class="${a.action === 'APPROVE' ? 'ok' : ['REJECT', 'CANCEL'].includes(a.action) ? 'no' : ''}"><b>${esc(ACT[a.action] || a.action)}</b>${a.step_order ? ` <span class="tiny muted">ขั้นที่ ${a.step_order}</span>` : ''}<div class="small muted">${esc(empName(a.actor_employee_id))} · ${fDT(a.action_at)}</div>${a.comments ? `<div class="small">“${esc(a.comments)}”</div>` : ''}</div>`).join('') || '<div class="muted small">–</div>'}</div></div></div>`;
+        return `<div class="${st}"><b>ขั้นที่ ${i + 1} · ${esc(stepName(s, i + 1))}</b><div class="small muted">${(s.approvers || []).map(a => esc(empName(a))).slice(0, 4).join(', ')}${(s.approvers || []).length > 4 ? ` และอีก ${(s.approvers || []).length - 4} คน` : ''}${s.backup ? ` · สำรอง: ${esc(empName(s.backup))}` : ''}</div>${done ? `<div class="small">${esc(actName(done.action, i + 1))} โดย ${esc(empName(done.actor_employee_id))}${done.acting_as_backup ? ' (สำรอง)' : ''} · ${fDT(done.action_at)}${done.comments ? `<div class="muted">“${esc(done.comments)}”</div>` : ''}</div>` : st === 'cur' ? '<div class="small" style="color:var(--warn)">รอดำเนินการ</div>' : ''}</div>`; }).join('')}</div>` : '<div class="muted small">ยังไม่ได้ส่งอนุมัติ</div>'}
+     <h3 style="margin-top:16px">${ic('history')} ประวัติการดำเนินการ</h3><div class="tl">${acts.map(a => `<div class="${a.action === 'APPROVE' ? 'ok' : ['REJECT', 'CANCEL'].includes(a.action) ? 'no' : ''}"><b>${esc(actName(a.action, a.step_order))}</b>${a.step_order ? ` <span class="tiny muted">ขั้นที่ ${a.step_order}</span>` : ''}<div class="small muted">${esc(empName(a.actor_employee_id))} · ${fDT(a.action_at)}</div>${a.comments ? `<div class="small">“${esc(a.comments)}”</div>` : ''}</div>`).join('') || '<div class="muted small">–</div>'}</div></div></div>`;
   on(el, 'click', '[data-dl]', async (e, b) => { const u = await guard(() => signedUrl(b.dataset.dl)); window.open(u, '_blank', 'noopener'); });
   if ($('#xsub')) $('#xsub').onclick = async () => { const r = await guard(() => rpc('doc_submit', { p_doc: d.id })); toast(r && r.auto ? 'บันทึกแล้ว — กรรมการบริษัทไม่ต้องขออนุมัติ' : 'ส่งอนุมัติแล้ว', 'good'); docDetail(el, id, opt); };
   if ($('#xdel')) $('#xdel').onclick = async () => { if (await confirmDlg('ลบร่างเอกสารนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from('document_requests').delete().eq('id', d.id)), 'ลบแล้ว'); location.hash = '#/docs'; } };
@@ -3339,9 +3368,9 @@ async function docDetail(el, id, opt = {}) {
   on(el, 'click', '[data-a]', async (e, b) => {
     const a = b.dataset.a; const cm = $('#xcm').value.trim();
     if (a !== 'APPROVE' && !cm) return toast('กรุณาระบุเหตุผล', 'bad');
-    if (a === 'APPROVE' && !await confirmDlg('ยืนยันอนุมัติเอกสารนี้?', { okText: 'อนุมัติ' })) return;
+    if (a === 'APPROVE' && !await confirmDlg(ackNow ? 'ยืนยัน HR รับทราบเอกสารนี้? (ขั้นสุดท้าย)' : 'ยืนยันอนุมัติเอกสารนี้?', { okText: ackNow ? 'รับทราบ' : 'อนุมัติ' })) return;
     $$('[data-a]', el).forEach(x => x.disabled = true);
-    try { const r = await rpc('doc_act', { p_doc: d.id, p_action: a, p_comment: cm || null, p_step: inst.current_step }); toast(r.status === 'APPROVED' ? 'อนุมัติขั้นสุดท้ายแล้ว' : r.status === 'PENDING' ? 'อนุมัติแล้ว ส่งต่อขั้นถัดไป' : 'บันทึกแล้ว', 'good'); refreshCounters(); location.hash = '#/approve'; }
+    try { const r = await rpc('doc_act', { p_doc: d.id, p_action: a, p_comment: cm || null, p_step: inst.current_step }); toast(r.status === 'APPROVED' ? (ackNow ? 'HR รับทราบแล้ว — เอกสารเสร็จสมบูรณ์' : 'อนุมัติขั้นสุดท้ายแล้ว') : r.status === 'PENDING' ? 'อนุมัติแล้ว ส่งต่อขั้นถัดไป' : 'บันทึกแล้ว', 'good'); refreshCounters(); location.hash = '#/approve'; }
     catch (err) { toast(errMsg(err), 'bad'); docDetail(el, id, opt); }
   });
 }
