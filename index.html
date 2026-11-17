@@ -1572,7 +1572,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.8</div>
+      <div class="sbver">Smart Terminal HR<br>v1.17.9</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#c7d6f5" data-act="theme" title="สลับโหมดสี">${ic('moon')}</button><button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1893,7 +1893,7 @@ PAGES.dashboard = async el => {
   const kp = (v, l, i, c, href) => `<a class="card kpi" ${href ? `href="${href}"` : ''} style="color:inherit"><span class="ic" style="background:${c}">${ic(i)}</span><span class="v">${v}</span><span class="l">${l}</span></a>`;
   const bars = (list, max) => (list || []).slice(0, 12).map(x => `<div class="hbar"><span class="t" title="${esc(x.name)}">${esc(x.name)}</span><span class="b"><i style="width:${Math.max(3, (x.n / (max || 1)) * 100)}%"></i></span><span class="n">${num(x.n)}</span></div>`).join('') || emptyBox('ยังไม่มีข้อมูล');
   const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
-  const bod = e.position_name === 'กรรมการบริษัท'; /* v1.16.1 กรรมการบริษัทไม่ใช้การ์ดเวลาเข้า-ออก */
+  const bod = attExempt(e); /* v1.16.1 กรรมการบริษัทไม่ใช้การ์ดเวลาเข้า-ออก */
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
    <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
@@ -1970,7 +1970,7 @@ async function hrAgentData() {
   const e = me(); const t = todayStr(); const p = dParts(t);
   const from = `${p.y}-${String(p.m).padStart(2, '0')}-01`;
   if (e.is_system) return { sys: true };
-  if (e.position_name === 'กรรมการบริษัท') return { bod: true }; /* v1.13.1 กรรมการบริษัท (BOD) ไม่ตรวจเวลาเข้างาน */
+  if (attExempt(e)) return { bod: true }; /* v1.13.1 กรรมการบริษัท (BOD) ไม่ตรวจเวลาเข้างาน */
   const rows = await q(sb.from('attendance_daily_summaries').select('work_date,first_in,last_out,scheduled_start,late_minutes,attendance_status,leave_type_code').eq('employee_id', e.id).gte('work_date', from).lte('work_date', t).order('work_date'));
   const today = rows.find(r => r.work_date === t) || null;
   const late = rows.filter(r => (r.late_minutes || 0) > 0);
@@ -2000,6 +2000,8 @@ function hrAgentVerdict(a) {
     d: `วันนี้เข้างาน ${fT(td.first_in)} น.` };
 }
 /* v1.13 การ์ด HR Agent ใหม่: หุ่นยนต์ HR AI (hr-agent.webp) + หัวข้อใหญ่ตามผลตรวจ + กล่องคำพูด + สถิติ 3 ช่อง */
+/* v1.17.9 ผู้บริหารที่ไม่ต้องบันทึกเวลาเข้า-ออก: ติ๊กรายคน (employees.attendance_exempt) หรือตำแหน่งกรรมการบริษัท */
+const attExempt = x => !!x && (x.position_name === 'กรรมการบริษัท' || x.attendance_exempt === true || (me() && x.id === me().id && me().attendance_exempt === true));
 async function hrAgentCard(host, pend = 0) {
   const a = await hrAgentData(); const v = hrAgentVerdict(a);
   const tone = v.bn === 'ok' ? 'ok' : v.bn === 'bad' ? 'bad' : 'info';
@@ -2364,7 +2366,8 @@ const empFields = (isNew) => [
   { k: 'hire_date', label: 'วันที่เริ่มงาน', type: 'date' }, { k: 'regularization_date', label: 'วันที่บรรจุ', type: 'date' },
   { k: 'advance_limit', label: 'วงเงินเบิกล่วงหน้า (บาท)', type: 'number', step: '0.01' },
   { k: 'sso_status', label: 'สถานะประกันสังคม', type: 'select', opts: [['SUBMITTED', 'ส่งประกันสังคม'], ['NOT_SUBMITTED', 'ไม่ส่งประกันสังคม']] },
-  { k: 'tax_status', label: 'สถานะภาษี', ph: 'เช่น โสด/สมรส' }
+  { k: 'tax_status', label: 'สถานะภาษี', ph: 'เช่น โสด/สมรส' },
+  { k: 'attendance_exempt', label: 'ไม่ต้องบันทึกเวลาเข้า-ออก (ผู้บริหารระดับสูงสุด) — ไม่คิดสาย/ขาดงาน', type: 'check', full: true }
 ];
 const sensFields = [
   { type: 'section', label: 'ข้อมูลอ่อนไหว (PDPA) — เห็นเฉพาะ HR และเจ้าของข้อมูล' },
@@ -2425,7 +2428,7 @@ async function addEmployee() {
   const f = [...empFields(true), { type: 'section', label: 'สังกัด' }, ...asgFields()];
   const fm = formModal({ title: 'เพิ่มพนักงาน', wide: true, fields: f, onSubmit: async v => { v = asgSave(v);
     const pat = S.settings.employee_code_pattern; if (pat && !(new RegExp(pat)).test(v.employee_code)) throw new Error('รหัสพนักงานไม่ตรงรูปแบบที่กำหนด');
-    const ef = ['employee_code', 'title_th', 'first_name', 'last_name', 'first_name_en', 'last_name_en', 'nickname', 'gender', 'nationality', 'birth_date', 'phone', 'email', 'employee_type', 'employee_status', 'hire_date', 'regularization_date', 'advance_limit', 'sso_status', 'tax_status'];
+    const ef = ['employee_code', 'title_th', 'first_name', 'last_name', 'first_name_en', 'last_name_en', 'nickname', 'gender', 'nationality', 'birth_date', 'phone', 'email', 'employee_type', 'employee_status', 'hire_date', 'regularization_date', 'advance_limit', 'sso_status', 'tax_status', 'attendance_exempt'];
     const row = Object.fromEntries(ef.map(k => [k, v[k]]));
     const e = await q(sb.from('employees').insert(row).select().single());
     await q(sb.from('employee_assignments').insert({ employee_id: e.id, branch_id: v.branch_id, department_id: v.department_id, organizational_unit_id: v.organizational_unit_id, position_id: v.position_id, supervisor_employee_id: v.supervisor_employee_id, effective_from: v.effective_from, reason: v.reason || 'พนักงานใหม่' }));
