@@ -1678,7 +1678,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.18.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.18.2</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -2012,7 +2012,7 @@ PAGES.profile = async el => {
   ${sys ? '' : '<div id="porg" style="margin-top:14px"><div class="card"><div class="spin"></div></div></div>'}
   <div class="card mlist" style="margin-top:14px">${menuShown.map(([i, t, d, h]) => `<a class="mitem ${h ? '' : 'dis'}" ${h ? `href="${h}"` : ''}><span class="mi">${ic(i)}</span><span class="grow"><b>${t}</b><span>${d}</span></span>${ic('chev')}</a>`).join('')}</div>
   <div class="card mlist" style="margin-top:14px">
-    <a class="mitem" id="pphoto"><span class="mi">${ic('up')}</span><span class="grow"><b>เปลี่ยนรูปโปรไฟล์</b><span>JPG/PNG ไม่เกิน 10MB</span></span>${ic('chev')}</a>
+    <a class="mitem" id="pphoto"><span class="mi">${ic('up')}</span><span class="grow"><b>เปลี่ยนรูปโปรไฟล์</b><span>ถ่ายรูปด้วยกล้อง หรือเลือกรูปจากเครื่อง</span></span>${ic('chev')}</a>
     <a class="mitem" id="ppw"><span class="mi">${ic('key')}</span><span class="grow"><b>เปลี่ยนรหัสผ่าน</b><span>อย่างน้อย 8 ตัวอักษร</span></span>${ic('chev')}</a>
     ${simple ? '' : `<a class="mitem" href="#/tasks"><span class="mi">${ic('tasks')}</span><span class="grow"><b>สิ่งที่ต้องทำ</b><span>งานที่ได้รับมอบหมาย</span></span>${ic('chev')}</a>
     <a class="mitem" href="#/reports"><span class="mi">${ic('report')}</span><span class="grow"><b>รายงาน</b><span>ตามสิทธิ์ของท่าน</span></span>${ic('chev')}</a>`}
@@ -2021,8 +2021,8 @@ PAGES.profile = async el => {
     <a class="mitem bad" data-act="logout"><span class="mi">${ic('logout')}</span><span class="grow"><b>ออกจากระบบ</b></span></a></div>`;
   $('#ppw').onclick = () => formModal({ title: 'เปลี่ยนรหัสผ่าน', fields: [{ k: 'p1', label: 'รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)', type: 'password', req: true, full: true }, { k: 'p2', label: 'ยืนยันรหัสผ่านใหม่', type: 'password', req: true, full: true }],
     onSubmit: async v => { if (v.p1.length < 8) throw new Error('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'); if (v.p1 !== v.p2) throw new Error('รหัสผ่านไม่ตรงกัน'); const r = await sb.auth.updateUser({ password: v.p1, data: { weak_password: false } }); if (r.error) throw r.error; toast('เปลี่ยนรหัสผ่านแล้ว', 'good'); } });
-  $('#pphoto').onclick = () => { if (sys) return toast('บัญชีระบบไม่มีรูปโปรไฟล์', 'bad'); formModal({ title: 'เปลี่ยนรูปโปรไฟล์', fields: [{ k: 'f', label: 'ไฟล์รูป (JPG/PNG ไม่เกิน 10MB)', type: 'file', accept: 'image/*', req: true, full: true }],
-    onSubmit: async v => { const f = await cropPhoto(v.f[0]); if (!f) return; const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
+  /* v1.18.2 รูปโปรไฟล์: ทุกบัญชีรวมบัญชีระบบ (admin) · ถ่ายรูปด้วยกล้องมือถือ (กล้องหน้า) หรือเลือกจากคลังรูป → ครอปวงกลม → อัปโหลด */
+  $('#pphoto').onclick = () => pickProfilePhoto(e);
   $$('.mitem.dis', el).forEach(x => x.onclick = () => toast('บัญชีระบบ (admin) ไม่มีข้อมูลพนักงาน'));
   if ($('#pplay')) { const cb = $('#pplay'); q(sb.from('employees').select('agent_playful').eq('id', e.id).maybeSingle()).then(r => { cb.checked = !r || r.agent_playful !== false; }).catch(() => { cb.checked = true; });
     cb.onchange = () => guard(() => rpc('hr_agent_set_playful', { p_on: cb.checked }), cb.checked ? 'เปิดข้อความแซวจาก HR Agent แล้ว' : 'ปิดแล้ว — HR Agent จะแสดงข้อความกลาง'); }
@@ -2061,6 +2061,25 @@ async function profileOrg(host) {
    ${o.team.length ? `<div class="card" style="margin-top:14px"><h3 style="margin-bottom:6px">${ic('users')} ผู้ที่ฉันอนุมัติให้ (ขั้นที่ 1) <span class="badge">${o.team.length} คน</span></h3>${o.team.map(x => `<div style="padding:6px 0;border-top:1px solid var(--line)">${P(x)}</div>`).join('')}</div>` : ''}`;
 }
 /* ครอปรูปโปรไฟล์เป็นสี่เหลี่ยมจัตุรัส ให้ใบหน้าอยู่กึ่งกลางกรอบวงกลม (ลาก/ซูมได้) */
+IP.camera = '<path d="M4 8.5A2.5 2.5 0 016.5 6h1.7l1.2-1.8A1.5 1.5 0 0110.6 3.5h2.8a1.5 1.5 0 011.2.7L15.8 6h1.7A2.5 2.5 0 0120 8.5v8A2.5 2.5 0 0117.5 19h-11A2.5 2.5 0 014 16.5z"/><circle cx="12" cy="12.5" r="3.5"/>';
+function pickProfilePhoto(e) {
+  const m = modal({ title: 'เปลี่ยนรูปโปรไฟล์', body: `<div class="small muted" style="margin-bottom:12px">ใช้รูปหน้าตรง เห็นใบหน้าชัดเจน · JPG/PNG ไม่เกิน 10MB</div>
+    <div style="display:grid;gap:10px">
+      <label class="btn pri" style="justify-content:center;min-height:48px;font-size:16px;cursor:pointer">${ic('camera')} ถ่ายรูปด้วยกล้อง<input type="file" accept="image/*" capture="user" id="phcam" hidden></label>
+      <label class="btn" style="justify-content:center;min-height:48px;font-size:16px;cursor:pointer">${ic('up')} เลือกรูปจากเครื่อง<input type="file" accept="image/*" id="phlib" hidden></label>
+      ${e.photo_path ? `<button class="btn ghost" id="phdel" style="justify-content:center">${ic('trash')} ลบรูปปัจจุบัน</button>` : ''}</div>`,
+    foot: `<button class="btn" data-c>ยกเลิก</button>` });
+  $('[data-c]', m.el).onclick = () => m.close();
+  const go = async inp => { const f0 = inp.files && inp.files[0]; inp.value = ''; if (!f0) return; m.close();
+    try { if (f0.type && !/^image\//.test(f0.type)) throw new Error('กรุณาเลือกไฟล์รูปภาพ'); if (f0.size > 10 * 1024 * 1024) throw new Error('ไฟล์ต้องไม่เกิน 10 MB');
+      const f = await cropPhoto(f0); if (!f) return; const path = `avatar/${e.id}/${Date.now()}.jpg`;
+      await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; if (me() && me().id === e.id) me().photo_path = path;
+      await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route();
+    } catch (err) { toast(errMsg(err), 'bad'); } };
+  $('#phcam', m.el).onchange = ev => go(ev.target); $('#phlib', m.el).onchange = ev => go(ev.target);
+  if ($('#phdel', m.el)) $('#phdel', m.el).onclick = async () => { m.close(); if (!await confirmDlg('ลบรูปโปรไฟล์ปัจจุบัน?', { danger: true, okText: 'ลบรูป' })) return;
+    await guard(() => rpc('clear_my_photo'), 'ลบรูปแล้ว'); e.photo_path = null; if (me() && me().id === e.id) me().photo_path = null; renderShell(); route(); };
+}
 function cropPhoto(file) {
   return new Promise((res, rej) => {
     const img = new Image(); img.onerror = () => rej(new Error('ไฟล์รูปไม่ถูกต้อง'));
