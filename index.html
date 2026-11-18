@@ -1060,6 +1060,91 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   :root:not(#_):not(#__):not(#___):has(.shell) :is(.card,.panel,.kcard,.tbl-wrap,.hra,.bnav,.sb,.hero .tiles .tile .ti){background:rgba(22,36,68,.88)!important}
 }
+/* ===================== v1.18.0 — เกม & กิจกรรม (SMART Bingo) โทนฟ้า-น้ำเงิน บนกระจก Liquid Glass ===================== */
+:root{--gb1:#8fd0ff;--gb2:#1f6fd6;--gbg:linear-gradient(180deg,rgba(110,190,255,.96),rgba(30,100,210,.95))}
+.gcard{margin-bottom:14px}
+.gtag{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:20px;color:#fff;text-shadow:none;white-space:nowrap}
+.gtag i{width:7px;height:7px;border-radius:50%;background:#fff}
+.gtag.open{background:rgba(70,200,130,.85);box-shadow:0 0 12px rgba(90,230,150,.55)}
+.gtag.live{background:rgba(255,80,70,.9);box-shadow:0 0 12px rgba(255,90,80,.7)}
+.gtag.live i{animation:gblink 1.2s infinite}
+.gtag.end{background:rgba(120,130,150,.6)}
+@keyframes gblink{50%{opacity:.25}}
+.gpts{font-size:13px;font-weight:600;padding:5px 12px;border-radius:18px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);white-space:nowrap}
+.gcount{font-size:40px;font-weight:700;letter-spacing:1px;line-height:1.05;color:#9fd8ff;text-shadow:0 0 16px rgba(80,170,255,.8),0 2px 4px rgba(0,0,0,.5);font-variant-numeric:tabular-nums}
+.gavs{display:flex;justify-content:flex-end}.gavs .avatar{width:30px;height:30px;margin-left:-7px;border:2px solid rgba(255,255,255,.85);font-size:12px}
+.ginfo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.ginfo>div,.gprize>div{padding:8px 11px;border-radius:16px;font-size:12.5px;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(0,0,0,.20));border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.ginfo b{display:block;font-size:15px}
+.btn.gblue{background:var(--gbg)!important;color:#fff!important;border:0!important;font-weight:600;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),inset 0 -2px 0 rgba(0,30,90,.35),0 8px 20px rgba(30,110,230,.45)!important;text-shadow:0 1px 2px rgba(0,30,90,.4)}
+.btn.gbig{width:100%;height:50px;border-radius:25px;font-size:17px;justify-content:center}
+.gslots{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.gslot{display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:16px;color:#fff;text-decoration:none;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.4)}
+.gslot.ok{border:1px solid rgba(150,210,255,.7);background:rgba(70,150,255,.18)}
+.gslot.opt{opacity:.75}
+.gslot-e{aspect-ratio:1;display:grid;place-items:center;align-content:center;gap:4px;font-size:12px}
+.gsl{font-size:12px;text-align:center}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.g3>span{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-weight:600;font-size:15px;color:#fff;background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.g3>span.m{background:linear-gradient(180deg,var(--gb1),var(--gb2));box-shadow:0 0 10px rgba(80,160,255,.8),inset 0 1px 0 rgba(255,255,255,.7)}
+.g3>span.w{background:linear-gradient(180deg,#7ff5b0,#1fae63);box-shadow:0 0 14px rgba(100,240,160,.85),inset 0 1px 0 rgba(255,255,255,.7)}
+.g3>span.need{outline:2px dashed #9fd8ff;outline-offset:-3px;color:#9fd8ff}
+.g3.sm{width:84px;flex:none}.g3.sm>span{font-size:11px;border-radius:5px}
+.gball{width:92px;height:92px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:44px;font-weight:700;color:#fff;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95),rgba(160,215,255,.9) 18%,rgba(40,120,230,.95) 60%,rgba(10,40,120,.95));
+  box-shadow:0 0 30px rgba(70,160,255,.85),inset 0 -6px 12px rgba(0,20,80,.5);text-shadow:0 2px 4px rgba(0,20,70,.6)}
+.gchips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.gchips span{min-width:36px;height:30px;padding:0 6px;border-radius:15px;display:grid;place-items:center;font-weight:600;font-size:14.5px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(0,0,0,.2));box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.gminis{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:8px}
+.gmini{padding:7px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(0,0,0,.20));box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.gmini .t{font-size:11.5px;text-align:center;margin-bottom:4px}
+.gmini.near{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 0 2px rgba(140,205,255,.85),0 0 18px rgba(70,160,255,.6)}
+.gnear,.gwinbox{margin-top:10px;padding:9px 12px;border-radius:14px;font-size:13.5px;background:rgba(70,150,255,.25);border:1px solid rgba(150,210,255,.6)}
+.gwinbox{background:rgba(70,220,140,.22);border-color:rgba(140,255,190,.6)}
+.gboard{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-width:560px}
+.gcard .btn.grow{justify-content:center}
+.gboard span{height:32px;border-radius:9px;display:grid;place-items:center;font-weight:600;font-size:14px;background:rgba(255,255,255,.10);color:rgba(255,255,255,.65)}
+.gboard span.on{background:linear-gradient(180deg,var(--gb1),var(--gb2));color:#fff;box-shadow:0 0 8px rgba(80,160,255,.6)}
+.gboard span.last{outline:2px solid #fff;outline-offset:1px}
+.gplist{display:flex;flex-wrap:wrap;gap:6px}
+.gplist>span{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;border-radius:20px;font-size:13px;background:rgba(255,255,255,.12)}
+.gplist .avatar{width:24px;height:24px;font-size:11px}
+.gpast{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.14);font-size:14px}
+.gpast:first-of-type{border-top:0}
+.gwinrow{display:flex;align-items:center;gap:10px;padding:8px 0}
+.gmono{font-family:ui-monospace,Menlo,monospace;font-size:12px;word-break:break-all;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.25);margin-top:4px}
+.gproof{margin-top:12px;padding:10px;border-radius:12px;font-weight:600;text-align:center}
+.gproof.ok{background:rgba(70,220,140,.25);color:#9ff5c0}.gproof.bad{background:rgba(255,80,70,.25);color:#ffb0aa}
+.gempty{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:26px 16px}
+.gempty>svg{width:46px;height:46px;stroke:#9fd8ff}
+/* เลือกเลข */
+.gbig3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:min(240px,70%);margin:10px auto 12px}
+.gbig3 button{aspect-ratio:1;border-radius:14px;border:0;font:inherit;font-size:24px;font-weight:700;color:#fff;background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);cursor:pointer}
+.gbig3 button.sel{background:rgba(120,190,255,.25);outline:2.5px solid #9fd8ff;outline-offset:-3px;color:#9fd8ff}
+.gpad{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.gpad button{height:36px;border-radius:10px;border:0;font:inherit;font-weight:600;font-size:14.5px;color:#fff;background:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);cursor:pointer}
+.gpad button.u{background:linear-gradient(180deg,var(--gb1),var(--gb2));opacity:.55}
+.gslotbar{display:flex;gap:6px;margin-top:12px}
+.gslotbar a{flex:1;padding:6px 0;border-radius:12px;text-align:center;font-size:12px;font-weight:600;color:#fff;text-decoration:none;background:rgba(255,255,255,.1);border:1px dashed rgba(255,255,255,.5)}
+.gslotbar a.ok{background:rgba(90,220,150,.3);border:1px solid rgba(140,255,190,.6)}
+.gslotbar a.cur{background:rgba(70,150,255,.45);border:1px solid rgba(160,215,255,.9)}
+/* ผู้ชนะ */
+.gwinov .modal{max-width:400px}
+.gwin{position:relative;text-align:center;overflow:hidden}
+.gbingo{font-size:54px;font-weight:700;letter-spacing:3px;line-height:1.05;color:#9fd8ff;text-shadow:0 0 22px rgba(80,170,255,.95),0 3px 6px rgba(0,0,0,.5)}
+.gwav{display:flex;justify-content:center;margin:10px 0 6px}.gwav .avatar{width:86px;height:86px;font-size:32px;border:3px solid #fff;box-shadow:0 0 26px rgba(110,240,165,.8)}
+.gprize{display:flex;gap:8px;margin-top:14px}.gprize>div{flex:1}.gprize b{display:block;font-size:20px;color:#6ff0a4;text-shadow:0 0 12px rgba(110,240,164,.7)}
+.gconf{position:absolute;inset:0;pointer-events:none;z-index:0}.gwin>:not(.gconf){position:relative;z-index:1}
+.gconf i{position:absolute;top:-16px;width:8px;height:13px;border-radius:2px;animation:gfall 2.6s linear infinite}
+@keyframes gfall{to{transform:translateY(520px) rotate(540deg);opacity:.2}}
+/* ปุ่ม "เกม" บนหน้าหลัก */
+.tile.ghot{position:relative}
+.tile .cnt.gbadge{position:absolute;top:-4px;right:calc(50% - 52px);left:auto;bottom:auto;min-width:0;height:20px;line-height:20px;border-radius:10px;background:#2f7cf0;box-shadow:0 0 10px rgba(80,160,255,.8);padding:0 8px;font-size:11px;font-weight:700;color:#fff;text-shadow:none}
+.tile .cnt.gbadge.live{background:#ff5a4e;box-shadow:0 0 10px rgba(255,90,80,.8)}
+:root:not(#_):not(#__):not(#___):has(.shell) .hero .tiles .tile.ghot .ti{border-color:rgba(150,210,255,.95);box-shadow:var(--lg-sh),0 0 0 3px rgba(100,180,255,.35),0 0 22px rgba(70,160,255,.6)}
+:root:not(#_):not(#__):not(#___):has(.shell) .hra-game{text-decoration:none;color:#fff;margin-top:8px}
+:root:not(#_):not(#__):not(#___):has(.shell) .hra-game svg{color:#9fd8ff}
+@media (max-width:699px){.gcount{font-size:36px}.gball{width:84px;height:84px;font-size:40px}}
 /* ===================== v1.17 — หน้า Login แบบ Liquid Glass: ภาพประจำวันคมชัดเต็มจอ + ฟอร์มกระจก + ปุ่มเมนูกลม ===================== */
 .login{--lg-f:blur(7px) brightness(.72) contrast(1.18) saturate(1.35);--lg-bg:linear-gradient(180deg,rgba(255,255,255,.06) 0%,rgba(0,0,0,.10) 55%,rgba(0,0,0,.24) 100%);--lg-bd:rgba(255,255,255,.30);
   --lg-sh:inset 0 1.5px 0 rgba(255,255,255,.85),inset 1.5px 0 0 rgba(255,255,255,.28),inset -1px 0 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(255,255,255,.22),0 12px 28px rgba(0,0,0,.28);
@@ -1515,14 +1600,14 @@ const MODS = [
   { k: 'inbox', t: 'กล่องข้อความ HR', tl: 'ข้อความ<br>ถึง HR', i: 'chat', c: 'linear-gradient(135deg,#38bdf8,#0369a1)', show: () => can.hr(), cnt: () => S.hrInbox },
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
-const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' } };
+const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' }, game: { t: 'เกม & กิจกรรม', i: 'game' } };
 const BNAV_ALL = [['dashboard', 'หน้าหลัก', 'home'], ['chat', 'ChatHR', 'chat'], ['hrwork', 'งาน HR', 'board'], ['profile', 'โปรไฟล์', 'user']];
 /* v1.8.0: พนักงาน 3 แท็บ · ผู้มีสิทธิ์ HR 4 แท็บ (เพิ่ม "งาน HR" พร้อมตัวเลขงานค้าง) */
 const bnavItems = () => BNAV_ALL.filter(([k]) => k !== 'hrwork' || can.hr());
 const bnavCnt = k => k === 'hrwork' ? (S.pendingCount || 0) + (S.hrInbox || 0) : k === 'chat' ? (S.empChat || 0) : 0;
 const PAGES = {};
 const SIDE = [['dashboard', 'แดชบอร์ด', 'dash'], ['employees', 'พนักงาน', 'user'], ['org', 'โครงสร้างองค์กร', 'org'], ['time', 'เวลาเข้างาน', 'clock'], ['leave', 'การลา', 'plane'],
-  ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
+  ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['game', 'กิจกรรม & เกม', 'game'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
 
 /* ===================== LOGIN ===================== */
 /* พื้นหลังตามต้นแบบ: ภาพสำนักงานเบลอ (login-bg.jpg สกัดจากไฟล์ต้นแบบ) + เส้นคลื่นด้านล่าง */
@@ -1592,7 +1677,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.17.11</div>
+      <div class="sbver">Smart Terminal HR<br>v1.18.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1649,7 +1734,7 @@ async function openNotif(btn) {
   setTimeout(() => document.addEventListener('mousedown', close), 0);
   const rows = await q(sb.from('notifications').select('*').order('created_at', { ascending: false }).limit(40));
   d.innerHTML = `<div class="row" style="padding:10px 14px;border-bottom:1px solid var(--line)"><b>การแจ้งเตือน</b><span class="grow"></span><button class="btn sm ghost" id="nall">อ่านทั้งหมด</button></div><div style="overflow:auto">${rows.length ? rows.map(n =>
-    `<div class="it ${n.read_at ? '' : 'unread'}" data-id="${n.id}" data-ref="${esc(n.reference_type || '')}" data-rid="${esc(n.reference_id || '')}" data-nt="${esc(n.notification_type || '')}">${ic(n.notification_type === 'PAYSLIP' ? 'money' : n.reference_type === 'task' ? 'tasks' : n.notification_type === 'APPROVAL_PENDING' ? 'approve' : 'bell')}<div class="grow"><div style="font-weight:500">${esc(n.title)}</div><div class="small muted">${esc(n.message || '')}</div><div class="tiny muted">${fDT(n.created_at)}</div></div></div>`).join('') : emptyBox('ไม่มีการแจ้งเตือน', 'bell')}</div>`;
+    `<div class="it ${n.read_at ? '' : 'unread'}" data-id="${n.id}" data-ref="${esc(n.reference_type || '')}" data-rid="${esc(n.reference_id || '')}" data-nt="${esc(n.notification_type || '')}">${ic(/^GAME/.test(n.notification_type) ? 'game' : n.notification_type === 'PAYSLIP' ? 'money' : n.reference_type === 'task' ? 'tasks' : n.notification_type === 'APPROVAL_PENDING' ? 'approve' : 'bell')}<div class="grow"><div style="font-weight:500">${esc(n.title)}</div><div class="small muted">${esc(n.message || '')}</div><div class="tiny muted">${fDT(n.created_at)}</div></div></div>`).join('') : emptyBox('ไม่มีการแจ้งเตือน', 'bell')}</div>`;
   $('#nall', d).onclick = async () => { await q(sb.from('notifications').update({ read_at: new Date().toISOString() }).is('read_at', null)); d.remove(); refreshCounters(); };
   on(d, 'click', '.it', async (e, it) => {
     await sb.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', it.dataset.id);
@@ -1659,6 +1744,7 @@ async function openNotif(btn) {
     else if (ref === 'task') location.hash = '#/tasks/' + rid;
     else if (ref === 'payroll_run') location.hash = '#/payroll';
     else if (ref === 'employee') location.hash = '#/employee/' + rid;
+    else if (ref === 'game') location.hash = '#/game';
     else if (ref === 'hr_thread') location.hash = it.dataset.nt === 'HR_CHAT' && can.hr() ? '#/inbox/' + rid : '#/chat/t/' + rid;
   });
 }
@@ -1703,6 +1789,209 @@ async function route() {
   try { await PAGES[k](el, ...params); } catch (e) { console.error(e); el.innerHTML = `<div class="notice bad">${ic('alert')}<div>เกิดข้อผิดพลาด: ${esc(errMsg(e))}</div></div>`; }
 }
 const pageHead = (title, actions = '', back, icon) => `<div class="pagehead"><a class="btn ghost icon ${back ? '' : 'mback'}" href="${back || '#/dashboard'}" aria-label="กลับ">${ic('back')}</a>${icon ? `<span class="phi">${ic(icon)}</span>` : ''}<h2>${esc(title)}</h2><span class="grow"></span>${actions ? `<div class="pha row">${actions}</div>` : ''}</div>`;
+
+/* ===================== v1.18.0 เกม & กิจกรรม — SMART Bingo (การ์ด 3×3 · เลข 10–49 · HR Agent ออกเลขทุกชั่วโมงผ่าน pg_cron bingo_tick) =====================
+   ฐานข้อมูล: bingo_games / bingo_players / bingo_cards / bingo_draws / bingo_winners / game_points_ledger · ลำดับเลขลับเก็บใน bingo_secrets (ไม่มีใครอ่านได้)
+   ความโปร่งใส: ก่อนเริ่มเผยแพร่ SHA-256(salt:ลำดับเลข) จบเกมแล้วเปิด salt + ลำดับจริงให้ตรวจในเบราว์เซอร์ */
+IP.game = '<path d="M7 8h10a5 5 0 014.8 6.4l-.8 2.8a2.6 2.6 0 01-4.4 1l-2-2.2H9.4l-2 2.2a2.6 2.6 0 01-4.4-1l-.8-2.8A5 5 0 017 8z"/><path d="M7.5 11v4M5.5 13h4"/><path d="M16 12h.01M18 14.2h.01"/>';
+IP.dice = '<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M9 9h.01M15 9h.01M12 12h.01M9 15h.01M15 15h.01"/>';
+const G_ST = { OPEN: ['เปิดรับสมัคร', 'open'], LIVE: ['LIVE', 'live'], ENDED: ['จบแล้ว', 'end'], CANCELLED: ['ยกเลิก', 'end'] };
+const gHM = t => String(t || '').slice(0, 5);
+const gHh = t => { const x = gHM(t); return x.endsWith(':00') ? x.slice(0, 2) : x; };
+const gName = (id, fb) => { const e = S.dirMap[id] || (id === me().id ? me() : null); return e ? (e.nickname || e.first_name) : (fb || '–'); };
+const gAv = (id, fb) => { const e = S.dirMap[id] || (id === me().id ? me() : null); return e ? avatar(e) : `<span class="avatar">${esc((fb || '?').slice(0, 1))}</span>`; };
+const gCards = (st) => { const g = st.game; if (!g) return 0; if (g.cards_per_player) return g.cards_per_player; const n = Math.max(1, (st.players || []).length); return Math.max(1, Math.min(g.max_cards, Math.round(g.target_cards / n))); };
+let G_STATE = null, G_TIMER = null, G_POLL = null;
+async function gLoad() { const st = await rpc('bingo_state'); st.skew = Date.parse(st.now) - Date.now(); G_STATE = st; return st; }
+/* การ์ด 3×3: ช่องที่ออกแล้ว = ฟ้า · เส้นที่ชนะ = เขียว · ช่องที่รอ (เหลือ 1) = กรอบประ */
+function gCardHtml(nums, drawn, { line, cls = '' } = {}) {
+  const d = new Set(drawn || []); const L = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  const need = new Set(); L.forEach(l => { const miss = l.filter(i => !d.has(nums[i])); if (miss.length === 1) need.add(miss[0]); });
+  const win = new Set((line || []).map(x => x - 1));
+  return `<div class="g3 ${cls}">${nums.map((n, i) => `<span class="${win.has(i) ? 'w' : d.has(n) ? 'm' : need.has(i) && !line ? 'need' : ''}">${n}</span>`).join('')}</div>`;
+}
+const gMissing = (nums, drawn) => { const d = new Set(drawn || []); return Math.min(...[[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]].map(l => l.filter(i => !d.has(nums[i])).length)); };
+function gCountdown(el, at, skew) {
+  clearInterval(G_TIMER);
+  const tick = () => { if (!document.body.contains(el)) { clearInterval(G_TIMER); return; } const s = Math.max(0, Math.floor((Date.parse(at) - Date.now() - skew) / 1000));
+    el.textContent = `${String(Math.floor(s / 3600)).padStart(2, '0')}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; if (!s) { clearInterval(G_TIMER); setTimeout(() => { if (S.route.startsWith('game')) route(); }, 4000); } };
+  tick(); G_TIMER = setInterval(tick, 1000);
+}
+function gPoll(sig) {
+  clearInterval(G_POLL);
+  G_POLL = setInterval(async () => {
+    if (!S.route.startsWith('game') || document.hidden) { if (!S.route.startsWith('game')) clearInterval(G_POLL); return; }
+    if (busy()) return;
+    try { const st = await rpc('bingo_state'); const g = st.game || {}; if (`${g.id}|${g.status}|${(g.drawn || []).length}|${(st.players || []).length}` !== sig) route(); } catch (e) { }
+  }, 30000);
+}
+const gNext = g => { if (!g.next_draw_at) return '–'; const d = new Date(g.next_draw_at).toLocaleDateString('en-CA', { timeZone: CFG.tz }); return (d !== todayStr() ? fDL(d) + ' ' : '') + fT(g.next_draw_at) + ' น.'; };
+const gSig = st => { const g = st.game || {}; return `${g.id}|${g.status}|${(g.drawn || []).length}|${(st.players || []).length}`; };
+
+/* ปุ่ม "เกม" บนหน้าหลัก + คำชวนจาก HR Agent */
+const gameTile = () => ({ h: '#/game', i: 'game', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'เกม', game: 1 });
+async function gameHomeHint(root) {
+  try {
+    const st = await gLoad(); const g = st.game; const t = $('a.tile[href="#/game"]', root);
+    if (!g || !['OPEN', 'LIVE'].includes(g.status)) return;
+    if (t) { t.classList.add('ghot'); t.insertAdjacentHTML('beforeend', `<span class="cnt gbadge ${g.status === 'LIVE' ? 'live' : ''}">${g.status === 'LIVE' ? 'LIVE' : 'ใหม่'}</span>`); }
+    const hra = $('.hra', root); if (!hra || $('.hra-game', hra)) return;
+    const last = (g.drawn || []).slice(-1)[0];
+    const txt = g.status === 'OPEN' ? (st.joined ? `ลงชื่อบิงโกแล้ว 👍 แก้การ์ดได้ถึง ${gHM(g.reg_close)} น. ${g.game_date !== todayStr() ? 'วันที่ ' + fD(g.game_date) : ''}` : `${g.game_date === todayStr() ? 'วันนี้' : 'วันที่ ' + fD(g.game_date)} มีบิงโก! ลงชื่อก่อน ${gHM(g.reg_close)} น.`)
+      : last ? `บิงโกลูกที่ ${g.drawn.length} คือ ${last} 🎱 ลูกถัดไป ${gNext(g)}` : `บิงโกเริ่มแล้ว! ลูกแรก ${gHM(g.draw_start)} น.`;
+    hra.insertAdjacentHTML('beforeend', `<a class="hra-time hra-game" href="#/game">${ic('game')}<span class="grow">${esc(txt)}</span>${ic('chev')}</a>`);
+  } catch (e) { }
+}
+
+/* ===== หน้าเกม ===== */
+PAGES.game = async (el, sub, arg) => {
+  clearInterval(G_TIMER);
+  if (sub === 'admin') return gameAdmin(el);
+  const st = await gLoad();
+  if (sub === 'card') return gameCardEdit(el, st, +arg || 1);
+  const g = st.game; const drawn = (g && g.drawn) || [];
+  const pts = `<span class="gpts">⭐ ${num(st.my_points)} คะแนน</span>`;
+  const head = pageHead('เกม & กิจกรรม', `${pts}${st.can_manage ? `<a class="btn sm" href="#/game/admin">${ic('gear')} จัดการเกม</a>` : ''}`, '', 'game');
+  const past = (st.past || []).filter(p => p.status === 'ENDED');
+  const pastCard = past.length ? `<div class="card gcard"><div class="row"><h3 style="margin:0">🏆 ผู้ชนะครั้งก่อน</h3></div>${past.slice(0, 5).map(p => `<div class="gpast"><span>${fD(p.game_date)}</span><b class="grow">${esc((p.winners || []).join(', ') || '–')}</b><span class="small muted">ลูกที่ ${p.last_draw || '–'}</span></div>`).join('')}</div>` : '';
+  const rules = `<div class="card gcard"><h3 style="margin:0 0 6px">📜 กติกาย่อ</h3><div class="small" style="line-height:1.7">• กดเข้าร่วม และกรอกการ์ด 3×3 (เลข ${g ? g.num_min : 10}–${g ? g.num_max : 49} ไม่ซ้ำกัน) ก่อนปิดรับสมัคร ${g ? gHM(g.reg_close) : '08:59'} น.<br>• จำนวนการ์ดต่อคนขึ้นกับจำนวนผู้เล่น (ใบที่ไม่ได้กรอก ระบบสุ่มให้)<br>• HR Agent ออกเลขทุก ${g ? g.interval_min : 60} นาที ${g ? gHM(g.draw_start) + '–' + gHM(g.draw_end) : '09:00–17:00'} น.<br>• ได้แถวครบ 3 ช่อง แนวนอน แนวตั้ง หรือทแยง = BINGO! ระบบตรวจให้อัตโนมัติ ไม่ต้องกลัวพลาด<br>• ถ้าวันนี้ยังไม่มีผู้ชนะ เล่นต่อวันทำงานถัดไปด้วยการ์ดเดิม</div></div>`;
+  if (!g) { el.innerHTML = head + `<div class="card gcard gempty">${ic('game')}<b>ยังไม่มีเกมเปิดในขณะนี้</b><div class="small muted">เมื่อ HR เปิดเกมใหม่ จะมีการแจ้งเตือนและป้าย "ใหม่" ที่ปุ่มเกม</div>${st.can_manage ? `<a class="btn gblue" href="#/game/admin">${ic('plus')} สร้างเกมบิงโก</a>` : ''}</div>` + pastCard + rules; return; }
+  const [stl, stc] = G_ST[g.status] || [g.status, ''];
+  const tag = `<span class="gtag ${stc}">${g.status === 'LIVE' || g.status === 'OPEN' ? '<i></i>' : ''}${stl}</span>`;
+  const players = st.players || [];
+  const avs = `<div class="gavs">${players.slice(0, 7).map(p => gAv(p.id, p.name)).join('')}${players.length > 7 ? `<span class="avatar">+${players.length - 7}</span>` : ''}</div>`;
+  let main = '';
+  if (g.status === 'OPEN') {
+    const closed = Date.now() + st.skew >= Date.parse(g.close_at);
+    const k = gCards(st); const mine = st.my_cards || [];
+    main = `<div class="card gcard"><div class="row"><h3 style="margin:0" class="grow">🎱 SMART Bingo</h3>${tag}</div><div class="small muted">${fDL(g.game_date)}</div>
+      <div style="margin-top:12px"><div class="small">${closed ? 'ปิดรับสมัครแล้ว' : 'ปิดรับสมัครใน'}</div><div class="gcount" id="gcd">${closed ? 'กำลังแจกการ์ด…' : ''}</div></div>
+      <div class="row" style="margin-top:10px;flex-wrap:nowrap"><span class="small grow">ลงชื่อแล้ว <b>${players.length} คน</b></span>${avs}</div>
+      <div class="ginfo"><div>การ์ด<b>3×3 · เลข ${g.num_min}–${g.num_max}</b></div><div>ออกเลข<b>ทุก ${g.interval_min === 60 ? '1 ชม.' : g.interval_min % 60 ? g.interval_min + ' นาที' : g.interval_min / 60 + ' ชม.'} ${gHh(g.draw_start)}–${gHh(g.draw_end)} น.</b></div>
+       <div>จำนวนการ์ด<b>${players.length ? `คาดว่า ${k} ใบ/คน` : `ประกาศ ${gHM(g.draw_start)} น.`}</b></div><div>รางวัลผู้ชนะ<b>${esc(g.winner_prize)} 🎁</b></div></div>
+      ${closed ? '' : st.joined ? `<a class="btn gblue gbig" href="#/game/card/1">${ic('edit')} เลือกเลข / แก้การ์ด</a>` : `<button class="btn gblue gbig" id="gjoin">เข้าร่วม &amp; เลือกเลข</button>`}</div>
+     ${st.joined ? `<div class="card gcard"><div class="row"><h3 style="margin:0" class="grow">การ์ดของฉัน</h3>${closed ? '' : `<button class="btn sm ghost" id="gleave">ถอนตัว</button>`}</div>
+      <div class="small muted" style="margin:2px 0 10px">กรอกได้ ${g.max_cards} ใบ · ใช้จริง ${k} ใบแรก ตามจำนวนผู้เล่น · ใบที่ไม่ได้กรอก ระบบสุ่มให้</div>
+      <div class="gslots">${Array.from({ length: g.max_cards }, (_, i) => { const c = mine.find(x => x.slot === i + 1); return `<a class="gslot ${c ? 'ok' : ''} ${i + 1 > k ? 'opt' : ''}" href="#/game/card/${i + 1}">${c ? gCardHtml(c.nums, []) : `<div class="gslot-e">${ic('plus')}<span>ยังไม่กรอก</span></div>`}<span class="gsl">ใบที่ ${i + 1}${i + 1 > k ? ' · สำรอง' : ''}</span></a>`; }).join('')}</div></div>` : ''}`;
+  } else if (g.status === 'LIVE' || g.status === 'ENDED') {
+    const last = drawn.slice(-1)[0]; const mine = (st.my_cards || []).filter(c => c.active);
+    const near = mine.filter(c => gMissing(c.nums, drawn) === 1);
+    const wins = st.winners || [];
+    main = `<div class="card gcard"><div class="row"><h3 style="margin:0" class="grow">🎱 SMART Bingo</h3>${tag}</div>
+      <div class="row" style="gap:14px;margin-top:12px;align-items:center"><div class="gball">${last ?? '–'}</div><div class="grow" style="min-width:0">
+        <div class="small">${last ? `ลูกที่ ${drawn.length} · ออกเมื่อ ${fT(st.draws.slice(-1)[0].at)} น.` : `ลูกแรก ${gHM(g.draw_start)} น.`}</div>
+        <div class="gchips">${drawn.slice(-6, -1).reverse().map(n => `<span>${n}</span>`).join('')}</div>
+        <div class="small">${g.status === 'LIVE' ? `ลูกถัดไป <b>${gNext(g)}</b>` : `จบเกม ${g.ended_at ? fDT(g.ended_at) + ' น.' : ''}`}</div></div></div>
+      ${g.status === 'ENDED' ? `<div class="gwinbox">${wins.length ? `🎉 ผู้ชนะ: <b>${esc([...new Set(wins.map(w => w.first_name))].join(', '))}</b> · ลูกที่ ${wins[0].draw_no}` : ''}</div>` : ''}
+      ${mine.length ? `<div class="small" style="margin-top:12px">การ์ดของฉัน · ${mine.length} ใบ <span class="muted">(ผู้เล่น ${players.length} คน · ${players.reduce((a, p) => a + (p.cards || 0), 0)} ใบ)</span></div>
+       <div class="gminis">${mine.map(c => { const w = wins.find(x => x.slot === c.slot && x.employee_id === st.me); return `<div class="gmini ${gMissing(c.nums, drawn) === 1 && g.status === 'LIVE' ? 'near' : ''}"><div class="t">ใบที่ ${c.slot}${w ? ' 🏆' : ''}</div>${gCardHtml(c.nums, drawn, { line: w && w.line })}</div>`; }).join('')}</div>
+       ${near.length && g.status === 'LIVE' ? `<div class="gnear">🔥 ${near.map(c => `ใบที่ ${c.slot}`).join(', ')} เหลืออีก 1 ช่อง! รอเลข <b>${[...new Set(near.flatMap(c => [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]].map(l => l.filter(i => !drawn.includes(c.nums[i]))).filter(m => m.length === 1).map(m => c.nums[m[0]])))].sort((a, b) => a - b).join(', ')}</b></div>` : ''}`
+      : `<div class="small muted" style="margin-top:12px">${st.joined ? '' : 'คุณไม่ได้ร่วมเล่นเกมนี้ — ติดตามผลได้ที่กระดานสด'}</div>`}</div>
+     <div class="card gcard"><h3 style="margin:0 0 8px">กระดานสด · ออกแล้ว ${drawn.length} ลูก</h3><div class="gboard">${Array.from({ length: g.num_max - g.num_min + 1 }, (_, i) => g.num_min + i).map(n => `<span class="${drawn.includes(n) ? 'on' : ''} ${n === last ? 'last' : ''}">${n}</span>`).join('')}</div>
+      <div class="small" style="margin:12px 0 6px">ผู้เล่น ${players.length} คน</div><div class="gplist">${players.map(p => `<span>${gAv(p.id, p.name)}${esc(gName(p.id, p.name))}${wins.some(w => w.employee_id === p.id) ? ' 🏆' : ''}</span>`).join('')}</div></div>`;
+    if (g.status === 'ENDED') main += gWinnersCard(st);
+  } else {
+    main = `<div class="card gcard"><div class="row"><h3 style="margin:0" class="grow">🎱 SMART Bingo · ${fD(g.game_date)}</h3>${tag}</div><div class="small" style="margin-top:8px">${esc(g.cancel_reason || 'เกมนี้ถูกยกเลิก')}</div></div>`;
+  }
+  el.innerHTML = head + main + `<div class="card gcard"><div class="row"><span class="grow small">🔐 ความโปร่งใส: ลำดับเลขทั้งเกมถูกล็อกด้วยรหัส SHA-256 ก่อนเริ่ม</span><button class="btn sm" id="gproof">ตรวจสอบ</button></div></div>` + pastCard + rules;
+  if (g.status === 'OPEN' && $('#gcd') && !$('#gcd').textContent) gCountdown($('#gcd'), g.close_at, st.skew);
+  if ($('#gjoin')) $('#gjoin').onclick = async () => { await guard(() => rpc('bingo_join', { p_game: g.id, p_join: true }), 'เข้าร่วมแล้ว — เลือกเลขได้เลย'); location.hash = '#/game/card/1'; };
+  if ($('#gleave')) $('#gleave').onclick = async () => { if (!await confirmDlg('ถอนตัวจากเกมนี้? การ์ดที่กรอกไว้จะถูกลบ', { danger: true, okText: 'ถอนตัว' })) return; await guard(() => rpc('bingo_join', { p_game: g.id, p_join: false }), 'ถอนตัวแล้ว'); route(); };
+  $('#gproof').onclick = () => gProof(g);
+  if (g.status === 'ENDED') { const k = 'gwin_seen_' + g.id; let seen = false; try { seen = !!localStorage.getItem(k); localStorage.setItem(k, '1'); } catch (e) { } if (!seen) gWinPopup(st); }
+  gPoll(gSig(st));
+};
+function gWinnersCard(st) {
+  const g = st.game; const wins = st.winners || [];
+  return `<div class="card gcard"><h3 style="margin:0 0 8px">🏆 ผลการแข่งขัน</h3>${wins.map(w => `<div class="gwinrow">${gAv(w.employee_id, w.first_name)}<div class="grow"><b>${esc(w.name)}</b><div class="small muted">การ์ดใบที่ ${w.slot} · ลูกที่ ${w.draw_no}</div></div>${gCardHtml(w.nums, g.drawn, { line: w.line, cls: 'sm' })}</div>`).join('') || '<div class="small muted">ไม่มีผู้ชนะ</div>'}
+    <div class="small" style="margin-top:10px">ผู้ชนะได้ ${esc(g.winner_prize)}${g.winner_points ? ` + ${num(g.winner_points)} คะแนน` : ''}${g.join_points ? ` · ผู้เข้าร่วมทุกคน +${num(g.join_points)} คะแนน` : ''}</div></div>`;
+}
+function gWinPopup(st) {
+  const g = st.game; const w = (st.winners || [])[0]; if (!w) return;
+  const names = [...new Set(st.winners.map(x => x.first_name))];
+  const conf = Array.from({ length: 28 }, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-delay:${(i % 7) * .18}s;background:${['#60a5fa', '#6ff0a4', '#ffd15a', '#c48bff', '#93c5fd', '#ff8a84'][i % 6]}"></i>`).join('');
+  const m = modal({ title: 'SMART Bingo', body: `<div class="gwin"><div class="gconf">${conf}</div><div class="small">ลูกที่ ${w.draw_no} · เลข ${g.drawn[w.draw_no - 1]}</div><div class="gbingo">BINGO!</div>
+    <div class="gwav">${gAv(w.employee_id, w.first_name)}</div><div style="font-size:21px;font-weight:700">${esc(names.map(n => 'คุณ' + n).join(', '))}</div>
+    <div style="width:150px;margin:12px auto 0">${gCardHtml(w.nums, g.drawn, { line: w.line })}</div>
+    <div class="gprize"><div>ผู้ชนะ<b>🎁 ${g.winner_points ? '+' + num(g.winner_points) : ''}</b>${esc(g.winner_prize)}</div><div>ผู้เข้าร่วม ${(st.players || []).length} คน<b>+${num(g.join_points)}</b>คะแนนทุกคน</div></div></div>` });
+  m.el.classList.add('gwinov');
+}
+async function gProof(g) {
+  const rev = g.revealed_seq && g.revealed_salt;
+  let ok = null;
+  if (rev) { try { const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(g.revealed_salt + ':' + g.revealed_seq.join(','))); ok = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('') === g.commit_hash; } catch (e) { } }
+  modal({ title: 'ตรวจสอบความโปร่งใส', body: `<p class="small" style="margin-top:0">ก่อนเกมเริ่ม ระบบสุ่มลำดับเลขทั้งหมดไว้ล่วงหน้าและเก็บเป็นความลับ แล้วเผยแพร่รหัส SHA-256 ของลำดับนั้นไว้ — HR และผู้ดูแลระบบก็อ่านลำดับไม่ได้และแก้ไขไม่ได้ จบเกมแล้วระบบเปิดลำดับจริงให้ตรวจว่าตรงกับรหัสเดิม</p>
+    <div class="small muted">รหัสที่เผยแพร่ก่อนเริ่ม (SHA-256)</div><div class="gmono">${esc(g.commit_hash)}</div>
+    ${rev ? `<div class="small muted" style="margin-top:10px">Salt</div><div class="gmono">${esc(g.revealed_salt)}</div><div class="small muted" style="margin-top:10px">ลำดับเลขทั้งหมด</div><div class="gmono">${g.revealed_seq.join(', ')}</div>
+      <div class="gproof ${ok ? 'ok' : 'bad'}">${ok === null ? 'เบราว์เซอร์นี้คำนวณ SHA-256 ไม่ได้' : ok ? '✓ ตรงกัน — ลำดับเลขไม่ถูกแก้ไขระหว่างเกม' : '✗ ไม่ตรงกัน กรุณาแจ้ง HR'}</div>` : `<div class="small" style="margin-top:10px">ลำดับจริงจะเปิดให้ตรวจเมื่อจบเกม</div>`}` });
+}
+
+/* ===== เลือกเลข ===== */
+async function gameCardEdit(el, st, slot) {
+  const g = st.game;
+  if (!g || g.status !== 'OPEN' || !st.joined || Date.now() + st.skew >= Date.parse(g.close_at)) { location.hash = '#/game'; return; }
+  slot = Math.min(Math.max(1, slot), g.max_cards);
+  const mine = st.my_cards || []; const cur = mine.find(c => c.slot === slot);
+  let cells = cur ? [...cur.nums] : Array(9).fill(null); let sel = cells.findIndex(x => x == null); if (sel < 0) sel = 0;
+  const k = gCards(st); const R = Array.from({ length: g.num_max - g.num_min + 1 }, (_, i) => g.num_min + i);
+  el.innerHTML = pageHead('SMART Bingo', `<span class="gtag open"><i></i>ปิดรับ ${gHM(g.reg_close)}</span>`, '#/game', 'game') + `
+   <div class="card gcard"><div class="row"><b class="grow" id="gct"></b><span class="small" id="gcn"></span></div>
+    <div class="gbig3" id="gbig"></div><div class="gpad" id="gpad"></div>
+    <div class="row" style="gap:8px;margin-top:12px"><button class="btn grow" id="grand">${ic('dice')} สุ่มให้</button><button class="btn grow" id="gclr">ล้างใบนี้</button></div>
+    <div class="gslotbar">${Array.from({ length: g.max_cards }, (_, i) => `<a href="#/game/card/${i + 1}" class="${i + 1 === slot ? 'cur' : mine.some(c => c.slot === i + 1) ? 'ok' : 'opt'}">ใบ ${i + 1}${mine.some(c => c.slot === i + 1) && i + 1 !== slot ? ' ✓' : ''}</a>`).join('')}</div>
+    <div class="small muted" style="margin-top:8px">ลงชื่อแล้ว ${(st.players || []).length} คน → คาดว่าได้ <b>${k} ใบ/คน</b> · ใบที่ไม่ได้กรอก ระบบสุ่มให้</div></div>
+   <div class="row" style="gap:10px">${cur ? `<button class="btn" id="gdel">${ic('trash')} ลบใบนี้</button>` : ''}<button class="btn gblue gbig grow" id="gsave">บันทึกการ์ด</button></div>`;
+  const draw = () => {
+    $('#gct').textContent = `ใบที่ ${slot} · ${cells.every(x => x != null) ? 'ครบแล้ว' : `เลือกเลขช่องที่ ${sel + 1}`}`; $('#gcn').textContent = `${cells.filter(x => x != null).length}/9`;
+    $('#gbig').innerHTML = cells.map((n, i) => `<button type="button" data-c="${i}" class="${i === sel ? 'sel' : ''}">${n ?? (i === sel ? '?' : '')}</button>`).join('');
+    $('#gpad').innerHTML = R.map(n => `<button type="button" data-n="${n}" class="${cells.includes(n) ? 'u' : ''}">${n}</button>`).join('');
+  };
+  draw();
+  on($('#gbig'), 'click', '[data-c]', (e, b) => { const i = +b.dataset.c; if (i === sel && cells[i] != null) cells[i] = null; sel = i; draw(); });
+  on($('#gpad'), 'click', '[data-n]', (e, b) => { const n = +b.dataset.n; const at = cells.indexOf(n); if (at >= 0) { cells[at] = null; sel = at; draw(); return; }
+    cells[sel] = n; const nx = cells.findIndex((x, i) => x == null && i > sel); sel = nx >= 0 ? nx : Math.max(0, cells.findIndex(x => x == null)); draw(); });
+  $('#grand').onclick = () => { const pool = R.filter(n => !cells.includes(n)).sort(() => Math.random() - .5); cells = cells.map(x => x ?? pool.pop()); draw(); };
+  $('#gclr').onclick = () => { cells = Array(9).fill(null); sel = 0; draw(); };
+  if ($('#gdel')) $('#gdel').onclick = async () => { await guard(() => rpc('bingo_save_card', { p_game: g.id, p_slot: slot, p_nums: null }), 'ลบการ์ดแล้ว'); route(); };
+  $('#gsave').onclick = async () => {
+    if (cells.some(x => x == null)) { toast('กรอกให้ครบ 9 ช่อง หรือกด "สุ่มให้"', 'bad'); return; }
+    await guard(() => rpc('bingo_save_card', { p_game: g.id, p_slot: slot, p_nums: cells }), `บันทึกการ์ดใบที่ ${slot} แล้ว`);
+    const nx = Array.from({ length: k }, (_, i) => i + 1).find(s => s !== slot && !mine.some(c => c.slot === s));
+    location.hash = nx ? '#/game/card/' + nx : '#/game';
+  };
+}
+
+/* ===== HR: จัดการเกม ===== */
+async function gameAdmin(el) {
+  if (!can.hr()) { location.hash = '#/game'; return; }
+  const st = await gLoad(); const g = st.game && ['OPEN', 'LIVE'].includes(st.game.status) ? st.game : null;
+  const editable = !g || (g.status === 'OPEN' && Date.now() + st.skew < Date.parse(g.close_at));
+  const nextWork = () => { const d = new Date(Date.parse(todayStr()) + 864e5); while ([0, 6].includes(d.getUTCDay())) d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
+  const F = [{ k: 'game_date', label: 'วันที่เล่น', type: 'date', req: true, def: nextWork() }, { k: 'reg_close', label: 'ปิดรับสมัคร', type: 'time', def: '08:59' },
+    { k: 'draw_start', label: 'เริ่มออกเลข', type: 'time', def: '09:00' }, { k: 'draw_end', label: 'ออกเลขลูกสุดท้าย', type: 'time', def: '17:00' },
+    { k: 'interval_min', label: 'ออกเลขทุก', type: 'select', opts: [[60, '1 ชั่วโมง'], [30, '30 นาที'], [120, '2 ชั่วโมง']], def: 60, noEmpty: true, req: true },
+    { k: 'winner_prize', label: 'รางวัลผู้ชนะ', def: 'รางวัลพิเศษ', full: true }, { k: 'winner_points', label: 'คะแนนผู้ชนะ', type: 'number', def: 100, min: 0 }, { k: 'join_points', label: 'คะแนนผู้เข้าร่วม', type: 'number', def: 10, min: 0 }];
+  const vals = g ? { ...g, reg_close: gHM(g.reg_close), draw_start: gHM(g.draw_start), draw_end: gHM(g.draw_end) } : {};
+  const players = st.players || [];
+  el.innerHTML = pageHead('จัดการเกม · บิงโก', '', '#/game', 'game') + `
+   <div class="card gcard"><div class="row"><h3 style="margin:0" class="grow">${g ? 'ตั้งค่าเกม' : 'สร้างเกมบิงโกใหม่'}</h3>${g ? `<span class="gtag ${G_ST[g.status][1]}"><i></i>${G_ST[g.status][0]}</span>` : ''}</div>
+    <div class="small muted" style="margin:4px 0 10px">การ์ด 3×3 · เลข 10–49 · ใช้การ์ดรวมราว 36 ใบ (จำนวนใบต่อคน = 36 ÷ คนเล่น ปัดเศษ 1–5 ใบ) · ผู้เล่นน้อยกว่า 2 คน เกมยกเลิกอัตโนมัติ</div>
+    <div class="fgrid" id="gf">${F.map(f => fieldHtml(editable ? f : { ...f, ro: true }, vals[f.k])).join('')}</div>
+    ${editable ? `<div class="row" style="margin-top:12px"><span class="grow"></span><button class="btn gblue" id="gsv">${g ? 'บันทึกการแก้ไข' : 'เปิดเกม และแจ้งพนักงาน'}</button></div>` : ''}</div>
+   ${g ? `<div class="card gcard"><div class="row"><h3 style="margin:0" class="grow">สถานะ</h3><span class="small">ลงชื่อ <b>${players.length} คน</b>${g.status === 'OPEN' && players.length ? ` → ${gCards(st)} ใบ/คน` : g.cards_per_player ? ` · ${g.cards_per_player} ใบ/คน` : ''}</span></div>
+     <div class="gplist" style="margin-top:10px">${players.map(p => `<span>${gAv(p.id, p.name)}${esc(gName(p.id, p.name))}${g.status === 'OPEN' ? '' : ` · ${p.cards} ใบ`}</span>`).join('') || '<span class="small muted">ยังไม่มีผู้ลงชื่อ</span>'}</div>
+     <div class="small muted" style="margin-top:12px">Commit SHA-256</div><div class="gmono">${esc(g.commit_hash)}</div>
+     ${g.status === 'LIVE' ? `<div class="small" style="margin-top:10px">ออกแล้ว ${(g.drawn || []).length} ลูก: ${(g.drawn || []).join(', ') || '–'} · ลูกถัดไป ${gNext(g)}</div>` : ''}
+     <div class="row" style="margin-top:12px"><span class="grow"></span><button class="btn bad" id="gcx">หยุดเกมฉุกเฉิน</button></div></div>` : ''}
+   ${(st.past || []).length ? `<div class="card gcard"><h3 style="margin:0 0 6px">ประวัติเกม</h3>${st.past.map(p => `<div class="gpast"><span>${fD(p.game_date)}</span><b class="grow">${p.status === 'CANCELLED' ? '<span class="muted">ยกเลิก</span>' : esc((p.winners || []).join(', ') || '–')}</b><span class="small muted">${p.draws} ลูก</span></div>`).join('')}</div>` : ''}`;
+  if ($('#gsv')) $('#gsv').onclick = async () => {
+    let v; try { v = readFields($('#gf'), F); } catch (e) { toast(e.message, 'bad'); return; }
+    if (v.game_date < todayStr()) { toast('วันที่เล่นต้องไม่ใช่วันที่ผ่านมาแล้ว', 'bad'); return; }
+    if (!g && !await confirmDlg(`เปิดเกมบิงโกวันที่ ${fDL(v.game_date)} และส่งแจ้งเตือนถึงพนักงานทุกคน?`, { okText: 'เปิดเกม' })) return;
+    await guard(() => rpc('bingo_admin_save', { p: { ...v, id: g ? g.id : null } }), g ? 'บันทึกแล้ว' : 'เปิดเกมแล้ว — แจ้งพนักงานเรียบร้อย'); route();
+  };
+  if ($('#gcx')) $('#gcx').onclick = async () => { const r = await confirmDlg('หยุดเกมนี้ทันที? ผู้เล่นทุกคนจะได้รับแจ้งเตือน', { danger: true, okText: 'หยุดเกม', input: { label: 'เหตุผล', required: true } }); if (!r) return; await guard(() => rpc('bingo_admin_cancel', { p_game: g.id, p_reason: r }), 'หยุดเกมแล้ว'); route(); };
+}
 
 /* ===================== PROFILE ===================== */
 PAGES.profile = async el => {
@@ -1843,7 +2132,7 @@ function simpleTiles(m) {
     { h: '#/docs', i: 'upload', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอ<br>อนุมัติ' },
     { h: '#/docs/history', i: 'history', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ประวัติ<br>ขออนุมัติ' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
-    { h: '#/payroll/hub', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }];
+    { h: '#/payroll/hub', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }, gameTile()];
   if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
   return t;
@@ -1888,7 +2177,7 @@ async function dashHR(el, d) {
     ['#/time', 'clock', 'linear-gradient(135deg,#22d3ee,#0e7490)', 'เวลา<br>เข้า-ออก'],
     ['#/leave', 'leave', 'linear-gradient(135deg,#34d399,#0f9f6e)', 'การลา'],
     ['#/payroll', 'money', 'linear-gradient(135deg,#facc15,#ca8a04)', 'เงินเดือน'],
-    ['#/settings', 'gear', 'linear-gradient(135deg,#94a3b8,#475569)', 'ตั้งค่า<br>ระบบ']];
+    ['#/settings', 'gear', 'linear-gradient(135deg,#94a3b8,#475569)', 'ตั้งค่า<br>ระบบ'], ['#/game', 'game', 'linear-gradient(135deg,#60a5fa,#1d4ed8)', 'เกม']];
   const st = (v, l, h) => `<a href="${h}"><b>${num(v || 0)}</b><span>${l}</span></a>`;
   const mx = Math.max(...(o.by_branch || []).map(x => x.n), 1);
   const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
@@ -1911,7 +2200,7 @@ async function dashHR(el, d) {
   ${sys ? '' : `<div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div><div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>`}`;
   aaLoad('#adagent');
   if (!sys) {
-    hrAgentCard($('#hragent')).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+    hrAgentCard($('#hragent')).then(() => gameHomeHint(el)).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
     annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
   }
 }
@@ -1922,6 +2211,7 @@ PAGES.hrwork = async el => {
     ['เวลาและการลา', [['#/time', 'clock', 'จัดการเวลา'], ['#/leave', 'leave', 'โควตาการลา'], ['#/reports/ot', 'otcal', 'OT']]],
     ['เอกสารและงาน', [['#/approve', 'approve', 'อนุมัติเอกสาร', S.pendingCount], ['#/inbox', 'chat', 'กล่องข้อความ HR', S.hrInbox], ['#/docs', 'upload', 'ยื่นเอกสาร'], ['#/tasks', 'tasks', 'สิ่งที่ต้องทำ']]],
     ['เงินเดือนและรายงาน', [['#/payroll', 'money', 'เงินเดือน'], ['#/reports', 'report', 'รายงาน']]],
+    ['กิจกรรม', [['#/game/admin', 'game', 'จัดการเกมบิงโก'], ['#/game', 'game', 'เกม & กิจกรรม']]],
     ['ระบบ', [['#/settings', 'gear', 'ตั้งค่าระบบ']]]];
   el.innerHTML = pageHead('งาน HR', '', '', 'board') + hrTodoCard(d) + `<div class="card aa" style="margin-top:14px" id="adagent"><div class="spin"></div></div>` + G.map(([g, list]) => `<div class="card" style="margin-top:14px"><div class="small muted" style="margin-bottom:4px">${g}</div>${list.map(([h, i, l, n]) => hrRow(n ? n : '', l, i, h, 'var(--brand)')).join('')}</div>`).join('');
   aaLoad('#adagent', true);
@@ -1939,7 +2229,7 @@ PAGES.dashboard = async el => {
   const bod = attExempt(e); /* v1.16.1 กรรมการบริษัทไม่ใช้การ์ดเวลาเข้า-ออก */
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
-   <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : MODS.filter(x => x.show())).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
+   <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : [...MODS.filter(x => x.show()), gameTile()]).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
   ${bod || e.is_system ? `<div class="card" id="tdyorg"><div class="spin"></div></div>` : `<div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
@@ -1984,7 +2274,7 @@ PAGES.dashboard = async el => {
   html += `<a class="svc" href="#/docs"><div><b>HR Services</b>บริการ HR สำหรับพนักงาน — ยื่นลา ขอ OT ขอปรับเวลา</div><div class="chips"><span>${ic('file')}</span><span>${ic('users')}</span><span>${ic('cal')}</span></div></a>`;
   el.innerHTML = html;
   if ($('#tdyorg')) orgTodayCard($('#tdyorg')).catch(() => { $('#tdyorg').innerHTML = '<div class="small muted">โหลดสรุปเวลาเข้างานไม่สำเร็จ</div>'; });
-  hrAgentCard($('#hragent'), m.pending_approvals || 0).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+  hrAgentCard($('#hragent'), m.pending_approvals || 0).then(() => gameHomeHint(el)).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
   annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
 };
 
