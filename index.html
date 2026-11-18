@@ -745,6 +745,7 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 .hra-h{font-size:25px;font-weight:700;line-height:1.2;color:#ffffff}
 .hra.ok .hra-h{color:#8ef0b5}.hra.bad .hra-h{color:#ffb27a}
 .hra-say{position:relative;background:#ffffff;border-radius:14px;padding:9px 13px;font-size:15.5px;line-height:1.45;color:#1c2b4b;box-shadow:0 4px 14px rgba(0,8,30,.18)}
+.hra-say .hra-close{display:block;margin-top:4px;font-size:14px;color:#4b5b7a}
 .hra-say::before{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#ffffff;border-left:0}
 .hra-time{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 13px;border-radius:13px;background:rgba(255,255,255,.12);font-size:16px;font-weight:600;color:#fff}
 .hra-time svg{width:20px;height:20px;flex:none}
@@ -1600,7 +1601,7 @@ const MODS = [
   { k: 'inbox', t: 'กล่องข้อความ HR', tl: 'ข้อความ<br>ถึง HR', i: 'chat', c: 'linear-gradient(135deg,#38bdf8,#0369a1)', show: () => can.hr(), cnt: () => S.hrInbox },
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
-const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' }, game: { t: 'เกม & กิจกรรม', i: 'game' } };
+const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' }, game: { t: 'เกม & กิจกรรม', i: 'game' }, agentmsg: { t: 'ข้อความ HR Agent', i: 'bot', show: () => can.hr() } };
 const BNAV_ALL = [['dashboard', 'หน้าหลัก', 'home'], ['chat', 'ChatHR', 'chat'], ['hrwork', 'งาน HR', 'board'], ['profile', 'โปรไฟล์', 'user']];
 /* v1.8.0: พนักงาน 3 แท็บ · ผู้มีสิทธิ์ HR 4 แท็บ (เพิ่ม "งาน HR" พร้อมตัวเลขงานค้าง) */
 const bnavItems = () => BNAV_ALL.filter(([k]) => k !== 'hrwork' || can.hr());
@@ -1677,7 +1678,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.18.0</div>
+      <div class="sbver">Smart Terminal HR<br>v1.18.1</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -2015,6 +2016,7 @@ PAGES.profile = async el => {
     <a class="mitem" id="ppw"><span class="mi">${ic('key')}</span><span class="grow"><b>เปลี่ยนรหัสผ่าน</b><span>อย่างน้อย 8 ตัวอักษร</span></span>${ic('chev')}</a>
     ${simple ? '' : `<a class="mitem" href="#/tasks"><span class="mi">${ic('tasks')}</span><span class="grow"><b>สิ่งที่ต้องทำ</b><span>งานที่ได้รับมอบหมาย</span></span>${ic('chev')}</a>
     <a class="mitem" href="#/reports"><span class="mi">${ic('report')}</span><span class="grow"><b>รายงาน</b><span>ตามสิทธิ์ของท่าน</span></span>${ic('chev')}</a>`}
+    ${sys ? '' : `<label class="mitem" style="cursor:pointer"><span class="mi">${ic('bot')}</span><span class="grow"><b>ข้อความแซวจาก HR Agent</b><span>เปิด = ข้อความขี้เล่นหลังสแกนเข้างาน · ปิด = ข้อความกลาง</span></span><input type="checkbox" id="pplay" style="width:22px;height:22px" aria-label="รับข้อความแซวจาก HR Agent"></label>`}
     <div class="mitem" style="cursor:default"><span class="mi">${ic('shield')}</span><span class="grow"><b>สิทธิ์ในระบบ</b><span>${roles || '–'}${e.supervisor_name ? ' · หัวหน้า: ' + esc(e.supervisor_name) : ''}</span></span></div>
     <a class="mitem bad" data-act="logout"><span class="mi">${ic('logout')}</span><span class="grow"><b>ออกจากระบบ</b></span></a></div>`;
   $('#ppw').onclick = () => formModal({ title: 'เปลี่ยนรหัสผ่าน', fields: [{ k: 'p1', label: 'รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)', type: 'password', req: true, full: true }, { k: 'p2', label: 'ยืนยันรหัสผ่านใหม่', type: 'password', req: true, full: true }],
@@ -2022,6 +2024,8 @@ PAGES.profile = async el => {
   $('#pphoto').onclick = () => { if (sys) return toast('บัญชีระบบไม่มีรูปโปรไฟล์', 'bad'); formModal({ title: 'เปลี่ยนรูปโปรไฟล์', fields: [{ k: 'f', label: 'ไฟล์รูป (JPG/PNG ไม่เกิน 10MB)', type: 'file', accept: 'image/*', req: true, full: true }],
     onSubmit: async v => { const f = await cropPhoto(v.f[0]); if (!f) return; const path = `avatar/${e.id}/${Date.now()}.jpg`; await uploadFile(path, f, { upsert: true }); await rpc('set_my_photo', { p_path: path }); e.photo_path = path; await signPhotos([e]); toast('อัปเดตรูปแล้ว', 'good'); renderShell(); route(); } }); };
   $$('.mitem.dis', el).forEach(x => x.onclick = () => toast('บัญชีระบบ (admin) ไม่มีข้อมูลพนักงาน'));
+  if ($('#pplay')) { const cb = $('#pplay'); q(sb.from('employees').select('agent_playful').eq('id', e.id).maybeSingle()).then(r => { cb.checked = !r || r.agent_playful !== false; }).catch(() => { cb.checked = true; });
+    cb.onchange = () => guard(() => rpc('hr_agent_set_playful', { p_on: cb.checked }), cb.checked ? 'เปิดข้อความแซวจาก HR Agent แล้ว' : 'ปิดแล้ว — HR Agent จะแสดงข้อความกลาง'); }
   if (!sys) profileOrg($('#porg')).catch(err => { $('#porg').innerHTML = `<div class="notice bad">${esc(errMsg(err))}</div>`; });
 };
 /* อายุงานจากวันเริ่มงาน → "x ปี y เดือน z วัน" */
@@ -2204,11 +2208,35 @@ async function dashHR(el, d) {
     annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
   }
 }
+/* v1.18.1 HR จัดการคลังข้อความ HR Agent หลังบันทึกเวลาเข้างาน (แก้ถ้อยคำได้ ไม่กระทบผลคำนวณเวลา/เงินเดือน) */
+PAGES.agentmsg = async el => {
+  const [rows, st] = await Promise.all([q(sb.from('hr_agent_messages').select('*').order('category').order('sort')), q(sb.from('system_settings').select('setting_value').eq('setting_key', 'hr_agent_playful').maybeSingle())]);
+  const on = !st || st.setting_value !== false;
+  const order = Object.keys(AGM_CAT);
+  const grp = order.map(c => [c, rows.filter(r => r.category === c)]);
+  el.innerHTML = pageHead('ข้อความ HR Agent', `<button class="btn pri" id="amadd">${ic('plus')} เพิ่มข้อความ</button>`, '#/hrwork', 'bot') + `
+   <div class="card"><label class="row" style="gap:10px;align-items:center;cursor:pointer"><input type="checkbox" id="amon" ${on ? 'checked' : ''} ${can.hrAdmin() ? '' : 'disabled'} style="width:22px;height:22px"><span class="grow"><b>เปิดข้อความแนวขี้เล่นทั้งบริษัท</b><div class="small muted">ปิด = พนักงานทุกคนได้ข้อความกลาง · พนักงานเลือกปิดเฉพาะตัวเองได้ที่หน้าโปรไฟล์</div></span></label>
+    <div class="small muted" style="margin-top:8px">เกณฑ์: มาก่อนเวลา = สแกนก่อนเวลาเริ่มกะ · ตรงเวลา = ไม่สาย · สายนับตามกะของแต่ละคน ผ่อนผัน 0 นาที · สายตั้งแต่ 3 ครั้ง/เดือน ใช้ข้อความหมวด “สายเกิน 30 นาที / สายบ่อย” พร้อมปุ่มติดต่อ HR · ข้อความกลางใช้ {time} = เวลาเข้างาน, {late} = นาทีที่สาย · ข้อความที่พูดถึงเบี้ยขยันปิดไว้จนกว่านโยบาย Payroll จะยืนยัน</div></div>
+   ${grp.map(([c, rs]) => `<div class="card" style="margin-top:14px"><h3 style="margin:0 0 6px">${esc(AGM_CAT[c])} <span class="badge">${rs.filter(r => r.active).length}/${rs.length} ใช้งาน</span></h3>
+     ${rs.length ? rs.map(r => `<div class="row" style="gap:8px;align-items:center;padding:7px 0;border-top:1px solid rgba(127,127,127,.18)"><input type="checkbox" data-amt="${r.id}" ${r.active ? 'checked' : ''} aria-label="ใช้งานข้อความนี้" style="width:20px;height:20px"><span class="grow" style="min-width:0;${r.active ? '' : 'opacity:.55'}">${esc(r.body)}</span><button class="btn ghost icon sm" data-ame="${r.id}" aria-label="แก้ไข">${ic('edit')}</button><button class="btn ghost icon sm" data-amd="${r.id}" aria-label="ลบ">${ic('trash')}</button></div>`).join('') : '<div class="small muted">ยังไม่มีข้อความ</div>'}</div>`).join('')}`;
+  const form = r => formModal({ title: r ? 'แก้ไขข้อความ' : 'เพิ่มข้อความ', fields: [
+      { k: 'category', label: 'หมวด', type: 'select', req: true, opts: order.map(c => [c, AGM_CAT[c]]), full: true },
+      { k: 'body', label: 'ข้อความ', type: 'textarea', req: true, full: true }, { k: 'active', label: 'ใช้งาน', type: 'check', full: true }],
+    values: r || { category: 'EARLY', active: true },
+    onSubmit: async v => { const x = { category: v.category, body: v.body.trim(), active: !!v.active, updated_at: new Date().toISOString() };
+      if (r) await q(sb.from('hr_agent_messages').update(x).eq('id', r.id)); else await q(sb.from('hr_agent_messages').insert({ ...x, sort: 1 + Math.max(0, ...rows.filter(y => y.category === v.category).map(y => y.sort)), source: 'HR' }));
+      toast('บันทึกแล้ว', 'good'); route(); } });
+  $('#amadd').onclick = () => form(null);
+  $('#amon').onchange = ev => guard(() => q(sb.from('system_settings').update({ setting_value: ev.target.checked, confirmed: true, updated_by: S.ctx.employee ? S.ctx.employee.id : null, updated_at: new Date().toISOString() }).eq('setting_key', 'hr_agent_playful')), ev.target.checked ? 'เปิดข้อความแนวขี้เล่นแล้ว' : 'ปิดแล้ว — ทุกคนได้ข้อความกลาง');
+  $$('[data-amt]', el).forEach(b => b.onchange = async () => { await guard(() => q(sb.from('hr_agent_messages').update({ active: b.checked, updated_at: new Date().toISOString() }).eq('id', b.dataset.amt)), b.checked ? 'เปิดใช้ข้อความแล้ว' : 'ปิดข้อความแล้ว'); route(); });
+  $$('[data-ame]', el).forEach(b => b.onclick = () => form(rows.find(r => r.id === b.dataset.ame)));
+  $$('[data-amd]', el).forEach(b => b.onclick = async () => { if (!await confirmDlg('ลบข้อความนี้?', { danger: true, okText: 'ลบ' })) return; await guard(() => q(sb.from('hr_agent_messages').delete().eq('id', b.dataset.amd)), 'ลบแล้ว'); route(); });
+};
 /* เมนูทั้งหมดของ HR จัดกลุ่ม — แท็บ "งาน HR" */
 PAGES.hrwork = async el => {
   const d = await rpc('dash_stats');
   const G = [['บุคลากร', [['#/employees', 'idcard', 'ข้อมูลพนักงาน'], ['#/org', 'org', 'โครงสร้างองค์กร']]],
-    ['เวลาและการลา', [['#/time', 'clock', 'จัดการเวลา'], ['#/leave', 'leave', 'โควตาการลา'], ['#/reports/ot', 'otcal', 'OT']]],
+    ['เวลาและการลา', [['#/time', 'clock', 'จัดการเวลา'], ['#/leave', 'leave', 'โควตาการลา'], ['#/reports/ot', 'otcal', 'OT'], ['#/agentmsg', 'bot', 'ข้อความ HR Agent']]],
     ['เอกสารและงาน', [['#/approve', 'approve', 'อนุมัติเอกสาร', S.pendingCount], ['#/inbox', 'chat', 'กล่องข้อความ HR', S.hrInbox], ['#/docs', 'upload', 'ยื่นเอกสาร'], ['#/tasks', 'tasks', 'สิ่งที่ต้องทำ']]],
     ['เงินเดือนและรายงาน', [['#/payroll', 'money', 'เงินเดือน'], ['#/reports', 'report', 'รายงาน']]],
     ['กิจกรรม', [['#/game/admin', 'game', 'จัดการเกมบิงโก'], ['#/game', 'game', 'เกม & กิจกรรม']]],
@@ -2335,17 +2363,31 @@ function hrAgentVerdict(a) {
 /* v1.13 การ์ด HR Agent ใหม่: หุ่นยนต์ HR AI (hr-agent.webp) + หัวข้อใหญ่ตามผลตรวจ + กล่องคำพูด + สถิติ 3 ช่อง */
 /* v1.17.9 ผู้บริหารที่ไม่ต้องบันทึกเวลาเข้า-ออก: ติ๊กรายคน (employees.attendance_exempt) หรือตำแหน่งกรรมการบริษัท */
 const attExempt = x => !!x && (x.position_name === 'กรรมการบริษัท' || x.attendance_exempt === true || (me() && x.id === me().id && me().attendance_exempt === true));
+/* v1.18.1 ข้อความหลังบันทึกเวลาเข้างาน (สเปก HR AI 1.0): สุ่มจากคลัง hr_agent_messages ตามหมวด EARLY, ON_TIME, LATE ทั้ง 4 ช่วง, SPECIAL_5_DAYS
+   — RPC hr_agent_checkin_message เลือกหมวดจากกะของแต่ละคน + late_minutes จริง, ข้อความคงเดิมตลอดวัน, ไม่ซ้ำกับครั้งก่อนในหมวดเดียวกัน
+   — สายตั้งแต่ 3 ครั้ง/เดือน = ข้อความสุภาพ + ปุ่มติดต่อ HR · ปิดโหมดขี้เล่น (บริษัท/รายคน) = ข้อความกลาง · แสดงเฉพาะเจ้าของ */
+const AGM_CAT = { EARLY: 'มาก่อนเวลา', ON_TIME: 'มาตรงเวลา', LATE_1_5: 'สาย 1–5 นาที', LATE_6_15: 'สาย 6–15 นาที', LATE_16_30: 'สาย 16–30 นาที', LATE_OVER_30: 'สายเกิน 30 นาที / สายบ่อย', SPECIAL_5_DAYS: 'ตรงเวลา 5 วันติดต่อกัน', CLOSING: 'ข้อความปิดท้าย', NEUTRAL_GOOD: 'ข้อความกลาง — ไม่สาย', NEUTRAL_LATE: 'ข้อความกลาง — สาย', ORIGINAL_LATE: 'ต้นฉบับผู้บริหาร — มาสาย', ORIGINAL_GOOD: 'ต้นฉบับผู้บริหาร — มาเช้า/ตรงเวลา' };
+function hrAgentApplyMsg(v, a, m) {
+  if (!m || !m.text || a.bod || a.sys) return v;
+  const late = /LATE/.test(m.category);
+  const h = m.category === 'EARLY' ? 'มาก่อนเวลา ☀️' : m.category === 'ON_TIME' ? 'มาตรงเวลา 🎉' : m.category === 'SPECIAL_5_DAYS' ? `ตรงเวลาครบ ${num(m.streak)} วัน 👑` : m.category === 'NEUTRAL_GOOD' ? 'บันทึกเวลาเข้างานแล้ว'
+    : m.frequent ? `เดือนนี้มาสาย ${num(m.late_count)} ครั้งแล้ว` : m.category === 'NEUTRAL_LATE' ? 'บันทึกเวลาเข้างานแล้ว' : v.h;
+  return { ...v, h, bn: late ? 'bad' : 'ok', k: late ? 'warn' : 'good', m: m.text, closing: m.closing || '', s: '', frequent: !!m.frequent };
+}
 async function hrAgentCard(host, pend = 0) {
-  const a = await hrAgentData(); const v = hrAgentVerdict(a);
+  const a = await hrAgentData();
+  const am = a.sys || a.bod ? null : await rpc('hr_agent_checkin_message').catch(() => null);
+  const v = hrAgentApplyMsg(hrAgentVerdict(a), a, am);
   const tone = v.bn === 'ok' ? 'ok' : v.bn === 'bad' ? 'bad' : 'info';
   const msg = v.m || v.d; const time = v.m ? v.d : '';
   host.innerHTML = `<div class="hra ${tone}">
    <div class="hra-top"><img class="hra-bot" src="hr-agent.webp" alt="HR Agent หุ่นยนต์ผู้ช่วย HR"><div class="hra-body">
     <span class="hra-tag">HR Agent · ตรวจเวลาเข้างาน</span>
     <div class="hra-h">${esc(v.h)}</div>
-    <div class="hra-say">${esc(msg)}</div></div></div>
+    <div class="hra-say">${esc(msg)}${v.closing ? `<span class="hra-close">${esc(v.closing)}</span>` : ''}</div></div></div>
    ${time ? `<div class="hra-time">${ic('clock')}<span>${esc(time)}</span></div>` : ''}
    ${a.bod ? `<a class="hra-time" href="#/approve/tab/pending" style="text-decoration:none">${ic('approve')}<span class="grow">${pend ? `มีเอกสารรอท่านอนุมัติ ${num(pend)} รายการ` : 'ไม่มีเอกสารรอท่านอนุมัติ'}</span>${ic('chev')}</a>` : ''}
+   ${v.frequent ? `<a class="hra-time" href="#/chat/hr" style="text-decoration:none">${ic('chat')}<span class="grow">ติดต่อหัวหน้างานหรือ HR หากมีเหตุจำเป็น</span>${ic('chev')}</a>` : ''}
    ${v.s ? `<div class="hra-sub">${esc(v.s)}</div>` : ''}
    ${a.sys || a.bod ? '' : `<div class="hra-stats"><div><b>${num(a.onTime)}</b><span>ตรงเวลา (วัน)</span></div><div class="${a.late.length ? 'warn' : ''}"><b>${num(a.late.length)}</b><span>มาสาย (ครั้ง)</span></div><div class="${a.lateMin ? 'warn' : ''}"><b>${num(a.lateMin)}</b><span>สายสะสม (นาที)</span></div></div>
    ${a.late.length ? `<details class="hra-more"><summary>ดูรายละเอียดการมาสายเดือนนี้</summary>${a.late.map(r => `<div class="row"><span>${fD(r.work_date)}</span><span class="grow"></span><span>เข้า ${fT(r.first_in)} น.</span><span class="badge b-warn">สาย ${num(r.late_minutes)} นาที</span></div>`).join('')}</details>` : ''}`}
