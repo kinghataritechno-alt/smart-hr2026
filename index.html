@@ -1146,6 +1146,71 @@ input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;h
 :root:not(#_):not(#__):not(#___):has(.shell) .hra-game{text-decoration:none;color:#fff;margin-top:8px}
 :root:not(#_):not(#__):not(#___):has(.shell) .hra-game svg{color:#9fd8ff}
 @media (max-width:699px){.gcount{font-size:36px}.gball{width:84px;height:84px;font-size:40px}}
+/* ===================== v1.19.0 — ดวงชะตาวันนี้ (ไพ่ทาโรต์ AI · เซียมซี AI) โทนม่วง-ทอง / แดง-ทอง บนกระจก Liquid Glass ===================== */
+.tile.fhot{position:relative}
+.tile .cnt.fbadge{position:absolute;top:-4px;right:calc(50% - 52px);left:auto;bottom:auto;min-width:0;height:20px;line-height:20px;border-radius:10px;background:linear-gradient(180deg,#ffd76a,#e0a020);color:#3b2400;box-shadow:0 0 10px rgba(255,210,100,.7);padding:0 8px;font-size:11px;font-weight:700;text-shadow:none}
+:root:not(#_):not(#__):not(#___):has(.shell) .hero .tiles .tile.fhot .ti{border-color:rgba(214,170,255,.95);background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.38),rgba(168,110,255,.32) 50%,rgba(70,30,140,.5))!important;box-shadow:var(--lg-sh),0 0 0 3px rgba(190,140,255,.35),0 0 22px rgba(190,120,255,.7)}
+:root:not(#_):not(#__):not(#___):has(.shell) .hra-fort{text-decoration:none;color:#fff;margin-top:8px}
+:root:not(#_):not(#__):not(#___):has(.shell) .hra-fort svg{color:#e6c8ff}
+.ftdot{display:inline-block;width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);vertical-align:-2px;margin:0 3px 0 2px;box-shadow:0 0 6px rgba(0,0,0,.35)}
+.ftcard{margin-bottom:14px}
+.ftwho{gap:12px;flex-wrap:nowrap!important;flex-direction:row!important;align-items:center}.ftwho img{width:54px;height:54px;object-fit:contain;flex:none}.ftwho img.round{border-radius:50%;object-fit:cover;object-position:center 22%;border:2px solid rgba(214,170,255,.85)}
+.ftwho b{font-size:16.5px}
+.ftscore{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.ftscore>div,.ftsay,.ftline,.ftchips span,.ftsci span,.fttabs a,.ftspread button{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(0,0,0,.20));box-shadow:inset 0 1px 0 rgba(255,255,255,.45);border-radius:16px}
+.ftscore>div{text-align:center;padding:10px 4px}
+.ftscore b{display:block;font-size:30px;line-height:1.1;color:#e6c8ff;text-shadow:0 0 12px rgba(200,140,255,.9),0 1px 2px rgba(0,0,0,.5)}
+.ftscore span{font-size:13px}.ftscore i{display:block;font-style:normal;color:#ffd76a;font-size:11px;letter-spacing:1px}
+.ftsay{padding:10px 13px;margin-top:10px;font-size:14.5px;line-height:1.55}
+.ftchips,.ftsci{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.ftchips span{padding:5px 11px;font-size:13.5px;border-radius:14px}
+.ftsci span{padding:3px 9px;font-size:11.5px;border-radius:10px;opacity:.9}
+.ftmodes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;max-width:720px}
+.ftmode{padding:0!important;overflow:hidden;text-decoration:none;color:#fff;display:flex;flex-direction:column;margin:0!important}
+.ftmode img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center 28%;display:block}
+.ftmode .lb{padding:9px 12px 12px;font-weight:700;font-size:17px;line-height:1.2}.ftmode .lb small{display:block;font-weight:400;font-size:12.5px;opacity:.92;margin-top:2px}
+.ftpriv{text-align:center;margin:4px 0 14px;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.btn.ftbtn{background:linear-gradient(180deg,rgba(196,150,255,.96),rgba(110,50,210,.95))!important;color:#fff!important;border:0!important;font-weight:600;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),0 8px 20px rgba(110,50,210,.45)!important;justify-content:center}
+.btn.ftbtn.red{background:linear-gradient(180deg,rgba(255,120,110,.96),rgba(180,20,30,.95))!important;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),0 8px 20px rgba(160,20,30,.45)!important}
+.fttabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:12px;padding:2px}
+.fttabs a{flex:none;padding:8px 13px;color:#fff;text-decoration:none;font-size:14px;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.6);background:rgba(20,10,50,.45)}
+.fttabs a.on{background:linear-gradient(180deg,rgba(196,150,255,.9),rgba(110,50,210,.9));font-weight:700}
+.ftintro{display:flex;gap:12px;align-items:center}.ftintro img{width:76px;height:92px;object-fit:cover;object-position:center 25%;border-radius:16px;flex:none}
+.ftspread{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ftspread button{border:0;color:#fff;font:inherit;font-weight:700;font-size:17px;padding:10px;cursor:pointer}
+.ftspread button small{display:block;font-weight:400;font-size:12px}
+.ftspread button.on{background:linear-gradient(180deg,rgba(196,150,255,.85),rgba(110,50,210,.85));box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 14px rgba(170,110,255,.6)}
+.ftc{width:96px;height:160px;border-radius:12px;padding:6px;background:linear-gradient(160deg,#3a1d6e,#1a0c3a);border:2px solid #e2bd6a;box-shadow:0 0 16px rgba(190,130,255,.55),0 8px 16px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;text-align:center;color:#f7dc9a;flex:none}
+.ftc .num{font-size:11px;font-weight:600;height:15px}
+.ftc .art{flex:1;width:100%;border-radius:7px;display:grid;place-items:center;font-size:42px;background:radial-gradient(circle,#ffe7a3 0,#f4b35a 28%,#5b2aa0 72%)}
+.ftc.rev .art span{display:inline-block;transform:rotate(180deg)}
+.ftc .nm{font-size:10.5px;font-weight:600;line-height:1.15;margin-top:4px;min-height:24px;display:grid;place-items:center}
+.ftc.back .art{background:repeating-linear-gradient(45deg,rgba(226,189,106,.18) 0 6px,transparent 6px 12px),radial-gradient(circle,#6b3fc0,#24104d);color:#f7dc9a;font-size:30px}
+.ftfan{display:flex;justify-content:center;height:170px;margin:14px 0 6px;padding-top:14px;overflow:hidden}
+.ftfan .ftc{width:74px;height:124px;margin:0 -18px;transform:rotate(var(--r));transform-origin:50% 100%;transition:transform .4s}
+.ftfan.shuffle .ftc{animation:ftshuf .5s ease-in-out infinite alternate}
+.ftfan.shuffle .ftc:nth-child(odd){animation-delay:.25s}
+@keyframes ftshuf{to{transform:rotate(0) translateY(-10px)}}
+.ftcards{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ftpos{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;animation:ftflip .7s ease both}
+.ftpos:nth-child(2){animation-delay:.25s}.ftpos:nth-child(3){animation-delay:.5s}
+@keyframes ftflip{from{transform:rotateY(90deg);opacity:0}to{transform:none;opacity:1}}
+.ftline{padding:9px 12px;margin-top:8px;font-size:14px;line-height:1.5}.ftline b{display:block;color:#e6c8ff}
+.ftsi{text-align:center}.ftsi h3{margin:10px 0 4px}
+.ftcup{width:150px;height:180px;margin:4px auto 0;border-radius:24px;overflow:hidden;box-shadow:0 0 24px rgba(255,90,80,.45)}
+.ftcup img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.ftcup.shake{animation:ftcup .14s linear infinite}.ftcup.wiggle{animation:ftcup .14s linear 2}
+@keyframes ftcup{0%{transform:rotate(-7deg)}50%{transform:rotate(7deg) translateY(-3px)}100%{transform:rotate(-7deg)}}
+.ftsi .btn.gbig{margin-top:14px}
+.ftslip{position:relative;border-radius:22px;padding:14px 18px 16px;margin:40px 0 14px;color:#5a1010;background:linear-gradient(180deg,#fff7e6,#f8e6c4);border:3px solid #c9a24a;box-shadow:0 0 0 4px #9c1c1c,0 12px 26px rgba(0,0,0,.35);text-shadow:none;animation:ftflip .7s ease both}
+.ftslip .no{width:78px;height:78px;margin:-52px auto 6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3cf,#e9c46a);border:3px solid #9c1c1c;display:grid;place-items:center;align-content:center;font-size:32px;font-weight:700;line-height:1}
+.ftslip .no small{font-size:11px;font-weight:500}
+.ftslip h2{text-align:center;font-size:21px;color:#8f1414;margin:0}
+.ftslip .lv{text-align:center;margin:4px 0;font-size:14px}.ftslip .lv span{background:#b3191f;color:#fff;border-radius:10px;padding:1px 10px;margin-left:4px}
+.ftslip .verse{text-align:center;font-style:italic;font-size:14.5px;margin:6px 0 8px;color:#7a2a10}
+.ftslip .it{display:flex;gap:10px;padding:7px 0;border-top:1px dashed rgba(140,30,20,.3);font-size:14px;line-height:1.4}
+.ftslip .it b{color:#8f1414;min-width:86px;white-space:nowrap}
+@media (max-width:420px){.ftc{width:88px;height:148px}.ftc .art{font-size:36px}.ftscore b{font-size:26px}}
 /* ===================== v1.17 — หน้า Login แบบ Liquid Glass: ภาพประจำวันคมชัดเต็มจอ + ฟอร์มกระจก + ปุ่มเมนูกลม ===================== */
 .login{--lg-f:blur(7px) brightness(.72) contrast(1.18) saturate(1.35);--lg-bg:linear-gradient(180deg,rgba(255,255,255,.06) 0%,rgba(0,0,0,.10) 55%,rgba(0,0,0,.24) 100%);--lg-bd:rgba(255,255,255,.30);
   --lg-sh:inset 0 1.5px 0 rgba(255,255,255,.85),inset 1.5px 0 0 rgba(255,255,255,.28),inset -1px 0 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(255,255,255,.22),0 12px 28px rgba(0,0,0,.28);
@@ -1601,14 +1666,14 @@ const MODS = [
   { k: 'inbox', t: 'กล่องข้อความ HR', tl: 'ข้อความ<br>ถึง HR', i: 'chat', c: 'linear-gradient(135deg,#38bdf8,#0369a1)', show: () => can.hr(), cnt: () => S.hrInbox },
   { k: 'settings', t: 'ตั้งค่าระบบ', tl: 'ตั้งค่า<br>ระบบ', i: 'gear', c: 'linear-gradient(135deg,#94a3b8,#475569)', show: () => can.hr() }
 ];
-const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' }, game: { t: 'เกม & กิจกรรม', i: 'game' }, agentmsg: { t: 'ข้อความ HR Agent', i: 'bot', show: () => can.hr() } };
+const EXTRA = { reports: { t: 'รายงาน', i: 'report' }, profile: { t: 'โปรไฟล์', i: 'user' }, chat: { t: 'ChatHR', i: 'chat' }, hrwork: { t: 'งาน HR', i: 'board', show: () => can.hr() }, employee: { t: 'ข้อมูลพนักงาน', i: 'idcard' }, game: { t: 'เกม & กิจกรรม', i: 'game' }, fortune: { t: 'ดวงชะตาวันนี้', i: 'wand' }, agentmsg: { t: 'ข้อความ HR Agent', i: 'bot', show: () => can.hr() } };
 const BNAV_ALL = [['dashboard', 'หน้าหลัก', 'home'], ['chat', 'ChatHR', 'chat'], ['hrwork', 'งาน HR', 'board'], ['profile', 'โปรไฟล์', 'user']];
 /* v1.8.0: พนักงาน 3 แท็บ · ผู้มีสิทธิ์ HR 4 แท็บ (เพิ่ม "งาน HR" พร้อมตัวเลขงานค้าง) */
 const bnavItems = () => BNAV_ALL.filter(([k]) => k !== 'hrwork' || can.hr());
 const bnavCnt = k => k === 'hrwork' ? (S.pendingCount || 0) + (S.hrInbox || 0) : k === 'chat' ? (S.empChat || 0) : 0;
 const PAGES = {};
 const SIDE = [['dashboard', 'แดชบอร์ด', 'dash'], ['employees', 'พนักงาน', 'user'], ['org', 'โครงสร้างองค์กร', 'org'], ['time', 'เวลาเข้างาน', 'clock'], ['leave', 'การลา', 'plane'],
-  ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['game', 'กิจกรรม & เกม', 'game'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
+  ['reports', 'OT', 'otcal', '#/reports/ot'], ['docs', 'ยื่นเอกสาร', 'upload'], ['approve', 'อนุมัติเอกสาร', 'approve'], ['tasks', 'สิ่งที่ต้องทำ', 'tasks'], ['game', 'กิจกรรม & เกม', 'game'], ['fortune', 'ดวงชะตาวันนี้', 'wand'], ['payroll', 'เงินเดือน', 'wallet'], ['reports', 'รายงาน', 'chart'], ['settings', 'ตั้งค่า', 'gear']];
 
 /* ===================== LOGIN ===================== */
 /* พื้นหลังตามต้นแบบ: ภาพสำนักงานเบลอ (login-bg.jpg สกัดจากไฟล์ต้นแบบ) + เส้นคลื่นด้านล่าง */
@@ -1678,7 +1743,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.18.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.19.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -2147,6 +2212,301 @@ function viewPreview(kind = 'phone') {
   requestAnimationFrame(() => draw(kind));
 }
 
+/* ===================== v1.19.0 ดวงชะตาวันนี้ — ดวงประจำวัน (5 ศาสตร์) · ไพ่ทาโรต์ AI · เซียมซี AI =====================
+   ผลเห็นเฉพาะเจ้าของ: ตาราง fortune_draws/fortune_profiles เปิด RLS ไม่มี policy — เข้าถึงผ่าน RPC fortune_me / fortune_draw / fortune_set_birth เท่านั้น
+   ไม่มีคะแนนหรือรางวัล · ไพ่/เซียมซีสุ่มฝั่งฐานข้อมูล (gen_random_bytes) วันละ 1 ครั้งต่อหัวข้อ ผลคงเดิมทั้งวัน
+   ดวงประจำวันคำนวณในเบราว์เซอร์จากวันเกิด + วันนี้ (ผลเดิมทั้งวัน): ทักษา · ราศีไทย (สุริยยาตร์) · นักษัตรจีน (ลี่ชุน 4 ก.พ.) · เลขศาสตร์ · ดาวประจำวัน */
+IP.wand = '<path d="M4 20L14.5 9.5"/><path d="M13 8l3 3"/><path d="M17.5 2.5l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8z" style="stroke:#ffe08a;fill:#ffe08a;stroke-width:1"/><path d="M20 10l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4z" style="stroke:#ffe08a;fill:#ffe08a;stroke-width:.8"/><path d="M9.5 3.5l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4z" style="stroke:#ffe08a;fill:#ffe08a;stroke-width:.8"/>';
+IP.share = '<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.3M8.3 13.2l7.4 4.3"/>';
+const FT_PL = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'ราหู'];
+const FT_TAKSA = [0, 1, 2, 3, 6, 4, 7, 5]; /* ลำดับทักษา: อาทิตย์ จันทร์ อังคาร พุธ เสาร์ พฤหัส ราหู ศุกร์ */
+const FT_POS = ['บริวาร', 'อายุ', 'เดช', 'ศรี', 'มูละ', 'อุตสาหะ', 'มนตรี', 'กาลกิณี'];
+const FT_COL = [['แดง', '#e53935'], ['เหลือง', '#fdd835'], ['ชมพู', '#f48fb1'], ['เขียว', '#43a047'], ['ส้ม', '#fb8c00'], ['ฟ้า', '#4fc3f7'], ['ม่วง', '#8e24aa'], ['เทา', '#78909c']];
+const FT_DIR = ['ตะวันออกเฉียงเหนือ', 'ตะวันออก', 'ตะวันออกเฉียงใต้', 'ใต้', 'ตะวันตก', 'เหนือ', 'ตะวันตกเฉียงใต้', 'ตะวันตกเฉียงเหนือ'];
+const FT_RASI = [['มังกร', 1, 14, 'ดิน'], ['กุมภ์', 2, 13, 'ลม'], ['มีน', 3, 14, 'น้ำ'], ['เมษ', 4, 13, 'ไฟ'], ['พฤษภ', 5, 15, 'ดิน'], ['เมถุน', 6, 15, 'ลม'], ['กรกฎ', 7, 17, 'น้ำ'], ['สิงห์', 8, 17, 'ไฟ'], ['กันย์', 9, 17, 'ดิน'], ['ตุลย์', 10, 17, 'ลม'], ['พิจิก', 11, 16, 'น้ำ'], ['ธนู', 12, 16, 'ไฟ']];
+const FT_ZOD = ['ชวด', 'ฉลู', 'ขาล', 'เถาะ', 'มะโรง', 'มะเส็ง', 'มะเมีย', 'มะแม', 'วอก', 'ระกา', 'จอ', 'กุน'];
+const FT_AREA = [['work', 'การงาน', '💼'], ['money', 'การเงิน', '💰'], ['love', 'ความรัก', '❤️'], ['health', 'สุขภาพ', '🌿']];
+const FT_POS_TXT = {
+  'บริวาร': 'วันนี้เป็นวันบริวารของคุณ คนรอบข้างพร้อมสนับสนุน งานที่ต้องอาศัยทีมจะราบรื่น',
+  'อายุ': 'วันนี้เป็นวันอายุของคุณ ร่างกายและจิตใจสดชื่น เหมาะเริ่มนิสัยดี ๆ ใหม่',
+  'เดช': 'วันนี้เป็นวันเดชของคุณ มีพลังและความมั่นใจ เหมาะเจรจา เสนองาน และตัดสินใจเรื่องสำคัญ',
+  'ศรี': 'วันนี้เป็นวันศรีของคุณ โชคลาภและเสน่ห์เด่น เรื่องเงินและคนรักมีข่าวดี',
+  'มูละ': 'วันนี้เป็นวันมูละของคุณ เหมาะวางรากฐาน จัดการเงินเก็บ และงานที่ต้องการความมั่นคง',
+  'อุตสาหะ': 'วันนี้เป็นวันอุตสาหะของคุณ ขยันแล้วได้ผลเต็มที่ เหมาะเคลียร์งานค้าง',
+  'มนตรี': 'วันนี้เป็นวันมนตรีของคุณ มีผู้ใหญ่และหัวหน้าคอยช่วยเหลือ ขอคำปรึกษาแล้วจะได้ทางออกดี',
+  'กาลกิณี': 'วันนี้ตรงกับกาลกิณีของคุณ ใจเย็นและรอบคอบไว้ก่อน ยังไม่ต้องตัดสินใจเรื่องใหญ่ แล้ววันนี้จะผ่านไปด้วยดี'
+};
+const FT_PL_TXT = ['พลังอาทิตย์หนุนความเป็นผู้นำและความมั่นใจ', 'พลังจันทร์ช่วยเรื่องความอ่อนโยนและเสน่ห์', 'พลังอังคารให้ความกล้าและความรวดเร็ว', 'พลังพุธหนุนการสื่อสารและการเจรจา', 'พลังพฤหัสส่งเสริมการเรียนรู้และผู้ใหญ่เมตตา', 'พลังศุกร์ส่งเสริมความรัก ความสุข และความสร้างสรรค์', 'พลังเสาร์ให้ความอดทนและความหนักแน่น'];
+const FT_NUM_TXT = ['', 'เหมาะเริ่มต้นสิ่งใหม่', 'เหมาะทำงานร่วมกับผู้อื่น', 'เหมาะสื่อสารและคิดสร้างสรรค์', 'เหมาะจัดระเบียบและทำงานละเอียด', 'เหมาะเปิดรับการเปลี่ยนแปลง', 'เหมาะดูแลครอบครัวและคนใกล้ชิด', 'เหมาะทบทวนและวางแผน', 'เหมาะเรื่องเงินและธุรกิจ', 'เหมาะปิดงานเก่าและช่วยเหลือผู้อื่น'];
+const FT_ADV = { work: 'ทำงานทีละอย่างให้เสร็จ จะลดความกดดันได้มาก', money: 'ใช้จ่ายอย่างมีสติ เก็บเงินส่วนหนึ่งไว้ก่อนใช้', love: 'พูดจาอ่อนโยนกับคนใกล้ตัว ความสัมพันธ์จะยิ่งดี', health: 'ดื่มน้ำ พักสายตา และนอนให้พอ' };
+
+const ftDigits = s => String(s).replace(/\D/g, '').split('').reduce((a, b) => a + +b, 0);
+const ftReduce = (n, master) => { while (n > 9 && !(master && [11, 22, 33].includes(n))) n = ftDigits(n); return n; };
+const ftUTC = iso => { const [y, m, d] = iso.split('-').map(Number); return Date.UTC(y, m - 1, d); };
+function ftRasi(iso) { const [, m, d] = iso.split('-').map(Number); let r = FT_RASI[11]; for (const x of FT_RASI) if (m > x[1] || (m === x[1] && d >= x[2])) r = x; return r; }
+function ftZodYear(iso) { const [y, m, d] = iso.split('-').map(Number); const yy = (m < 2 || (m === 2 && d < 4)) ? y - 1 : y; return ((yy - 4) % 12 + 12) % 12; }
+const ftZodDay = iso => ((Math.round((ftUTC(iso) - Date.UTC(1949, 9, 1)) / 864e5) % 12) + 12) % 12; /* 1 ต.ค. 2492 = วันชวด (甲子) */
+const FT_LIUHE = [[0, 1], [2, 11], [3, 10], [4, 9], [5, 8], [6, 7]];
+const FT_SANHE = [[8, 0, 4], [11, 3, 7], [2, 6, 10], [5, 9, 1]];
+function ftZodRel(a, b) {
+  if (FT_LIUHE.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) return 'liuhe';
+  if (a !== b && FT_SANHE.some(g => g.includes(a) && g.includes(b))) return 'sanhe';
+  if (Math.abs(a - b) === 6) return 'clash';
+  return '';
+}
+function ftElemRel(a, b) {
+  if (a === b) return 'same';
+  const s = [a, b].sort().join();
+  if (s === 'ลม,ไฟ' || s === 'ดิน,น้ำ') return 'good';
+  if (s === 'น้ำ,ไฟ' || s === 'ดิน,ลม') return 'opp';
+  return '';
+}
+/* ดวงประจำวัน — ผลเดิมตลอดวัน (ขึ้นกับวันเกิด + วันที่เท่านั้น) */
+function ftDay(bd, today) {
+  const bPl = new Date(ftUTC(bd)).getUTCDay(), tPl = new Date(ftUTC(today)).getUTCDay();
+  const pos = FT_POS[(FT_TAKSA.indexOf(tPl) - FT_TAKSA.indexOf(bPl) + 8) % 8];
+  const todayAt = k => FT_TAKSA[(FT_TAKSA.indexOf(tPl) + FT_POS.indexOf(k)) % 8]; /* ทักษาของวันนี้ (ตารางสีประจำวัน) */
+  const rB = ftRasi(bd), rT = ftRasi(today), zB = ftZodYear(bd), zT = ftZodDay(today);
+  const [by, bm, bdd] = bd.split('-'), [ty, tm, td] = today.split('-');
+  const life = ftReduce(ftDigits(bd), true);
+  const py = ftReduce(ftDigits(bm + bdd) + ftDigits(ty)), pm = ftReduce(py + +tm), pd = ftReduce(pm + +td);
+  const s = { work: 3, money: 3, love: 3, health: 3 };
+  ({ 'บริวาร': () => s.love++, 'อายุ': () => s.health++, 'เดช': () => s.work++, 'ศรี': () => { s.money++; s.love++; }, 'มูละ': () => s.money++, 'อุตสาหะ': () => s.work++, 'มนตรี': () => s.work++, 'กาลกิณี': () => s.work-- })[pos]();
+  const er = ftElemRel(rB[3], rT[3]); if (er === 'same') { s.love++; s.health++; } else if (er === 'good') s.money++; else if (er === 'opp') s.health--;
+  const zr = ftZodRel(zB, zT); if (zr === 'liuhe') { s.work++; s.money++; } else if (zr === 'sanhe') s.love++; else if (zr === 'clash') s.work--;
+  ({ 1: () => s.work++, 2: () => s.love++, 3: () => s.love++, 4: () => s.work++, 6: () => s.love++, 7: () => s.health++, 8: () => s.money++, 9: () => s.health++ })[pd]?.();
+  if (tPl === 5) s.love++; else if (tPl === 4) s.work++; else if (tPl === 1) s.health++;
+  for (const k in s) s[k] = Math.max(2, Math.min(5, s[k]));
+  const zTxt = zr === 'liuhe' ? `ปี${FT_ZOD[zB]}ของคุณเป็นมิตรกับวัน${FT_ZOD[zT]}วันนี้ งานและเงินมีคนช่วยหนุน` : zr === 'sanhe' ? `ปี${FT_ZOD[zB]}ของคุณเข้ากันดีกับวัน${FT_ZOD[zT]}วันนี้ ความสัมพันธ์ราบรื่น` : zr === 'clash' ? `ปี${FT_ZOD[zB]}ของคุณชงกับวัน${FT_ZOD[zT]}วันนี้ ใจเย็นและเลี่ยงการโต้เถียง` : '';
+  const eTxt = er === 'same' ? `ดวงอาทิตย์วันนี้อยู่ราศี${rT[0]} ธาตุ${rT[3]}เดียวกับราศีเกิดของคุณ พลังใจดี` : er === 'good' ? `ดวงอาทิตย์วันนี้อยู่ราศี${rT[0]} ธาตุส่งเสริมราศี${rB[0]}ของคุณ` : er === 'opp' ? `ดวงอาทิตย์วันนี้อยู่ราศี${rT[0]} ธาตุต่างจากราศีเกิด ดูแลสุขภาพเป็นพิเศษ` : '';
+  const low = Object.keys(s).sort((a, b) => s[a] - s[b])[0];
+  const text = [FT_POS_TXT[pos], `${FT_PL_TXT[tPl]} ${eTxt}`.trim(), zTxt, `ตามเลขศาสตร์ วันนี้เป็นวันเลข ${pd} ของคุณ ${FT_NUM_TXT[pd]}`].filter(Boolean);
+  const sri = todayAt('ศรี'), det = todayAt('เดช'), kala = todayAt('กาลกิณี');
+  return { bPl, tPl, pos, rasi: rB[0], zod: FT_ZOD[zB], life, pd, s, text, advice: FT_ADV[low],
+    lucky: [FT_COL[sri], FT_COL[det]], avoid: FT_COL[kala], dir: FT_DIR[FT_TAKSA.indexOf(sri)], nums: [...new Set([pd, sri + 1])].sort((a, b) => a - b) };
+}
+
+/* ===== ไพ่ทาโรต์ 78 ใบ: [ชื่อ, ชื่อไทย, สัญลักษณ์, ความหมายหัวตั้ง, ความหมายกลับหัว] — ความหมายตามตำราสายไรเดอร์-เวท เขียนด้วยถ้อยคำเชิงสร้างสรรค์ ===== */
+const FT_MAJ = [
+  ['The Fool', 'ผู้เริ่มต้น', '🌱', 'การเริ่มต้นใหม่ กล้าลองสิ่งที่ไม่เคยทำ', 'อยากเริ่มใหม่ แต่ควรวางแผนก่อนก้าว'],
+  ['The Magician', 'นักมายากล', '✨', 'มีทุกอย่างพร้อมในมือ ลงมือแล้วจะเห็นผล', 'ศักยภาพยังไม่ถูกใช้เต็มที่ โฟกัสให้ชัด'],
+  ['The High Priestess', 'นักบวชหญิง', '🌙', 'เชื่อสัญชาตญาณ คำตอบอยู่ในใจคุณ', 'ฟังเสียงตัวเองมากขึ้น อย่าให้เสียงรอบข้างทำให้สับสน'],
+  ['The Empress', 'จักรพรรดินี', '🌸', 'ความอุดมสมบูรณ์ การดูแลเอาใจใส่ สิ่งดีงอกงาม', 'ดูแลตัวเองบ้าง ก่อนดูแลคนอื่น'],
+  ['The Emperor', 'จักรพรรดิ', '👑', 'ความมั่นคง ระเบียบวินัย ภาวะผู้นำ', 'ยืดหยุ่นขึ้นอีกนิด งานจะลื่นไหล'],
+  ['The Hierophant', 'พระสังฆราช', '📜', 'ผู้ใหญ่ ครูบาอาจารย์ หลักการที่ถูกต้อง', 'ลองมองนอกกรอบเดิม อาจเจอทางที่ดีกว่า'],
+  ['The Lovers', 'คนรัก', '💞', 'ความรัก ความเข้าใจ การเลือกด้วยหัวใจ', 'ทบทวนการตัดสินใจให้ใจและเหตุผลไปทางเดียวกัน'],
+  ['The Chariot', 'รถศึก', '🏇', 'มุ่งมั่น เอาชนะอุปสรรค ก้าวไปข้างหน้า', 'ตั้งหลักให้มั่นก่อนเร่งความเร็ว'],
+  ['Strength', 'พลัง', '🦁', 'ความอดทน ใจเย็นแต่หนักแน่น', 'ให้กำลังใจตัวเองมากขึ้น คุณเก่งกว่าที่คิด'],
+  ['The Hermit', 'ฤๅษี', '🏮', 'ทบทวนตัวเอง แสวงหาความรู้', 'ออกมาคุยกับคนรอบข้างบ้าง จะได้มุมมองใหม่'],
+  ['Wheel of Fortune', 'กงล้อแห่งโชคชะตา', '☸️', 'จังหวะดีกำลังหมุนมา โชคเข้าข้าง', 'จังหวะยังไม่ลงตัว รออีกนิดวงล้อจะหมุนมาทางดี'],
+  ['Justice', 'ความยุติธรรม', '⚖️', 'ความยุติธรรม ผลลัพธ์ตรงกับสิ่งที่ทำ', 'ตรวจทานรายละเอียดให้รอบคอบ'],
+  ['The Hanged Man', 'ผู้ถูกแขวน', '🙃', 'มองมุมใหม่ หยุดพักเพื่อเห็นทางออก', 'ถึงเวลาตัดสินใจ ไม่ต้องรอนานกว่านี้'],
+  ['Death', 'การเปลี่ยนผ่าน', '🦋', 'ปิดเรื่องเก่าเพื่อเริ่มสิ่งใหม่ที่ดีกว่า', 'ปล่อยวางสิ่งที่ไม่จำเป็น ชีวิตจะเบาขึ้น'],
+  ['Temperance', 'ความพอดี', '🏺', 'ความพอดี สมดุล ค่อยเป็นค่อยไป', 'จัดเวลาให้สมดุลระหว่างงานกับการพักผ่อน'],
+  ['The Devil', 'พันธนาการ', '⛓️', 'รู้เท่าทันสิ่งยั่วใจ ควบคุมความอยากได้', 'กำลังหลุดพ้นจากสิ่งที่เคยผูกมัด'],
+  ['The Tower', 'หอคอย', '⚡', 'เรื่องไม่คาดคิดที่นำไปสู่การเริ่มต้นที่ดีกว่า', 'เตรียมแผนสำรองไว้ เรื่องยากจะผ่านไปได้'],
+  ['The Star', 'ดวงดาว', '⭐', 'ความหวัง แรงบันดาลใจ การเยียวยา', 'เติมพลังใจให้ตัวเอง ความหวังยังอยู่'],
+  ['The Moon', 'ดวงจันทร์', '🌕', 'จินตนาการ ความรู้สึกลึกซึ้ง', 'ความสับสนกำลังคลี่คลาย ภาพเริ่มชัดขึ้น'],
+  ['The Sun', 'ดวงอาทิตย์', '☀️', 'ความสำเร็จ ความสุข พลังบวกเต็มเปี่ยม', 'ความสุขอยู่ใกล้ตัว แค่มองให้เห็น'],
+  ['Judgement', 'การตื่นรู้', '📯', 'การตื่นรู้ โอกาสครั้งใหม่', 'ให้อภัยตัวเองแล้วก้าวต่อ'],
+  ['The World', 'โลก', '🌍', 'ความสำเร็จสมบูรณ์ ปิดงานได้อย่างงดงาม', 'ใกล้ถึงเส้นชัยแล้ว อีกนิดเดียว']];
+const FT_SUIT = [['Wands', 'ไม้เท้า', '🔥', 'ลงมือทำด้วยไฟและความกระตือรือร้นที่มี'], ['Cups', 'ถ้วย', '🏆', 'ฟังเสียงหัวใจ และใส่ใจความรู้สึกของกันและกัน'], ['Swords', 'ดาบ', '⚔️', 'ใช้เหตุผลให้ชัด คิดให้รอบก่อนตัดสินใจ'], ['Pentacles', 'เหรียญ', '💰', 'วางแผนให้เป็นรูปธรรม ค่อย ๆ สร้างความมั่นคง']];
+const FT_RANK = [['Ace', 'เอซ', 'A'], ['Two', 'สอง', 'II'], ['Three', 'สาม', 'III'], ['Four', 'สี่', 'IV'], ['Five', 'ห้า', 'V'], ['Six', 'หก', 'VI'], ['Seven', 'เจ็ด', 'VII'], ['Eight', 'แปด', 'VIII'], ['Nine', 'เก้า', 'IX'], ['Ten', 'สิบ', 'X'], ['Page', 'เพจ', 'P'], ['Knight', 'อัศวิน', 'Kn'], ['Queen', 'ราชินี', 'Q'], ['King', 'ราชา', 'K']];
+const FT_MIN = [
+  [['ไอเดียใหม่ไฟแรง แรงบันดาลใจพุ่ง', 'ไอเดียดีแล้ว ถึงเวลาลงมือ'], ['วางแผนอนาคต มองการณ์ไกล', 'เลือกทางให้ชัด แล้วเดินหน้า'], ['โอกาสขยายงาน ผลงานเริ่มเห็น', 'อดทนรอผลอีกนิด'], ['ความสำเร็จเล็ก ๆ ที่น่าฉลอง ทีมอบอุ่น', 'สร้างบรรยากาศดี ๆ ในทีม'], ['การแข่งขันที่ช่วยให้เก่งขึ้น', 'ลดการปะทะ หันมาร่วมมือกัน'], ['ชัยชนะ ได้รับการยอมรับ', 'เชื่อมั่นในผลงานตัวเอง ไม่ต้องรอคำชม'], ['ยืนหยัดในจุดยืน', 'เลือกสู้เฉพาะเรื่องที่สำคัญ'], ['เรื่องเดินเร็ว ข่าวดีมาไว', 'ชะลอนิด ตรวจให้ครบก่อนส่ง'], ['ความอดทน ใกล้สำเร็จแล้ว', 'พักให้หายเหนื่อยแล้วค่อยลุยต่อ'], ['รับผิดชอบมาก แต่จัดการได้', 'แบ่งงานให้คนอื่นช่วยบ้าง'], ['ข่าวดี ความกระตือรือร้น', 'เริ่มให้จริงจัง อย่าแค่คิด'], ['พลังลุย กล้าผจญภัย', 'ใจเย็นลงหน่อย จะไม่พลาด'], ['มั่นใจ มีเสน่ห์ เป็นที่รัก', 'ให้เวลากับตัวเองเติมพลัง'], ['ผู้นำที่มีวิสัยทัศน์', 'รับฟังทีมให้มากขึ้น']],
+  [['ความรักและความสุขใหม่', 'เปิดใจให้กว้างขึ้น'], ['ความสัมพันธ์ที่ลงตัว คู่ใจ', 'สื่อสารกันให้มากขึ้น'], ['งานรื่นเริง มิตรภาพ', 'ใช้เวลากับคนสำคัญให้มากขึ้น'], ['ทบทวนสิ่งที่มีอยู่', 'เปิดรับโอกาสใหม่ที่เข้ามา'], ['ยังมีสิ่งดีเหลืออยู่ มองด้านที่ยังมี', 'เรื่องเศร้ากำลังผ่านไป'], ['ความทรงจำดี ๆ คนเก่าแวะมา', 'อยู่กับปัจจุบันให้มากขึ้น'], ['มีหลายทางเลือกให้ฝัน', 'เลือกสิ่งที่เป็นไปได้จริงที่สุด'], ['ก้าวออกไปหาสิ่งที่ดีกว่า', 'ทบทวนให้แน่ใจก่อนเปลี่ยน'], ['สมหวังในสิ่งที่ขอ', 'ความสุขแท้เริ่มจากข้างใน'], ['ครอบครัวอบอุ่น ความสุขสมบูรณ์', 'ใส่ใจคนในบ้านมากขึ้น'], ['ข่าวดีเรื่องหัวใจ ความคิดสร้างสรรค์', 'ฟังความรู้สึกตัวเอง'], ['ข้อเสนอที่น่ายินดี ความโรแมนติก', 'อย่าเพิ่งเชื่ออะไรง่าย ๆ'], ['ความเมตตา เข้าอกเข้าใจผู้อื่น', 'ดูแลใจตัวเองด้วย'], ['สงบ มั่นคงทางอารมณ์', 'ใจเย็น ๆ ก่อนตอบโต้']],
+  [['ความคิดชัดเจน ตัดสินใจเด็ดขาด', 'ทบทวนข้อมูลให้ครบ'], ['ต้องเลือก ใช้เหตุผลให้มาก', 'การตัดสินใจกำลังชัดขึ้น'], ['เรื่องเจ็บใจที่ทำให้เติบโต', 'บาดแผลในใจกำลังหาย'], ['พักผ่อน ฟื้นพลัง', 'ได้เวลากลับมาลุยอีกครั้ง'], ['ไม่จำเป็นต้องชนะทุกเรื่อง เลือกสนามให้ถูก', 'ปรับความเข้าใจ คืนดีกัน'], ['ก้าวผ่านเรื่องยากไปสู่ที่ที่ดีกว่า', 'ปล่อยเรื่องเก่าแล้วไปต่อ'], ['ใช้ไหวพริบ วางแผนอย่างฉลาด', 'ตรงไปตรงมาจะดีที่สุด'], ['ทางออกมีอยู่ แค่ต้องมองให้เห็น', 'กำลังหลุดจากกรอบที่ขังตัวเอง'], ['คิดมากไปเอง เรื่องจริงไม่หนักขนาดนั้น', 'ความกังวลค่อย ๆ เบาลง'], ['จุดสิ้นสุดของเรื่องยาก พรุ่งนี้สดใสกว่า', 'ฟื้นตัวแล้ว เริ่มใหม่ได้เลย'], ['ช่างสังเกต อยากเรียนรู้', 'คิดก่อนพูด'], ['ลงมือเร็ว ตัดสินใจไว', 'ช้าลงนิด ฟังคนอื่นก่อน'], ['เฉียบคม ตรงไปตรงมา', 'พูดตรงได้ แต่ใส่ความอ่อนโยน'], ['มีเหตุผล ตัดสินใจเป็นธรรม', 'ใช้หัวใจร่วมกับเหตุผล']],
+  [['โอกาสทางการเงินใหม่', 'วางแผนการเงินก่อนลงทุน'], ['บริหารหลายเรื่องได้ดี', 'จัดลำดับความสำคัญใหม่'], ['งานเป็นทีม ฝีมือได้รับการยอมรับ', 'ประสานงานให้ชัดเจน'], ['เก็บออม มั่นคง', 'ใช้จ่ายกับสิ่งที่มีคุณค่าบ้าง'], ['มีคนพร้อมช่วยเหลือ แค่เอ่ยปาก', 'สถานการณ์การเงินกำลังดีขึ้น'], ['การให้และการรับ น้ำใจ', 'ให้อย่างพอดี'], ['ผลจากการลงแรงกำลังผลิดอก', 'อดทนรอการเติบโต'], ['ฝึกฝน ตั้งใจทำงาน ฝีมือพัฒนา', 'ทำให้ละเอียด ไม่ต้องรีบ'], ['พึ่งพาตัวเองได้ สำเร็จจากความขยัน', 'ให้รางวัลตัวเองบ้าง'], ['ความมั่งคั่งมั่นคงระยะยาว ครอบครัว', 'วางแผนระยะยาวให้รัดกุม'], ['เริ่มเรียนรู้สิ่งใหม่ที่มีประโยชน์', 'ตั้งเป้าหมายให้ชัด'], ['ขยัน มั่นคง เชื่อถือได้', 'ลองปรับวิธีใหม่ อย่าจำเจ'], ['ดูแลบ้านและการเงินเก่ง', 'แบ่งเวลาให้ตัวเอง'], ['มั่งคั่ง ประสบความสำเร็จ', 'ใช้ทรัพย์อย่างมีเป้าหมาย']]];
+const FT_ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
+function ftCard(id) {
+  if (id < 22) { const m = FT_MAJ[id]; return { en: m[0], th: m[1], sym: m[2], up: m[3], rev: m[4], num: FT_ROMAN[id], suit: -1 }; }
+  const s = Math.floor((id - 22) / 14), r = (id - 22) % 14, su = FT_SUIT[s], rk = FT_RANK[r];
+  return { en: `${rk[0]} of ${su[0]}`, th: `${rk[1]}${su[1]}`, sym: su[2], up: FT_MIN[s][r][0], rev: FT_MIN[s][r][1], num: rk[2], suit: s };
+}
+const FT_TOPIC = { WORK: ['การงาน', '💼', 'work'], MONEY: ['การเงิน', '💰', 'money'], LOVE: ['ความรัก', '❤️', 'love'], LIFE: ['ชีวิตโดยรวม', '🌟', ''] };
+const ftKey = t => t.split(' ')[0];
+function ftTarotRead(cards, topic, day) {
+  const cs = cards.map(c => ({ ...ftCard(c.id), r: !!c.rev })), T = FT_TOPIC[topic];
+  const m = c => c.r ? c.rev : c.up;
+  let sum;
+  if (cs.length === 3) sum = `ในเรื่อง${T[0]} เรื่องราวเริ่มจาก${ftKey(m(cs[0]))} ตอนนี้คุณอยู่ในช่วง${ftKey(m(cs[1]))} และทางข้างหน้าชี้ไปที่${m(cs[2])}`;
+  else sum = `ในเรื่อง${T[0]} ไพ่ ${cs[0].en} บอกว่า ${m(cs[0])}`;
+  const majors = cs.filter(c => c.suit < 0 && !c.r).length;
+  if (majors >= 2) sum += ' — มีไพ่ชุดใหญ่หลายใบ แปลว่าเรื่องนี้มีความสำคัญกับชีวิตคุณในช่วงนี้';
+  let link = '';
+  if (day) {
+    const sc = T[2] ? day.s[T[2]] : Math.round((day.s.work + day.s.money + day.s.love + day.s.health) / 4);
+    link = sc >= 4 ? `เข้ากับดวงวันนี้ที่${T[2] ? 'ดวง' + T[0] : 'ภาพรวม'}เด่น (${sc}/5) จังหวะดีที่จะลงมือ` : `ดวง${T[2] ? T[0] : 'ภาพรวม'}วันนี้อยู่ระดับ ${sc}/5 ค่อยเป็นค่อยไปจะดีที่สุด`;
+  }
+  const last = cs[cs.length - 1];
+  const advice = last.suit < 0 ? `ทำตามข้อความของ ${last.en}: ${last.r ? last.rev : last.up}` : FT_SUIT[last.suit][3];
+  return { cs, sum, link, advice };
+}
+
+/* ===== เซียมซี 28 ใบ (เขียนขึ้นใหม่ทั้งชุดสำหรับ SMART HR): [ชื่อ, ระดับ, กลอน, การงาน, การเงิน, ความรัก, สุขภาพ, ข้อคิด] ===== */
+const FT_SI = [
+  ['ฟ้าเปิดทางสว่าง', 'ดีมาก', 'ฟ้าใสหลังฝนพรำ ทางที่เดินพลันสว่างไสว', 'งานที่รอผลจะมีข่าวดี ผู้ใหญ่เห็นฝีมือ', 'รายรับเข้ามาสม่ำเสมอ', 'คนรักเข้าใจกันดี คนโสดมีคนเข้ามาทัก', 'แข็งแรง สดชื่น', 'รักษาความตั้งใจนี้ไว้'],
+  ['ค่อยเป็นค่อยไป', 'ดี', 'สายน้ำไหลช้า แต่ไหลถึงทะเลเสมอ', 'งานคืบหน้าทีละขั้นอย่างมั่นคง', 'เก็บเล็กผสมน้อยได้ผลดี', 'ความสัมพันธ์ค่อย ๆ ลึกซึ้ง', 'พักผ่อนให้พอ', 'อย่าใจร้อน ผลดีรออยู่'],
+  ['รอจังหวะ', 'ปานกลาง', 'ดอกตูมยังไม่บาน อย่าเพิ่งรีบเด็ดดม', 'เรื่องใหม่ยังไม่ต้องรีบ เตรียมข้อมูลไว้ก่อน', 'ใช้จ่ายอย่างระมัดระวัง', 'ให้เวลาอีกฝ่ายได้คิด', 'นอนให้เป็นเวลา', 'รอได้ ย่อมได้สิ่งที่ดี'],
+  ['มังกรเหินฟ้า', 'ดีมาก', 'มังกรได้เมฆ ทะยานสู่ฟ้ากว้าง', 'มีโอกาสแสดงฝีมือ ได้รับมอบหมายงานสำคัญ', 'โชคลาภจากความสามารถ', 'เสน่ห์แรง เป็นที่ชื่นชม', 'พลังเต็มเปี่ยม', 'กล้ารับโอกาส แต่ถ่อมตนไว้'],
+  ['มิตรนำโชค', 'ดี', 'ไม้ต้นเดียวไม่เป็นป่า มีเพื่อนมาจึงร่มเย็น', 'ทีมช่วยเหลือกันดี งานยากกลายเป็นง่าย', 'มีคนแนะนำช่องทางดี', 'เพื่อนช่วยเป็นสะพานใจ', 'ออกกำลังกับเพื่อนจะสนุก', 'ขอบคุณคนที่ช่วยเหลือ'],
+  ['ทางคดเคี้ยว', 'ปานกลาง', 'ทางขึ้นเขาคดเคี้ยว แต่ยอดเขาอยู่ไม่ไกล', 'มีอุปสรรคเล็กน้อย แก้ได้ด้วยความอดทน', 'รัดเข็มขัดสักพัก', 'คุยกันด้วยเหตุผล', 'ระวังเหนื่อยสะสม', 'เดินทีละก้าว อย่าท้อ'],
+  ['บุญหนุนนำ', 'ดีมาก', 'ทำดีไว้ในวันวาน ผลบุญบันดาลวันนี้', 'ความดีที่ทำไว้มีคนเห็น', 'มีลาภลอยเล็ก ๆ', 'คนรักใส่ใจ อบอุ่น', 'จิตใจแจ่มใส', 'ทำดีต่อไปโดยไม่ต้องหวังผล'],
+  ['เรือได้ลม', 'ดี', 'เรือได้ลมใบตึง แล่นถึงฝั่งดังใจหมาย', 'งานเดินหน้าเร็วตามแผน', 'ค้าขายคล่อง', 'ไปไหนไปกัน ราบรื่น', 'แข็งแรงดี', 'รีบใช้จังหวะที่ดีนี้'],
+  ['ฟ้าครึ้มก่อนสดใส', 'ปานกลาง', 'เมฆบังจันทร์ชั่วคราว ไม่นานแสงคืนกลับมา', 'อาจมีเรื่องให้คิดหนัก แต่คลี่คลายได้', 'เผื่อเงินสำรองไว้บ้าง', 'ใจเย็นแล้วจะเข้าใจกัน', 'ดูแลเรื่องการนอน', 'เรื่องยากมีวันผ่านไป'],
+  ['ปลูกไม้ได้ผล', 'ดี', 'หว่านเมล็ดด้วยใจ วันหนึ่งได้ร่มเงา', 'สิ่งที่ลงแรงไว้เริ่มเห็นผล', 'รายได้เพิ่มจากความขยัน', 'ความจริงใจชนะใจ', 'แข็งแรง', 'ขยันต่อไป ผลดีจะยิ่งงอกงาม'],
+  ['ดาวประจำตัวส่องแสง', 'ดีมาก', 'ดาวดวงเดิมส่องสกาว นำทางไม่ให้หลง', 'ตัดสินใจถูกทาง งานสำเร็จ', 'การเงินคล่องตัว', 'คู่รักสมหวัง', 'สดชื่นแจ่มใส', 'เชื่อในตัวเอง'],
+  ['ระวังวาจา', 'ปานกลาง', 'คำพูดดั่งดาบสองคม ใช้ให้งามย่อมได้มิตร', 'สื่อสารให้ชัดเจน จะลดความเข้าใจผิด', 'อย่าค้ำประกันใครง่าย ๆ', 'พูดดี ๆ ต่อกัน', 'ถนอมเสียงและลำคอ', 'คิดก่อนพูดเสมอ'],
+  ['ผู้ใหญ่อุปถัมภ์', 'ดี', 'ต้นไม้ใหญ่ให้ร่มเงา คนเดินทางได้พักใจ', 'หัวหน้าหรือผู้ใหญ่ให้การสนับสนุน', 'ได้คำแนะนำดีเรื่องเงิน', 'ผู้ใหญ่ทางบ้านเอ็นดู', 'แข็งแรงดี', 'นอบน้อมต่อผู้ใหญ่'],
+  ['ใจสงบงานสำเร็จ', 'ดี', 'น้ำนิ่งเห็นเงาจันทร์ ใจสงบเห็นทางออก', 'สมาธิดี งานละเอียดสำเร็จ', 'ใช้จ่ายพอดี', 'อบอุ่นเรียบง่าย', 'นอนหลับสนิท', 'ทำสมาธิสักนิดก่อนเริ่มงาน'],
+  ['อย่าเพิ่งเสี่ยง', 'ปานกลาง', 'คลื่นแรงอย่าออกเรือ รอทะเลสงบก่อน', 'ยังไม่เหมาะกับการเปลี่ยนแปลงใหญ่', 'เลี่ยงการลงทุนเสี่ยงสูง', 'อย่าตัดสินใจตอนอารมณ์ร้อน', 'เดินทางช้า ๆ ไม่ต้องรีบ', 'รอได้ ปลอดภัยกว่า'],
+  ['ทองในทราย', 'ดีมาก', 'ร่อนทรายด้วยความเพียร ย่อมพบทองคำ', 'ความพยายามได้ผลเกินคาด', 'มีโอกาสได้ผลตอบแทนพิเศษ', 'เจอคนที่ใช่ในที่ไม่คาดคิด', 'แข็งแรงดี', 'อย่าเลิกกลางทาง'],
+  ['ประตูบานใหม่', 'ดี', 'ปิดประตูหนึ่ง อีกบานพลันเปิดกว้าง', 'มีโอกาสใหม่ ได้เรียนรู้งานใหม่', 'ช่องทางรายได้ใหม่', 'เริ่มต้นสิ่งดีด้วยกัน', 'ลองกิจกรรมใหม่ ๆ', 'เปิดใจรับสิ่งใหม่'],
+  ['ช้าแต่ชัวร์', 'ปานกลาง', 'เต่าเดินช้า แต่ถึงเส้นชัย', 'งานอาจล่าช้า แต่ผลลัพธ์ดี', 'ค่อย ๆ สะสม', 'รักที่มั่นคงต้องใช้เวลา', 'ออกกำลังสม่ำเสมอ', 'ความสม่ำเสมอคือกุญแจ'],
+  ['ก้าวหน้าอย่างมั่นคง', 'ดีมาก', 'บันไดทีละขั้น พาขึ้นสู่ยอดสูง', 'มีความคืบหน้า ได้รับความไว้วางใจจากผู้ใหญ่', 'ได้ผลตอบแทนจากสิ่งที่ลงแรง', 'สัมพันธ์ราบรื่น เข้าใจกันมากขึ้น', 'แข็งแรง', 'ค่อย ๆ เดินอย่างมีวินัย ความสำเร็จอยู่ไม่ไกล'],
+  ['น้ำใจนำสุข', 'ดี', 'ให้น้ำแก่ผู้กระหาย ใจตนก็ชุ่มชื่น', 'ช่วยเหลือเพื่อนร่วมงาน แล้วน้ำใจจะกลับมา', 'ทำบุญเล็กน้อยแล้วใจสบาย', 'ความใส่ใจเล็ก ๆ ทำให้รักงอกงาม', 'ใจดี กายก็ดี', 'ให้ก่อนแล้วจะได้รับ'],
+  ['หาทางสายกลาง', 'ปานกลาง', 'ตึงไปขาด หย่อนไปไม่ดัง', 'ระวังงานล้นมือ แบ่งเวลาให้ดี', 'ใช้จ่ายพอดี', 'ให้พื้นที่ส่วนตัวกันบ้าง', 'พักสายตาบ้าง', 'สมดุลคือคำตอบ'],
+  ['จันทร์เต็มดวง', 'ดี', 'จันทร์เพ็ญส่องฟ้า ทุกสิ่งแจ่มชัด', 'เรื่องที่ค้างคาได้คำตอบ', 'เคลียร์ภาระการเงินได้ดี', 'เปิดใจคุยกันแล้วชัดเจน', 'แข็งแรงดี', 'ความจริงใจนำความสบายใจ'],
+  ['หงส์ทอง', 'ดีมาก', 'หงส์ทองร่อนลงสระ นำความรุ่งเรืองมา', 'ได้รับคำชม ผลงานโดดเด่น', 'โชคดีด้านการเงิน', 'เป็นที่รักของคนรอบข้าง', 'สดใส', 'แบ่งปันความสำเร็จกับทีม'],
+  ['ตรวจทานอีกครั้ง', 'ปานกลาง', 'ช่างทองดูทองถี่ถ้วน จึงได้ทองแท้', 'ตรวจเอกสารและตัวเลขให้ละเอียด', 'เช็กใบเสร็จและบิล', 'ฟังให้ครบก่อนสรุป', 'ดื่มน้ำให้พอ', 'ละเอียดวันนี้ สบายพรุ่งนี้'],
+  ['ลมเย็นพัดมา', 'ดี', 'ลมเย็นพัดคลายร้อน ใจที่ร้อนพลันสงบ', 'บรรยากาศในที่ทำงานดีขึ้น', 'มีเรื่องให้สบายใจด้านการเงิน', 'ปรับความเข้าใจกันได้', 'ผ่อนคลาย', 'ยิ้มให้กันมากขึ้น'],
+  ['เพียรเรียนรู้', 'ดี', 'หยดน้ำทีละหยด เจาะหินได้', 'ทักษะใหม่ที่ฝึกจะเป็นประโยชน์', 'ลงทุนกับความรู้คุ้มค่า', 'เรียนรู้กันและกัน', 'ฝึกนิสัยดีวันละนิด', 'เรียนรู้ทุกวัน'],
+  ['เก็บแรงไว้ก่อน', 'ปานกลาง', 'เสือหมอบก่อนกระโจน จึงจับได้แม่นยำ', 'เตรียมตัวให้พร้อม โอกาสใหญ่กำลังมา', 'เก็บเงินสำรองไว้', 'อดทนรอจังหวะ', 'พักผ่อนสะสมพลัง', 'พร้อมก่อนแล้วค่อยลุย'],
+  ['สมปรารถนา', 'ดีมาก', 'ดอกบัวบานรับแสงอรุณ สิ่งที่หวังสมดังใจ', 'เป้าหมายที่ตั้งไว้สำเร็จ', 'โชคลาภดี', 'สมหวังในความรัก', 'แข็งแรงสดใส', 'ขอบคุณทุกสิ่งดี ๆ ในชีวิต']];
+
+/* ===== ข้อมูล + ปุ่มบนหน้าหลัก ===== */
+const fortuneTile = () => ({ h: '#/fortune', i: 'wand', c: 'linear-gradient(135deg,#c084fc,#6d28d9)', tl: 'ดวงชะตา<br>วันนี้', fort: 1 });
+let FT_ME = null;
+async function ftLoad(force) { if (!FT_ME || force || FT_ME._d !== todayStr()) { FT_ME = await rpc('fortune_me'); FT_ME._d = todayStr(); } return FT_ME; }
+const ftDot = c => `<i class="ftdot" style="background:${c[1]}"></i>`;
+async function fortuneHomeHint(root) {
+  try {
+    const t = $('a.tile[href="#/fortune"]', root);
+    if (t) { t.classList.add('fhot'); let seen = null; try { seen = localStorage.getItem('ft_seen'); } catch (e) { } if (!seen) t.insertAdjacentHTML('beforeend', '<span class="cnt fbadge">ใหม่</span>'); }
+    const hra = $('.hra', root); if (!hra || $('.hra-fort', hra) || me().is_system) return;
+    const f = await ftLoad(); let txt;
+    if (f.birth_date) { const d = ftDay(f.birth_date, f.today); txt = `สีมงคลวันนี้ ${ftDot(d.lucky[0])} ${d.lucky[0][0]} ${ftDot(d.lucky[1])} ${d.lucky[1][0]} · ดวงงาน ${d.s.work}/5`; }
+    else txt = 'ดูดวงชะตาวันนี้ ไพ่ทาโรต์ และเซียมซีได้แล้ว';
+    hra.insertAdjacentHTML('beforeend', `<a class="hra-time hra-fort" href="#/fortune">${ic('wand')}<span class="grow">${txt}</span>${ic('chev')}</a>`);
+  } catch (e) { }
+}
+async function ftShare(text) {
+  try { if (navigator.share) { await navigator.share({ title: 'ดวงชะตาวันนี้ · SMART HR', text }); return; } } catch (e) { return; }
+  try { await navigator.clipboard.writeText(text); toast('คัดลอกผลแล้ว นำไปวางแชร์ได้เลย', 'good'); } catch (e) { toast('แชร์ไม่สำเร็จ', 'bad'); }
+}
+const ftStars = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+
+/* ===== หน้า ดวงชะตาวันนี้ ===== */
+PAGES.fortune = async (el, sub, arg) => {
+  try { localStorage.setItem('ft_seen', '1'); } catch (e) { }
+  const f = await ftLoad(true);
+  if (sub === 'tarot') return ftTarotPage(el, f, arg);
+  if (sub === 'siamsi') return ftSiamsiPage(el, f);
+  const head = pageHead('ดวงชะตาวันนี้', `<span class="small">${fDL(f.today)}</span>`, '', 'wand');
+  const modes = `<div class="ftmodes">
+    <a class="card ftmode" href="#/fortune/tarot"><img src="fortune-tarot.webp" alt="หุ่นยนต์ผู้อ่านไพ่ทาโรต์"><div class="lb">ไพ่ทาโรต์ AI<small>เลือกหัวข้อ เปิด 1 หรือ 3 ใบ</small></div></a>
+    <a class="card ftmode red" href="#/fortune/siamsi"><img src="fortune-siamsi.webp" alt="หุ่นยนต์เซียมซี"><div class="lb">เซียมซี AI<small>ตั้งจิต แล้วเขย่า วันละ 1 ครั้ง</small></div></a></div>
+    <div class="small ftpriv">🔒 ผลดวงทั้งหมดเห็นเฉพาะคุณ · เพื่อความบันเทิงและเป็นกำลังใจ</div>`;
+  if (!f.birth_date) {
+    el.innerHTML = head + `<div class="card ftcard"><h3 style="margin:0 0 6px">กรอกวันเกิดเพื่อดูดวงประจำวัน</h3>
+      <div class="small" style="margin-bottom:10px">ยังไม่มีวันเกิดของคุณในระบบ กรอกครั้งเดียวใช้ได้ตลอด วันเกิดนี้ใช้เฉพาะการดูดวงและเห็นเฉพาะคุณ</div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><input type="date" id="ftbd" class="inp" style="max-width:220px"><button class="btn ftbtn" id="ftbds">ดูดวงเลย</button></div></div>` + modes;
+    $('#ftbds').onclick = async () => { const v = $('#ftbd').value; if (!v) { toast('กรุณากรอกวันเกิด', 'bad'); return; } await guard(() => rpc('fortune_set_birth', { p_date: v })); route(); };
+    return;
+  }
+  const d = ftDay(f.birth_date, f.today);
+  const share = `ดวงชะตาวันนี้ ${fDL(f.today)}\n${FT_AREA.map(a => `${a[2]} ${a[1]} ${d.s[a[0]]}/5`).join(' · ')}\nสีมงคล ${d.lucky.map(c => c[0]).join(' ')}\n${d.text[0]}\n— SMART HR`;
+  el.innerHTML = head + `<div class="card ftcard">
+    <div class="row ftwho"><img src="hr-agent.webp" alt=""><div class="grow"><b>คนเกิดวัน${FT_PL[d.bPl]} · ราศี${d.rasi} · ปี${d.zod}</b><div class="small">เลขชีวิต ${d.life} · เลขประจำวันนี้ ${d.pd} · วันนี้เป็นวัน${d.pos}ของคุณ</div></div></div>
+    <div class="ftscore">${FT_AREA.map(a => `<div><b>${d.s[a[0]]}</b><span>${a[1]}</span><i>${ftStars(d.s[a[0]])}</i></div>`).join('')}</div>
+    <div class="ftsay">${d.text.map(esc).join('<br>')}</div>
+    <div class="ftsay small">💡 ${esc(d.advice)}</div>
+    <div class="ftchips"><span>สีมงคล ${ftDot(d.lucky[0])}${d.lucky[0][0]} ${ftDot(d.lucky[1])}${d.lucky[1][0]}</span><span>ควรเลี่ยง ${ftDot(d.avoid)}${d.avoid[0]}</span><span>ทิศมงคล ${d.dir}</span>${f.show_lucky ? `<span>เลขมงคล ${d.nums.join(', ')}</span>` : ''}</div>
+    <div class="ftsci"><span>โหราศาสตร์ไทย (ทักษา)</span><span>ราศี</span><span>นักษัตรจีน</span><span>เลขศาสตร์</span><span>ดาวประจำวัน</span></div>
+    <div class="row" style="margin-top:12px"><span class="grow"></span><button class="btn sm" id="ftsh">${ic('share')} แชร์ผล</button></div></div>` + modes;
+  $('#ftsh').onclick = () => ftShare(share);
+};
+
+function ftCardHtml(c, rev, back) {
+  if (back) return `<div class="ftc back"><div class="art">✦</div></div>`;
+  return `<div class="ftc ${rev ? 'rev' : ''}"><div class="num">${c.num}</div><div class="art"><span>${c.sym}</span></div><div class="nm">${esc(c.en)}</div></div>`;
+}
+async function ftTarotPage(el, f, topic) {
+  const day = f.birth_date ? ftDay(f.birth_date, f.today) : null;
+  const done = t => (f.draws || []).find(x => x.kind === 'TAROT' && x.topic === t);
+  topic = FT_TOPIC[topic] ? topic : 'WORK';
+  const tabs = `<div class="fttabs">${Object.entries(FT_TOPIC).map(([k, v]) => `<a href="#/fortune/tarot/${k}" class="${k === topic ? 'on' : ''}">${v[1]} ${v[0]}${done(k) ? ' ✓' : ''}</a>`).join('')}</div>`;
+  const head = pageHead('ไพ่ทาโรต์ AI', '', '#/fortune', 'wand');
+  const dr = done(topic);
+  if (!dr) {
+    let spread = 3;
+    el.innerHTML = head + tabs + `<div class="card ftcard ftintro"><img src="fortune-tarot.webp" alt=""><div class="grow"><b>ตั้งคำถามเรื่อง${FT_TOPIC[topic][0]}ในใจ</b><div class="small">หายใจลึก ๆ ทำใจให้สงบ แล้วเลือกรูปแบบการเปิดไพ่ — เปิดได้วันละ 1 ครั้งต่อหัวข้อ</div></div></div>
+      <div class="card ftcard"><div class="ftspread"><button data-n="1">1 ใบ<small>คำตอบของวันนี้</small></button><button data-n="3" class="on">3 ใบ<small>อดีต · ปัจจุบัน · อนาคต</small></button></div>
+      <div class="ftfan">${Array.from({ length: 7 }, (_, i) => `<div class="ftc back" style="--r:${(i - 3) * 7}deg"><div class="art">✦</div></div>`).join('')}</div>
+      <button class="btn ftbtn gbig" id="ftdraw">สับไพ่และเปิดไพ่ ✨</button></div>`;
+    el.querySelectorAll('.ftspread button').forEach(b => b.onclick = () => { spread = +b.dataset.n; el.querySelectorAll('.ftspread button').forEach(x => x.classList.toggle('on', x === b)); });
+    $('#ftdraw').onclick = async () => {
+      $('#ftdraw').disabled = true; $('.ftfan').classList.add('shuffle');
+      const [r] = await Promise.all([guard(() => rpc('fortune_draw', { p_kind: 'TAROT', p_topic: topic, p_spread: spread })), new Promise(z => setTimeout(z, 1500))]).catch(() => [null]);
+      if (!r) { $('#ftdraw').disabled = false; return; }
+      FT_ME = null; const nf = await ftLoad(true); ftTarotPage(el, nf, topic);
+    };
+    return;
+  }
+  const rd = ftTarotRead(dr.result.cards, topic, day);
+  const pos = rd.cs.length === 3 ? ['อดีต', 'ปัจจุบัน', 'อนาคต'] : ['คำตอบของวันนี้'];
+  const share = `ไพ่ทาโรต์เรื่อง${FT_TOPIC[topic][0]} ${fDL(f.today)}\n${rd.cs.map((c, i) => `${pos[i]}: ${c.en}${c.r ? ' (กลับหัว)' : ''}`).join('\n')}\n${rd.sum}\n— SMART HR`;
+  el.innerHTML = head + tabs + `<div class="card ftcard"><div class="ftcards">${rd.cs.map((c, i) => `<div class="ftpos">${ftCardHtml(c, c.r)}<div class="small"><b>${pos[i]}</b><br>${esc(c.th)}${c.r ? ' · กลับหัว' : ''}</div></div>`).join('')}</div></div>
+    <div class="card ftcard"><div class="row ftwho"><img src="fortune-tarot.webp" alt="" class="round"><b class="grow">คำทำนายจาก AI ผู้อ่านไพ่</b></div>
+      ${rd.cs.map((c, i) => `<div class="ftline"><b>${pos[i]} · ${esc(c.en)}${c.r ? ' (กลับหัว)' : ''}</b><span>${esc(c.r ? c.rev : c.up)}</span></div>`).join('')}
+      <div class="ftsay"><b>ภาพรวม:</b> ${esc(rd.sum)}${rd.link ? `<br>${esc(rd.link)}` : ''}</div>
+      <div class="ftsay small">💡 คำแนะนำ: ${esc(rd.advice)}</div>
+      <div class="row" style="margin-top:12px;gap:8px"><button class="btn sm" id="ftsh">${ic('share')} แชร์ผล</button><span class="grow"></span><span class="small muted">ผลนี้คงเดิมทั้งวัน · ลองหัวข้ออื่นได้ด้านบน</span></div></div>`;
+  $('#ftsh').onclick = () => ftShare(share);
+}
+
+let FT_SHAKE = null;
+async function ftSiamsiPage(el, f) {
+  const head = pageHead('เซียมซี AI', `<span class="small">${fDL(f.today)}</span>`, '#/fortune', 'wand');
+  const dr = (f.draws || []).find(x => x.kind === 'SIAMSI');
+  if (FT_SHAKE) { window.removeEventListener('devicemotion', FT_SHAKE); FT_SHAKE = null; }
+  if (dr) {
+    const n = dr.result.no, s = FT_SI[n - 1];
+    const share = `เซียมซีวันนี้ ใบที่ ${n} "${s[0]}" (${s[1]})\n${s[2]}\n${s[7]}\n— SMART HR`;
+    el.innerHTML = head + `<div class="ftslip"><div class="no"><small>ใบที่</small>${n}</div><h2>${esc(s[0])}</h2>
+      <div class="lv">ภาพรวม <span>${s[1]}</span></div><div class="verse">“${esc(s[2])}”</div>
+      ${[['💼 การงาน', 3], ['💰 การเงิน', 4], ['❤️ ความรัก', 5], ['🌿 สุขภาพ', 6], ['🌱 ข้อคิด', 7]].map(([l, i]) => `<div class="it"><b>${l}</b><span>${esc(s[i])}</span></div>`).join('')}</div>
+      <div class="card ftcard"><div class="row" style="gap:8px"><button class="btn sm" id="ftsh">${ic('share')} แชร์ผล</button><span class="grow"></span><span class="small muted">เขย่าได้อีกครั้งพรุ่งนี้</span></div></div>`;
+    $('#ftsh').onclick = () => ftShare(share);
+    return;
+  }
+  el.innerHTML = head + `<div class="card ftcard ftsi"><div class="ftcup" id="ftcup"><img src="fortune-siamsi.webp" alt="หุ่นยนต์เซียมซีถือกระบอกเซียมซี"></div>
+    <h3>ตั้งจิตอธิษฐาน แล้วเขย่ากระบอกเซียมซี</h3><div class="small">นึกถึงเรื่องที่อยากรู้ในใจ แล้วกดปุ่ม หรือเปิดโหมดเขย่ามือถือ — วันละ 1 ครั้ง</div>
+    <button class="btn ftbtn red gbig" id="ftgo">เขย่าเลย</button>
+    <button class="btn sm" id="ftmo" style="margin-top:10px">📳 เขย่าด้วยมือถือ</button></div>`;
+  let busy = false;
+  const go = async () => {
+    if (busy) return; busy = true; $('#ftgo').disabled = true; $('#ftcup').classList.add('shake');
+    try { navigator.vibrate && navigator.vibrate([60, 60, 60, 60, 120]); } catch (e) { }
+    const [r] = await Promise.all([guard(() => rpc('fortune_draw', { p_kind: 'SIAMSI' })), new Promise(z => setTimeout(z, 1800))]).catch(() => [null]);
+    if (FT_SHAKE) { window.removeEventListener('devicemotion', FT_SHAKE); FT_SHAKE = null; }
+    if (!r) { busy = false; $('#ftgo').disabled = false; $('#ftcup').classList.remove('shake'); return; }
+    const nf = await ftLoad(true); ftSiamsiPage(el, nf);
+  };
+  $('#ftgo').onclick = go;
+  $('#ftmo').onclick = async () => {
+    try { if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function' && await DeviceMotionEvent.requestPermission() !== 'granted') { toast('ไม่ได้รับอนุญาตให้ใช้เซนเซอร์ กดปุ่ม เขย่าเลย แทนได้', 'bad'); return; } } catch (e) { toast('อุปกรณ์นี้ใช้โหมดเขย่าไม่ได้ กดปุ่ม เขย่าเลย แทนได้', 'bad'); return; }
+    let hits = 0, lastT = 0;
+    FT_SHAKE = ev => {
+      if (!document.body.contains($('#ftgo'))) { window.removeEventListener('devicemotion', FT_SHAKE); FT_SHAKE = null; return; }
+      const a = ev.accelerationIncludingGravity || {}; const m = Math.hypot(a.x || 0, a.y || 0, a.z || 0);
+      if (m > 22) { const t = Date.now(); if (t - lastT > 120) { hits++; lastT = t; $('#ftcup').classList.add('wiggle'); } if (hits >= 4) go(); }
+    };
+    window.addEventListener('devicemotion', FT_SHAKE);
+    $('#ftmo').textContent = '📳 เขย่ามือถือได้เลย…';
+  };
+}
+
 /* ===================== M01 DASHBOARD ===================== */
 /* เมนูลัดสำหรับพนักงานทั่วไปบนมือถือ — จำนวนคอลัมน์ปรับตามจำนวนปุ่ม ให้แต่ละแถวเต็มและสมดุล */
 const tileCols = n => n <= 5 ? n : n === 6 ? 3 : 4;
@@ -2155,7 +2515,7 @@ function simpleTiles(m) {
     { h: '#/docs', i: 'upload', c: 'linear-gradient(135deg,#34d399,#0f9f6e)', tl: 'ขอ<br>อนุมัติ' },
     { h: '#/docs/history', i: 'history', c: 'linear-gradient(135deg,#fbbf24,#ea8a0c)', tl: 'ประวัติ<br>ขออนุมัติ' },
     { h: '#/leave', i: 'cal', c: 'linear-gradient(135deg,#a78bfa,#6d28d9)', tl: 'วันลา<br>คงเหลือ' },
-    { h: '#/payroll/hub', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }, gameTile()];
+    { h: '#/payroll/hub', i: 'money', c: 'linear-gradient(135deg,#60a5fa,#1d4ed8)', tl: 'สลิป<br>เงินเดือน' }, gameTile(), fortuneTile()];
   if (S.pendingCount || m.pending_approvals) t.push({ h: '#/approve/tab/pending', i: 'approve', c: 'linear-gradient(135deg,#4ade80,#16a34a)', tl: 'อนุมัติ<br>เอกสาร' });
   if (m.tasks_open) t.push({ h: '#/tasks', i: 'tasks', c: 'linear-gradient(135deg,#f472b6,#db2777)', tl: 'สิ่งที่<br>ต้องทำ' });
   return t;
@@ -2200,7 +2560,7 @@ async function dashHR(el, d) {
     ['#/time', 'clock', 'linear-gradient(135deg,#22d3ee,#0e7490)', 'เวลา<br>เข้า-ออก'],
     ['#/leave', 'leave', 'linear-gradient(135deg,#34d399,#0f9f6e)', 'การลา'],
     ['#/payroll', 'money', 'linear-gradient(135deg,#facc15,#ca8a04)', 'เงินเดือน'],
-    ['#/settings', 'gear', 'linear-gradient(135deg,#94a3b8,#475569)', 'ตั้งค่า<br>ระบบ'], ['#/game', 'game', 'linear-gradient(135deg,#60a5fa,#1d4ed8)', 'เกม']];
+    ['#/settings', 'gear', 'linear-gradient(135deg,#94a3b8,#475569)', 'ตั้งค่า<br>ระบบ'], ['#/game', 'game', 'linear-gradient(135deg,#60a5fa,#1d4ed8)', 'เกม'], ['#/fortune', 'wand', 'linear-gradient(135deg,#c084fc,#6d28d9)', 'ดวงชะตา<br>วันนี้']];
   const st = (v, l, h) => `<a href="${h}"><b>${num(v || 0)}</b><span>${l}</span></a>`;
   const mx = Math.max(...(o.by_branch || []).map(x => x.n), 1);
   const chips = obj => Object.entries(obj || {}).map(([k, v]) => `<span class="badge ${(ATT_STATUS[k] || [])[1] || ''}">${esc((ATT_STATUS[k] || [k])[0])} ${num(v)}</span>`).join(' ') || '<span class="muted small">ยังไม่มีข้อมูลเวลา (ต้องนำเข้าจากเครื่องสแกน)</span>';
@@ -2223,7 +2583,7 @@ async function dashHR(el, d) {
   ${sys ? '' : `<div class="card" style="margin-top:14px" id="hragent"><div class="spin"></div></div><div class="card" style="margin-top:14px" id="annbox"><div class="spin"></div></div>`}`;
   aaLoad('#adagent');
   if (!sys) {
-    hrAgentCard($('#hragent')).then(() => gameHomeHint(el)).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+    hrAgentCard($('#hragent')).then(() => { gameHomeHint(el); fortuneHomeHint(el); }).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
     annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
   }
 }
@@ -2276,7 +2636,7 @@ PAGES.dashboard = async el => {
   const bod = attExempt(e); /* v1.16.1 กรรมการบริษัทไม่ใช้การ์ดเวลาเข้า-ออก */
   let html = `
   <div class="hero"><div class="hi">${avatar(e, 'lg')}<div><div class="hello">สวัสดีครับ</div><div class="code">รหัสพนักงาน : ${esc(e.employee_code)}</div><div class="nm">${esc((e.title_th || '') + e.first_name + ' ' + (e.last_name || ''))}</div><div class="pos">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div></div>
-   <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : [...MODS.filter(x => x.show()), gameTile()]).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
+   <div class="tiles${simple ? ' simple' : ''}" ${simple ? `style="--cols:${tileCols(simpleTiles(m).length)}"` : ''}>${(simple ? simpleTiles(m) : [...MODS.filter(x => x.show()), gameTile(), fortuneTile()]).map(x => `<a class="tile" href="${x.h || '#/' + x.k}"><span class="ti" style="background:${x.c}">${ic(x.i)}</span>${x.tl || x.t}</a>`).join('')}</div></div>
   ${bod || e.is_system ? `<div class="card" id="tdyorg"><div class="spin"></div></div>` : `<div class="card"><div class="row" style="margin-bottom:10px"><h3 style="margin:0">${ic('cal')} สรุปวันนี้</h3><span class="muted small">${fDL(t)}</span><span class="grow"></span><a class="btn ghost icon" href="#/time" aria-label="ดูเวลา">${ic('chev')}</a></div>
    <div class="today">
     <div><div class="l"><span style="color:var(--good)">${ic('in')}</span>เวลาเข้างาน</div><div class="v">${fT(tdy.first_in)}</div></div>
@@ -2321,7 +2681,7 @@ PAGES.dashboard = async el => {
   html += `<a class="svc" href="#/docs"><div><b>HR Services</b>บริการ HR สำหรับพนักงาน — ยื่นลา ขอ OT ขอปรับเวลา</div><div class="chips"><span>${ic('file')}</span><span>${ic('users')}</span><span>${ic('cal')}</span></div></a>`;
   el.innerHTML = html;
   if ($('#tdyorg')) orgTodayCard($('#tdyorg')).catch(() => { $('#tdyorg').innerHTML = '<div class="small muted">โหลดสรุปเวลาเข้างานไม่สำเร็จ</div>'; });
-  hrAgentCard($('#hragent'), m.pending_approvals || 0).then(() => gameHomeHint(el)).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
+  hrAgentCard($('#hragent'), m.pending_approvals || 0).then(() => { gameHomeHint(el); fortuneHomeHint(el); }).catch(() => { $('#hragent').innerHTML = '<div class="small muted">HR Agent โหลดข้อมูลไม่สำเร็จ</div>'; });
   annCard($('#annbox')).catch(() => { $('#annbox').innerHTML = '<div class="small muted">โหลดประกาศไม่สำเร็จ</div>'; });
 };
 
