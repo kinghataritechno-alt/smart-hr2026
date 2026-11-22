@@ -721,6 +721,22 @@ details.more summary{cursor:pointer;color:var(--brand);font-size:14px;padding:4p
 .thd-b{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;background:transparent;color:var(--muted,#64748b);display:grid;place-items:center;cursor:pointer;border-radius:8px}
 .thd-b:hover{background:rgba(127,127,127,.12)}.thd-b svg{width:18px;height:18px}
 input.thd-src{position:absolute!important;right:0;bottom:0;width:1px!important;height:1px!important;opacity:0;pointer-events:none;padding:0!important;border:0!important}
+/* v1.20 ปฏิทินเลือกวันที่ */
+.thc-ov{position:fixed;inset:0;z-index:9999;background:rgba(2,8,23,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.thc{width:100%;max-width:340px;background:#0f1c3a;color:#fff;border:1px solid rgba(170,215,255,.35);border-radius:18px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);font-size:16px}
+.thc-h{display:flex;gap:6px;align-items:center;margin-bottom:10px}.thc-h select{flex:1;min-width:0;padding-right:2px!important;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(170,215,255,.35);border-radius:10px;padding:8px 6px;font:inherit;font-size:16px}.thc-h select option{color:#000}.thc-h .thc-m{flex:1.5}.thc-h .thc-y{flex:1}
+.thc-n{width:38px;height:38px;flex:0 0 38px;border-radius:10px;border:1px solid rgba(170,215,255,.35);background:rgba(255,255,255,.08);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.thc-w,.thc-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.thc-w span{font-size:13px;opacity:.7;padding:4px 0}
+.thc-g button{aspect-ratio:1;border:0;border-radius:10px;background:transparent;color:#fff;font:inherit;font-size:16px;cursor:pointer}.thc-g button:hover{background:rgba(255,255,255,.12)}
+.thc-g button.tod{box-shadow:inset 0 0 0 1.5px #f59e0b}.thc-g button.sel{background:#ea8a0c;color:#fff;font-weight:600}.thc-g button:disabled{opacity:.25;cursor:default}
+.thc-f{display:flex;gap:8px;align-items:center;margin-top:10px}
+/* v1.20 เลือกผู้รับผิดชอบด้วย # */
+.pk-w{position:relative;display:block;min-width:0}.pk-w .inp{width:100%}
+.pk-dd{display:block;position:relative;margin-top:6px;z-index:5;max-height:240px;overflow:auto;background:#0f1c3a;border:1px solid rgba(170,215,255,.4);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.45);padding:4px}
+.pk-it{display:block;width:100%;text-align:left;border:0;background:transparent;color:#fff;padding:10px 10px;border-radius:8px;font:inherit;font-size:15px;cursor:pointer}.pk-it.on,.pk-it:hover{background:rgba(234,138,12,.3)}.pk-none{padding:10px;opacity:.7;color:#fff}
+/* v1.20 มือถือ: ตัวอักษรช่องกรอก 16px กัน iPhone ซูมหน้าจอ (ทำให้ฟอร์มล้นขวา) + ปุ่มไม่ล้น */
+@media (pointer:coarse),(max-width:699px){input.inp,select.inp,textarea.inp,.inp,input,select,textarea{font-size:16px!important}}
+.modal .row{flex-wrap:wrap}.modal .row>.btn{flex:0 0 auto}.modal .fgrid>*{min-width:0}
 /* v1.5.6 ปุ่มเลือกไฟล์ภาษาไทย */
 .thf-w{position:relative;display:flex!important;align-items:center;gap:10px;min-height:44px;padding:6px 8px!important}
 .thf-w .thf-b{flex:0 0 auto}.thf-w .thf-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:14px}
@@ -1430,7 +1446,7 @@ const mask = (v, keep = 4) => { if (!v) return '–'; const s = String(v); retur
 /* ===================== LABELS ===================== */
 const EMP_STATUS = { ACTIVE: ['ปฏิบัติงาน', 'b-good'], PROBATION: ['ทดลองงาน', 'b-info'], SUSPENDED: ['พักงาน', 'b-warn'], RESIGNED: ['ลาออก', 'b-bad'], TERMINATED: ['พ้นสภาพ', 'b-bad'] };
 const DOC_STATUS = { DRAFT: ['ร่าง', ''], PENDING: ['รออนุมัติ', 'b-warn'], APPROVED: ['อนุมัติแล้ว', 'b-good'], REJECTED: ['ไม่อนุมัติ', 'b-bad'], RETURNED: ['ส่งกลับแก้ไข', 'b-info'], CANCELLED: ['ยกเลิก', ''] };
-const ATT_STATUS = { PRESENT: ['ปกติ', 'b-good'], LATE: ['สาย', 'b-warn'], ABSENT: ['ขาดงาน', 'b-bad'], INCOMPLETE: ['สแกนไม่ครบ', 'b-warn'], IN: ['เข้างานแล้ว', 'b-info'], LEAVE: ['ลา', 'b-info'], HOLIDAY: ['วันหยุดนักขัตฯ', ''], DAY_OFF: ['วันหยุด', ''], NO_SCHEDULE: ['ยังไม่กำหนดกะ', ''], PENDING: ['รอข้อมูล', ''], WORK_ON_OFFDAY: ['ทำงานวันหยุด', 'b-info'] };
+const ATT_STATUS = { OFFSITE: ['นอกสถานที่', 'b-info'], PRESENT: ['ปกติ', 'b-good'], LATE: ['สาย', 'b-warn'], ABSENT: ['ขาดงาน', 'b-bad'], INCOMPLETE: ['สแกนไม่ครบ', 'b-warn'], IN: ['เข้างานแล้ว', 'b-info'], LEAVE: ['ลา', 'b-info'], HOLIDAY: ['วันหยุดนักขัตฯ', ''], DAY_OFF: ['วันหยุด', ''], NO_SCHEDULE: ['ยังไม่กำหนดกะ', ''], PENDING: ['รอข้อมูล', ''], WORK_ON_OFFDAY: ['ทำงานวันหยุด', 'b-info'] };
 const TASK_STATUS = { NOT_STARTED: ['ยังไม่เริ่ม', ''], IN_PROGRESS: ['กำลังดำเนินการ', 'b-info'], PENDING_REVIEW: ['รอตรวจ', 'b-warn'], COMPLETED: ['เสร็จสิ้น', 'b-good'], CANCELLED: ['ยกเลิก', ''], OVERDUE: ['เกินกำหนด', 'b-bad'] };
 const PRIORITY = { LOW: 'ต่ำ', NORMAL: 'ปกติ', HIGH: 'สูง', URGENT: 'ด่วน' };
 const PAY_STATUS = { DRAFT: ['ร่าง', ''], CALCULATED: ['คำนวณแล้ว', 'b-info'], REVIEWED: ['ตรวจสอบแล้ว', 'b-warn'], APPROVED: ['อนุมัติ/ล็อก', 'b-good'], PUBLISHED: ['เผยแพร่สลิป', 'b-good'], CANCELLED: ['ยกเลิก', ''] };
@@ -1650,7 +1666,42 @@ function thdEnhance(src) {
   });
   t.addEventListener('blur', () => { const v = t.value.trim(); if (!v) { push(''); return; } const iso = thdParse(v); if (iso) { push(iso); t.value = thdFmt(iso); } else { t.classList.add('bad'); push(''); toast('วันที่ไม่ถูกต้อง — ใช้รูปแบบ วว/ดด/ปปปป (พ.ศ.) เช่น 06/11/2569', 'bad'); } });
   src.addEventListener('change', () => { if (!pushing) sync(); });
-  b.onclick = () => { if (t.disabled || t.readOnly) return; try { src.showPicker(); } catch (e) { t.focus(); } };
+  b.onclick = () => { if (src.disabled || src.readOnly) return; thdCal(VAL_DESC.get.call(src), iso => { push(iso); sync(); }, src); };
+  /* มือถือ: แตะช่องวันที่ = เปิดปฏิทิน (ไม่เด้งแป้นพิมพ์) */
+  if (matchMedia('(pointer:coarse)').matches) { t.readOnly = true; t.addEventListener('click', () => { if (!src.disabled && !src.readOnly) b.onclick(); }); }
+}
+/* v1.20 ปฏิทินเลือกวันที่ ภาษาไทย ปี พ.ศ. — ใช้แทนตัวเลือกวันที่ของเบราว์เซอร์ (iPhone ไม่เปิดให้) */
+const TH_MFULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+function thdCal(cur, onPick, src) {
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const today = todayStr(); const minV = src.min || '', maxV = src.max || '';
+  let base = cur && /^\d{4}-\d{2}-\d{2}$/.test(cur) ? new Date(cur + 'T00:00:00') : new Date(today + 'T00:00:00'); let y = base.getFullYear(), m = base.getMonth();
+  const ov = document.createElement('div'); ov.className = 'thc-ov';
+  ov.innerHTML = `<div class="thc" role="dialog" aria-label="เลือกวันที่"><div class="thc-h"><button type="button" class="thc-n" data-nv="-1" aria-label="เดือนก่อน">‹</button><select class="thc-m" aria-label="เดือน">${TH_MFULL.map((n, i) => `<option value="${i}">${n}</option>`).join('')}</select><select class="thc-y" aria-label="ปี"></select><button type="button" class="thc-n" data-nv="1" aria-label="เดือนถัดไป">›</button></div><div class="thc-w">${['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map(x => `<span>${x}</span>`).join('')}</div><div class="thc-g"></div><div class="thc-f"><button type="button" class="btn sm" data-today>วันนี้</button><button type="button" class="btn sm ghost" data-clear>ล้าง</button><span class="grow"></span><button type="button" class="btn sm" data-close>ปิด</button></div></div>`;
+  document.body.appendChild(ov);
+  const yNow = new Date().getFullYear(); const ys = $('.thc-y', ov);
+  for (let yy = yNow + 5; yy >= 1930; yy--) ys.insertAdjacentHTML('beforeend', `<option value="${yy}">${yy + 543}</option>`);
+  const close = () => ov.remove();
+  const draw = () => {
+    if (y < 1930) y = 1930; if (y > yNow + 5) y = yNow + 5;
+    $('.thc-m', ov).value = m; ys.value = y;
+    const first = new Date(y, m, 1), days = new Date(y, m + 1, 0).getDate(); let h = '';
+    for (let i = 0; i < first.getDay(); i++) h += '<span></span>';
+    for (let d = 1; d <= days; d++) { const v = iso(new Date(y, m, d)); const off = (minV && v < minV) || (maxV && v > maxV);
+      h += `<button type="button" data-d="${v}" class="${v === cur ? 'sel' : ''}${v === today ? ' tod' : ''}"${off ? ' disabled' : ''}>${d}</button>`; }
+    $('.thc-g', ov).innerHTML = h;
+  };
+  ov.addEventListener('click', e => {
+    if (e.target === ov || e.target.closest('[data-close]')) return close();
+    const nv = e.target.closest('[data-nv]'); if (nv) { m += Number(nv.dataset.nv); if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } return draw(); }
+    const dd = e.target.closest('[data-d]'); if (dd && !dd.disabled) { onPick(dd.dataset.d); return close(); }
+    if (e.target.closest('[data-today]')) { onPick(today); return close(); }
+    if (e.target.closest('[data-clear]')) { onPick(''); return close(); }
+  });
+  $('.thc-m', ov).onchange = e => { m = Number(e.target.value); draw(); };
+  ys.onchange = e => { y = Number(e.target.value); draw(); };
+  document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); } });
+  draw();
 }
 const thdScan = root => (root.querySelectorAll ? root : document).querySelectorAll('input[type=date]:not([data-thd])').forEach(thdEnhance);
 new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1) { if (n.matches && n.matches('input[type=date]')) thdEnhance(n); else thdScan(n); } }).observe(document.documentElement, { childList: true, subtree: true });
@@ -1761,7 +1812,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.19.1</div>
+      <div class="sbver">Smart Terminal HR<br>v1.20.0</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -4089,22 +4140,25 @@ async function scheduleGrid(host) {
 }
 
 /* ===================== M06 / M07 DOCUMENTS & APPROVAL ===================== */
-const DT_ICON = { LEAVE: 'plane', SHIFT_CHANGE: 'swap', DAYOFF_CHANGE: 'swap', DAYOFF_PATTERN: 'cal', TIME_ADD: 'clock', OT: 'ot', FACE_PHOTO: 'face', RESIGN: 'resign', MANPOWER: 'useradd', TRAINING_REQ: 'board', PR: 'cart', MATERIAL: 'box' };
+const DT_ICON = { OFFSITE: 'pin', LEAVE: 'plane', SHIFT_CHANGE: 'swap', DAYOFF_CHANGE: 'swap', DAYOFF_PATTERN: 'cal', TIME_ADD: 'clock', OT: 'ot', FACE_PHOTO: 'face', RESIGN: 'resign', MANPOWER: 'useradd', TRAINING_REQ: 'board', PR: 'cart', MATERIAL: 'box' };
 const RD_TYPES = ['DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
-const REQ_GRID = ['LEAVE', 'OT', 'DAYOFF_CHANGE', 'DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
-const REQ_SIMPLE = ['LEAVE', 'OT', 'TIME_ADD', 'SHIFT_CHANGE', 'DAYOFF_CHANGE'], REQ_SIMPLE_MORE = ['RESIGN'];  /* คำขอของพนักงานทั่วไปบนมือถือ */
+const REQ_GRID = ['LEAVE', 'OT', 'DAYOFF_CHANGE', 'OFFSITE', 'DAYOFF_PATTERN', 'MANPOWER', 'TRAINING_REQ', 'PR', 'MATERIAL'];
+const REQ_SIMPLE = ['LEAVE', 'OT', 'TIME_ADD', 'SHIFT_CHANGE', 'DAYOFF_CHANGE', 'OFFSITE'], REQ_SIMPLE_MORE = ['RESIGN'];  /* คำขอของพนักงานทั่วไปบนมือถือ */
 /* v1.17.5 ไอคอน 3D กระจกฟ้าประจำประเภทคำขอ (แบบที่ผู้ใช้เลือก แทนอวตาร v1.17.4) — ประเภทที่ไม่มีไฟล์ใช้ไอคอนเส้นในวงเรืองแสง */
 const DT_AVATAR = { LEAVE: 'ic-leave.webp', SHIFT_CHANGE: 'ic-shift-change.webp', DAYOFF_CHANGE: 'ic-dayoff-change.webp', TIME_ADD: 'ic-time-add.webp', OT: 'ic-ot.webp', FACE_PHOTO: 'ic-face-photo.webp', RESIGN: 'ic-resign.webp', DAYOFF_PATTERN: 'ic-dayoff-pattern.webp', MANPOWER: 'ic-manpower.webp', TRAINING_REQ: 'ic-training-req.webp', PR: 'ic-pr.webp', MATERIAL: 'ic-material.webp' };
-const DT_COLOR = { LEAVE: '#16a34a', SHIFT_CHANGE: '#2563eb', DAYOFF_CHANGE: '#7c3aed', TIME_ADD: '#0e7490', OT: '#ea8a0c', FACE_PHOTO: '#db2777', RESIGN: '#b91c1c', DAYOFF_PATTERN: '#7c3aed', MANPOWER: '#0891b2', TRAINING_REQ: '#4f46e5', PR: '#0d9488', MATERIAL: '#a16207' };
+const DT_COLOR = { OFFSITE: '#0284c7', LEAVE: '#16a34a', SHIFT_CHANGE: '#2563eb', DAYOFF_CHANGE: '#7c3aed', TIME_ADD: '#0e7490', OT: '#ea8a0c', FACE_PHOTO: '#db2777', RESIGN: '#b91c1c', DAYOFF_PATTERN: '#7c3aed', MANPOWER: '#0891b2', TRAINING_REQ: '#4f46e5', PR: '#0d9488', MATERIAL: '#a16207' };
 const WD = ['', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'];
 const OT_DAY = { WORKDAY: 'OT วันทำงาน', HOLIDAY_WORK: 'ทำงานวันหยุด', HOLIDAY_OT: 'OT วันหยุด' };
+const DAYOFF_TO = { WORKDAY: 'วันทำงาน', PUBLIC_HOLIDAY: 'วันหยุดนักขัตฤกษ์', EMP_HOLIDAY: 'วันหยุดพนักงาน', SPECIAL_HOLIDAY: 'วันหยุดพิเศษ' };
+const OFFSITE_PERIOD = { FULL: 'ทั้งวัน', AM: 'ช่วงเช้า', PM: 'ช่วงบ่าย' };
 const dtCode = id => (S.L.docTypes.find(x => x.id === id) || {}).document_code;
 const dtName = id => (S.L.docTypes.find(x => x.id === id) || {}).document_name || '–';
 function docSummary(d) {
   const c = dtCode(d.document_type_id);
   if (c === 'LEAVE') return `${nameOf('leaveTypes', d.leave_type_id, 'leave_name')} ${fD(d.date_from)}${d.date_to && d.date_to !== d.date_from ? ' – ' + fD(d.date_to) : ''}${d.half_day === 'AM' ? ' ครึ่งเช้า' : d.half_day === 'PM' ? ' ครึ่งบ่าย' : d.half_day === 'HOURS' ? ` เวลา ${fT(d.time_in)}–${fT(d.time_out)}` : ''}${d.units ? ` · ${fLv(d.units)}` : ''}`;
   if (c === 'SHIFT_CHANGE') return `${fD(d.date_from)}${d.date_to ? ' – ' + fD(d.date_to) : ''} → ${nameOf('shifts', d.shift_id, 'shift_name')}`;
-  if (c === 'DAYOFF_CHANGE') return `วันหยุดเดิม ${fD(d.date_from)} → วันหยุดใหม่ ${fD(d.date_to)}`;
+  if (c === 'DAYOFF_CHANGE') { const ct = (d.request_data || {}).change_to; return ct ? `${fD(d.date_from)} → ${DAYOFF_TO[ct] || ct}${d.time_in || d.time_out ? ` เวลา ${d.time_in ? fT(d.time_in) : '–'}–${d.time_out ? fT(d.time_out) : '–'}` : ''}` : `วันหยุดเดิม ${fD(d.date_from)} → วันหยุดใหม่ ${fD(d.date_to)}`; }
+  if (c === 'OFFSITE') return `${fD(d.date_from)}${d.date_to && d.date_to !== d.date_from ? ' – ' + fD(d.date_to) : ''} · ${OFFSITE_PERIOD[d.half_day || 'FULL']} · ${esc((d.request_data || {}).location || '')}`;
   if (c === 'TIME_ADD') return `${fD(d.date_from)} เข้า ${fT(d.time_in)} ออก ${fT(d.time_out)}`;
   if (c === 'OT') { const em = (d.request_data || {}).employees || []; return `${fD(d.date_from)} · ${num(d.hours, 2)} ชม. · ${OT_DAY[(d.request_data || {}).day_type] || ''}${em.length ? ` · ${em.length} คน: ${em.slice(0, 3).map(id => (S.dirMap[id] || {}).first_name || '').filter(Boolean).join(', ')}${em.length > 3 ? '…' : ''}` : ''}`; }
   if (c === 'RESIGN') return `มีผล ${fD(d.effective_date)}`;
@@ -4133,9 +4187,10 @@ PAGES.docs = async (el, a, b) => {
 function docFields(code) {
   const sh = opts('shifts', 'id', r => `${r.shift_name} (${hm(r.start_time)}–${hm(r.end_time)})`);
   const F = {
-    LEAVE: [{ k: 'leave_type_id', label: 'ประเภทการลา', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.status === 'ACTIVE' && x.leave_code !== 'ABSENT').map(x => [x.id, x.leave_name]) }, { k: 'half_day', label: 'รูปแบบการลา', type: 'select', opts: [['AM', 'ครึ่งวันเช้า'], ['PM', 'ครึ่งวันบ่าย'], ['HOURS', 'ลาเป็นชั่วโมง']], hint: 'ไม่เลือก = ลาเต็มวัน · ครึ่งวัน/ชั่วโมง ใช้ได้เมื่อลาวันเดียว' }, { k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่', type: 'date', req: true }, { k: 'lv_from', label: 'เวลาเริ่มลา', type: 'time' }, { k: 'lv_to', label: 'ถึงเวลา', type: 'time' }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true }],
+    LEAVE: [{ k: 'leave_type_id', label: 'ประเภทการลา', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.status === 'ACTIVE' && x.leave_code !== 'ABSENT').map(x => [x.id, x.leave_name]) }, { k: 'half_day', label: 'รูปแบบการลา', type: 'select', opts: [['AM', 'ครึ่งวันเช้า'], ['PM', 'ครึ่งวันบ่าย']], hint: 'ไม่เลือก = ลาเต็มวัน · ครึ่งวันใช้ได้เมื่อลาวันเดียว' }, { k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่', type: 'date', req: true }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true }],
     SHIFT_CHANGE: [{ k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่ (ถ้ามี)', type: 'date' }, { k: 'shift_id', label: 'กะที่ต้องการ', type: 'select', req: true, opts: sh }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true, req: true }],
-    DAYOFF_CHANGE: [{ k: 'date_from', label: 'วันหยุดเดิม (จะมาทำงาน)', type: 'date', req: true }, { k: 'date_to', label: 'วันหยุดใหม่', type: 'date', req: true }, { k: 'shift_id', label: 'กะที่ทำในวันหยุดเดิม (ถ้าต่างจากปกติ)', type: 'select', opts: sh }, { k: 'reason', label: 'เหตุผล', type: 'textarea', full: true, req: true }],
+    DAYOFF_CHANGE: [{ k: 'date_from', label: 'วันที่', type: 'date', req: true }, { k: 'change_to', label: 'เปลี่ยนเป็นวัน', type: 'select', req: true, opts: Object.entries(DAYOFF_TO) }, { k: 'in_t', label: 'เวลาเริ่ม (ถ้ามี)', type: 'time' }, { k: 'out_t', label: 'เวลาสิ้นสุด (ถ้ามี)', type: 'time' }, { k: 'reason', label: 'รายละเอียด', type: 'textarea', full: true, req: true }],
+    OFFSITE: [{ k: 'date_from', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'date_to', label: 'ถึงวันที่', type: 'date', req: true }, { k: 'period', label: 'ช่วงเวลา', type: 'select', req: true, noEmpty: true, def: 'FULL', opts: Object.entries(OFFSITE_PERIOD) }, { k: 'location', label: 'สถานที่', req: true, full: true }, { k: 'reason', label: 'รายละเอียดงาน', type: 'textarea', full: true, req: true }],
     TIME_ADD: [{ k: 'date_from', label: 'วันทำงาน', type: 'date', req: true }, { k: 'in_t', label: 'เวลาเข้า', type: 'time' }, { k: 'out_d', label: 'วันที่ออก (กะข้ามวัน)', type: 'date' }, { k: 'out_t', label: 'เวลาออก', type: 'time' }, { k: 'reason', label: 'เหตุผล (เช่น ลืมสแกน)', type: 'textarea', full: true, req: true }],
     OT: [{ k: 'date_from', label: 'วันที่ทำ OT', type: 'date', req: true }, { k: 'day_type', label: 'ประเภท', type: 'select', req: true, opts: Object.entries(OT_DAY) }, { k: 'ot_from', label: 'เวลาเริ่ม', type: 'time' }, { k: 'ot_to', label: 'เวลาสิ้นสุด', type: 'time' }, { k: 'hours', label: 'จำนวนชั่วโมง', type: 'number', step: '0.25', req: true, min: 0.25, max: 24 }, { k: 'reason', label: 'งานที่ทำ/เหตุผล', type: 'textarea', full: true, req: true }],
     FACE_PHOTO: [{ k: 'consent', label: 'ข้าพเจ้ายินยอมให้บริษัทเก็บและใช้ภาพใบหน้าเพื่อยืนยันตัวบุคคลในการบันทึกเวลา ตามประกาศความเป็นส่วนตัว (PDPA)', type: 'check', full: true }, { k: 'reason', label: 'หมายเหตุ', type: 'textarea', full: true }],
@@ -4169,7 +4224,7 @@ async function docForm(el, code, doc) {
   if (code === 'OT' && !(await rpc('ot_can_request').catch(() => false))) { el.innerHTML = pageHead('ขอค่าล่วงเวลา (OT)', '', '#/approve') + `<div class="card"><div class="notice info">${ic('alert')}<div>การขอ OT ทำได้เฉพาะระดับหัวหน้างานขึ้นไป (SUP / ASM / MGR / DIR) โดยหัวหน้าเป็นผู้ขอให้ลูกทีม — กรุณาแจ้งหัวหน้างานของท่าน</div></div></div>`; return; }
   const otTeam = code === 'OT' ? await rpc('ot_team') : [];
   const fields = docFields(code); if (code === 'OT') fields.unshift({ k: 'ot_emps', label: 'ขอ OT ให้ลูกทีม (เลือกได้หลายคน)', type: 'checks', req: true, full: true, opts: otTeam.map(x => [x.id, `${x.employee_code} ${x.name}`]) });
-  const v = doc ? { ...doc, ...(doc.request_data || {}), ot_emps: (doc.request_data || {}).employees || [], in_t: doc.time_in ? fT(doc.time_in) : '', lv_from: doc.time_in ? fT(doc.time_in) : '', lv_to: doc.time_out ? fT(doc.time_out) : '', out_t: doc.time_out ? fT(doc.time_out) : '', out_d: doc.time_out ? new Date(doc.time_out).toLocaleDateString('en-CA', { timeZone: CFG.tz }) : '' } : {};
+  const v = doc ? { ...doc, ...(doc.request_data || {}), ot_emps: (doc.request_data || {}).employees || [], in_t: doc.time_in ? fT(doc.time_in) : '', lv_from: doc.time_in ? fT(doc.time_in) : '', lv_to: doc.time_out ? fT(doc.time_out) : '', out_t: doc.time_out ? fT(doc.time_out) : '', out_d: doc.time_out ? new Date(doc.time_out).toLocaleDateString('en-CA', { timeZone: CFG.tz }) : '', period: doc.half_day || 'FULL' } : {};
   const atts = doc ? await q(sb.from('document_attachments').select('*').eq('document_id', doc.id)) : [];
   let extra = '';
   if (code === 'LEAVE') { const bal = await rpc('leave_balances', { p_emp: me().id, p_year: Number(todayStr().slice(0, 4)) }); extra = `<div class="row" style="margin-bottom:12px">${bal.filter(x => x.uses_quota).map(x => `<span class="badge b-info">${esc(x.leave_name)} คงเหลือ ${fLv(x.remaining - x.pending)}</span>`).join('')}</div>`; }
@@ -4184,14 +4239,13 @@ async function docForm(el, code, doc) {
   const calc = debounce(async () => {
     if (code !== 'LEAVE' || !$('#f_date_from')) return; const f = $('#f_date_from').value, to = $('#f_date_to').value || f; if (!f) return;
     if (!$('#f_date_to').value) $('#f_date_to').value = f;
-    const hrs = $('#f_half_day').value === 'HOURS';
+    const hrs = false;  /* v1.20: ยกเลิกลาเป็นชั่วโมง */
     if (hrs) { if ($('#f_date_to').value !== f) $('#f_date_to').value = f; const a = $('#f_lv_from').value, z = $('#f_lv_to').value; if (!a || !z) { $('#dcalc').innerHTML = 'ระบุเวลาเริ่มและเวลาสิ้นสุดการลา'; return; }
       try { const h = await rpc('leave_hours', { p_emp: me().id, p_date: f, p_in: localTs(f, a), p_out: localTs(f, z) }); $('#dcalc').innerHTML = `จำนวนที่ลา หักเวลาพักตามกะแล้ว: <b>${fLv(h / 8)}</b>${h >= 8 ? ' — <span style="color:var(--bad)">ตั้งแต่ 8 ชม. ให้เลือกลาเต็มวัน</span>' : ''}`; } catch (e) { } return; }
     try { const n = await rpc('leave_count_days', { p_emp: me().id, p_from: f, p_to: to, p_half: $('#f_half_day').value || null }); const lt = S.L.leaveTypes.find(x => x.id === ($('#f_leave_type_id') || {}).value); const need = lt && lt.attachment_min_days != null && n >= Number(lt.attachment_min_days); $('#dcalc').innerHTML = `จำนวนวันลา ไม่นับวันหยุดตามตารางกะ: <b>${fLv(n)}</b>` + (need ? ` — <span style="color:var(--bad)">${esc(lt.leave_name)}ตั้งแต่ ${num(lt.attachment_min_days, 0)} วันขึ้นไป ต้องแนบเอกสาร (เช่น ใบรับรองแพทย์)</span>` : ''); } catch (e) { }
   }, 300);
   if (code === 'LEAVE') {
-    const tg = () => { const on = $('#f_half_day').value === 'HOURS'; ['#f_lv_from', '#f_lv_to'].forEach(s => { $(s).closest('label').style.display = on ? '' : 'none'; }); $('#f_date_to').closest('label').style.display = on ? 'none' : ''; if (on && $('#f_date_from').value) $('#f_date_to').value = $('#f_date_from').value; };
-    ['#f_date_from', '#f_date_to', '#f_half_day', '#f_lv_from', '#f_lv_to', '#f_leave_type_id'].forEach(s => $(s) && $(s).addEventListener('change', calc)); $('#f_half_day').addEventListener('change', tg); tg();
+    ['#f_date_from', '#f_date_to', '#f_half_day', '#f_leave_type_id'].forEach(s => $(s) && $(s).addEventListener('change', calc));
   }
   if (code === 'OT') ['#f_ot_from', '#f_ot_to'].forEach(s => $(s).addEventListener('change', () => { const a = $('#f_ot_from').value, b = $('#f_ot_to').value; if (a && b) { let m = (+b.slice(0, 2) * 60 + +b.slice(3)) - (+a.slice(0, 2) * 60 + +a.slice(3)); if (m < 0) m += 1440; $('#f_hours').value = (m / 60).toFixed(2); } }));
   if (code === 'TIME_ADD') $('#f_date_from').addEventListener('change', () => { if (!$('#f_out_d').value) $('#f_out_d').value = $('#f_date_from').value; });
@@ -4202,10 +4256,12 @@ async function docForm(el, code, doc) {
     if (code === 'TIME_ADD') { row.time_in = localTs(x.date_from, x.in_t); row.time_out = localTs(x.out_d || x.date_from, x.out_t); if (!row.time_in && !row.time_out) throw new Error('กรุณาระบุเวลาเข้าหรือออก'); }
     if (code === 'OT') row.request_data = { day_type: x.day_type, from: x.ot_from, to: x.ot_to, employees: x.ot_emps || [] };
     if (code === 'FACE_PHOTO') row.request_data = { consent: !!x.consent };
+    if (code === 'DAYOFF_CHANGE') { row.date_to = row.date_from; row.shift_id = null; row.request_data = { change_to: x.change_to }; row.time_in = localTs(x.date_from, x.in_t); row.time_out = localTs(x.date_from, x.out_t); if (x.in_t && x.out_t && x.out_t <= x.in_t) throw new Error('เวลาสิ้นสุดต้องหลังเวลาเริ่ม'); }
+    if (code === 'OFFSITE') { if (x.date_to < x.date_from) throw new Error('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม'); row.half_day = x.period === 'FULL' ? null : x.period; if (row.half_day && x.date_to !== x.date_from) throw new Error('ช่วงเช้า/บ่าย ใช้ได้เมื่อขอวันเดียว — ถ้าหลายวันให้เลือกทั้งวัน'); row.request_data = { location: x.location }; }
     if (RD_TYPES.includes(code)) row.request_data = Object.fromEntries(fields.filter(f => f.rd).map(f => [f.k, x[f.k]]));
     if (code === 'LEAVE' && x.date_to && x.date_from && x.date_to < x.date_from) throw new Error('วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม');
     if (code === 'LEAVE') { row.time_in = null; row.time_out = null;
-      if (x.half_day === 'HOURS') { if (!x.lv_from || !x.lv_to) throw new Error('กรุณาระบุเวลาเริ่มและเวลาสิ้นสุดการลา'); if (x.lv_to <= x.lv_from) throw new Error('เวลาสิ้นสุดต้องหลังเวลาเริ่ม'); row.date_to = row.date_from; row.time_in = localTs(x.date_from, x.lv_from); row.time_out = localTs(x.date_from, x.lv_to); } }
+      if (false && x.half_day === 'HOURS') { if (!x.lv_from || !x.lv_to) throw new Error('กรุณาระบุเวลาเริ่มและเวลาสิ้นสุดการลา'); if (x.lv_to <= x.lv_from) throw new Error('เวลาสิ้นสุดต้องหลังเวลาเริ่ม'); row.date_to = row.date_from; row.time_in = localTs(x.date_from, x.lv_from); row.time_out = localTs(x.date_from, x.lv_to); } }
     const d = doc ? await q(sb.from('document_requests').update(row).eq('id', doc.id).select().single()) : await q(sb.from('document_requests').insert(row).select().single());
     doc = d;
     for (const f of $('#datt').files) { const p = `doc/${me().id}/${d.id}/${Date.now()}_${safeName(f.name)}`; await uploadFile(p, f); await q(sb.from('document_attachments').insert({ document_id: d.id, file_path: p, file_name: f.name, content_type: f.type })); }
@@ -4267,7 +4323,7 @@ const reqItem = (d, href, extra = '') => { const c = dtCode(d.document_type_id);
   return `<a class="ritem" href="${href || '#/docs/' + d.id}"><span class="rti" style="color:${DT_COLOR[c] || '#2563eb'}">${ic(DT_ICON[c] || 'file')}</span><span class="grow" style="min-width:0"><b>${esc(dtName(d.document_type_id))}</b><span>${esc(docSummary(d))}</span>${extra}</span><span class="pill ${st[2]}">${ic(st[0])} ${st[1]}</span>${ic('chev')}</a>`; };
 const reqTile = c => { const t = S.L.docTypes.find(x => x.document_code === c && x.active_status === 'ACTIVE'); if (!t) return '';
   return `<a class="rtile" href="#/docs/new/${c}">${DT_AVATAR[c] ? `<img class="rtimg" src="${DT_AVATAR[c]}" alt="">` : `<span class="rti" style="color:${DT_COLOR[c]}">${ic(DT_ICON[c] || 'file')}</span>`}<span>${TILE_LBL[c] || esc(t.document_name)}</span></a>`; };
-const TILE_LBL = { LEAVE: 'ขอลา', TIME_ADD: 'ขอปรับ<br>เวลา', SHIFT_CHANGE: 'ขอเปลี่ยน<br>กะ', OT: 'ขอล่วงเวลา<br>(OT)', DAYOFF_CHANGE: 'ขอสลับ<br>วันหยุด', DAYOFF_PATTERN: 'ขอเปลี่ยน<br>วันหยุด', MANPOWER: 'ขอเพิ่ม<br>อัตรากำลัง', TRAINING_REQ: 'ขอเข้ารับ<br>การอบรม', PR: 'ขอซื้อ/ขอจ้าง<br>(PR)', MATERIAL: 'ขอเบิก<br>วัสดุ/อุปกรณ์' };
+const TILE_LBL = { LEAVE: 'ขอลา', TIME_ADD: 'ขอปรับ<br>เวลา', SHIFT_CHANGE: 'ขอเปลี่ยน<br>กะ', OT: 'ขอล่วงเวลา<br>(OT)', DAYOFF_CHANGE: 'ขอเปลี่ยน<br>วันหยุด', DAYOFF_PATTERN: 'วันหยุด<br>ประจำสัปดาห์', OFFSITE: 'ทำงาน<br>นอกสถานที่', MANPOWER: 'ขอเพิ่ม<br>อัตรากำลัง', TRAINING_REQ: 'ขอเข้ารับ<br>การอบรม', PR: 'ขอซื้อ/ขอจ้าง<br>(PR)', MATERIAL: 'ขอเบิก<br>วัสดุ/อุปกรณ์' };
 PAGES.approve = async (el, a, tab) => {
   if (a && a !== 'tab') return docDetail(el, a, { back: '#/approve' });
   const T = [['request', 'ขออนุมัติ', 'send'], ['mine', 'รายการของฉัน', 'list'], ['pending', `รออนุมัติ${S.pendingCount ? ` (${S.pendingCount})` : ''}`, 'clock'], ['done', 'อนุมัติแล้ว', 'okc']];
@@ -4345,12 +4401,36 @@ PAGES.tasks = async (el, id) => {
 };
 function pickerHtml(sel = []) {
   const team = teamSet(); const pool = can.hr() || can.exec() ? S.dir.filter(x => ['ACTIVE', 'PROBATION'].includes(x.employee_status)) : S.dir.filter(x => team.has(x.id) || x.id === me().id || x.supervisor_id === (S.dirMap[me().id] || {}).supervisor_id);
-  return `<label class="f full">ผู้รับผิดชอบ (เพิ่มได้หลายคน)<div class="row"><input class="inp grow" id="pk" list="pkl" placeholder="พิมพ์รหัสหรือชื่อ แล้วกด เพิ่ม" style="width:auto"><datalist id="pkl">${pool.map(x => `<option value="${esc(empOpt(x.id))}">`).join('')}</datalist><button type="button" class="btn" id="pkadd">${ic('plus')} เพิ่ม</button>${can.manager() ? `<button type="button" class="btn" id="pkteam">ทั้งทีม</button>` : ''}</div><div class="row" id="pkc" style="margin-top:6px">${sel.map(id => `<span class="badge b-info" data-id="${id}">${esc(empName(id))} <button type="button" class="btn ghost sm" style="min-height:0;padding:0 2px" data-rm>✕</button></span>`).join('')}</div></label>`;
+  return `<label class="f full">ผู้รับผิดชอบ (เพิ่มได้หลายคน)<div class="row"><span class="pk-w grow"><input class="inp" id="pk" placeholder="พิมพ์ # เพื่อเลือกรายชื่อ เช่น #สุดา" autocomplete="off" data-pool="${pool.map(x => x.id).join(',')}"><span class="pk-dd" id="pkdd" hidden></span></span>${can.manager() ? `<button type="button" class="btn" id="pkteam">ทั้งทีม</button>` : ''}</div><div class="row" id="pkc" style="margin-top:6px">${sel.map(id => `<span class="badge b-info" data-id="${id}">${esc(empName(id))} <button type="button" class="btn ghost sm" style="min-height:0;padding:0 2px" data-rm>✕</button></span>`).join('')}</div></label>`;
 }
 function bindPicker(root) {
   const add = id => { if (!id || $(`#pkc [data-id="${id}"]`, root)) return; $('#pkc', root).insertAdjacentHTML('beforeend', `<span class="badge b-info" data-id="${id}">${esc(empName(id))} <button type="button" class="btn ghost sm" style="min-height:0;padding:0 2px" data-rm>✕</button></span>`); };
-  $('#pkadd', root).onclick = () => { const id = empFromOpt($('#pk', root).value.trim()); if (!id) return toast('ไม่พบพนักงาน', 'bad'); add(id); $('#pk', root).value = ''; };
-  $('#pk', root).addEventListener('change', () => $('#pkadd', root).click());
+  /* v1.20 พิมพ์ # แล้วเลือกรายชื่อจากรายการ (กรองด้วยรหัส/ชื่อ/ชื่อเล่น) */
+  const pk = $('#pk', root), dd = $('#pkdd', root), pool = (pk.dataset.pool || '').split(',').filter(Boolean);
+  let hi = 0, list = [];
+  const render = () => {
+    const v = pk.value; const h = v.lastIndexOf('#'); if (h < 0 && !v.trim()) { dd.hidden = true; return; }
+    const term = (h >= 0 ? v.slice(h + 1) : v).trim().toLowerCase();
+    const chosen = new Set($$('#pkc [data-id]', root).map(x => x.dataset.id));
+    list = pool.filter(id => !chosen.has(id)).map(id => S.dirMap[id]).filter(Boolean)
+      .filter(x => !term || [x.employee_code, x.first_name, x.last_name, x.nickname].some(f => String(f || '').toLowerCase().includes(term))).slice(0, 40);
+    hi = Math.min(hi, Math.max(0, list.length - 1));
+    dd.innerHTML = list.length ? list.map((x, i) => `<button type="button" class="pk-it${i === hi ? ' on' : ''}" data-pid="${x.id}"><b class="mono">${esc(x.employee_code)}</b> ${esc(x.first_name)} ${esc(x.last_name || '')}${x.nickname ? ` <span class="muted">(${esc(x.nickname)})</span>` : ''}</button>`).join('') : '<div class="pk-none">ไม่พบรายชื่อ</div>';
+    dd.hidden = false; dd.scrollIntoView({ block: 'nearest' });
+  };
+  const choose = id => { add(id); pk.value = ''; dd.hidden = true; hi = 0; pk.focus(); };
+  pk.addEventListener('input', () => { hi = 0; render(); });
+  pk.addEventListener('focus', () => { if (pk.value) render(); });
+  pk.addEventListener('keydown', e => {
+    if (dd.hidden) return;
+    if (e.key === 'ArrowDown') { hi = Math.min(hi + 1, list.length - 1); render(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { hi = Math.max(hi - 1, 0); render(); e.preventDefault(); }
+    else if (e.key === 'Enter') { if (list[hi]) choose(list[hi].id); e.preventDefault(); }
+    else if (e.key === 'Escape') { dd.hidden = true; }
+  });
+  dd.addEventListener('mousedown', e => e.preventDefault());
+  dd.addEventListener('click', e => { const b = e.target.closest('[data-pid]'); if (b) choose(b.dataset.pid); });
+  pk.addEventListener('blur', () => setTimeout(() => { dd.hidden = true; }, 150));
   if ($('#pkteam', root)) $('#pkteam', root).onclick = () => teamSet().forEach(add);
   on(root, 'click', '[data-rm]', (e, b) => b.parentElement.remove());
   return () => $$('#pkc [data-id]', root).map(x => x.dataset.id);
