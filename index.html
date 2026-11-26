@@ -1821,7 +1821,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.21.2</div>
+      <div class="sbver">Smart Terminal HR<br>v1.21.3</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -1864,6 +1864,7 @@ async function refreshCounters() {
   try {
     const [r, p] = await Promise.all([sb.from('notifications').select('id', { count: 'exact', head: true }).is('read_at', null), rpc('my_pending_approvals')]);
     S.unread = r.count || 0; S.pendingCount = (p || []).length;
+    try { if (can.hr()) { if (S.payFix === undefined) S.payFix = await rpc('is_pay_fix_team').catch(() => false); if (S.payFix) { const pf = await sb.from('payroll_checks').select('id', { count: 'exact', head: true }).eq('status', 'FIX_REQUESTED'); S.payFixCount = pf.count || 0; } } } catch (e) { }
     try { if (can.hr()) { const x = await sb.from('hr_threads').select('id', { count: 'exact', head: true }).eq('hr_unread', true); S.hrInbox = x.count || 0; }
       if (!me().is_system) { const y = await sb.from('hr_threads').select('id', { count: 'exact', head: true }).eq('employee_id', me().id).eq('emp_unread', true); S.empChat = y.count || 0; } } catch (e) { }
     ['#ndot', '#ndot2'].forEach(s => { const d = $(s); if (d) { d.textContent = S.unread > 99 ? '99+' : S.unread; d.classList.toggle('hidden', !S.unread); } });
@@ -2902,7 +2903,7 @@ PAGES.hrwork = async el => {
   const G = [['บุคลากร', [['#/employees', 'idcard', 'ข้อมูลพนักงาน'], ['#/org', 'org', 'โครงสร้างองค์กร']]],
     ['เวลาและการลา', [['#/time', 'clock', 'จัดการเวลา'], ['#/leave', 'leave', 'โควตาการลา'], ['#/reports/ot', 'otcal', 'OT'], ['#/agentmsg', 'bot', 'ข้อความ HR Agent']]],
     ['เอกสารและงาน', [['#/approve', 'approve', 'อนุมัติเอกสาร', S.pendingCount], ['#/inbox', 'chat', 'กล่องข้อความ HR', S.hrInbox], ['#/docs', 'upload', 'ยื่นเอกสาร'], ['#/tasks', 'tasks', 'สิ่งที่ต้องทำ']]],
-    ['เงินเดือนและรายงาน', [['#/payroll', 'money', 'เงินเดือน'], ['#/reports', 'report', 'รายงาน']]],
+    ['เงินเดือนและรายงาน', [['#/payroll', 'money', 'เงินเดือน'], ['#/paycheck', 'money', 'ตรวจสอบก่อนจ่ายเงินเดือน', S.payFixCount], ['#/reports', 'report', 'รายงาน']]],
     ['กิจกรรม', [['#/game/admin', 'game', 'จัดการเกมบิงโก'], ['#/game', 'game', 'เกม & กิจกรรม']]],
     ['ระบบ', [['#/settings', 'gear', 'ตั้งค่าระบบ']]]];
   el.innerHTML = pageHead('งาน HR', '', '', 'board') + hrTodoCard(d) + `<div class="card aa" style="margin-top:14px" id="adagent"><div class="spin"></div></div>` + G.map(([g, list]) => `<div class="card" style="margin-top:14px"><div class="small muted" style="margin-bottom:4px">${g}</div>${list.map(([h, i, l, n]) => hrRow(n ? n : '', l, i, h, 'var(--brand)')).join('')}</div>`).join('');
@@ -4366,6 +4367,8 @@ async function docDetail(el, id, opt = {}) {
   on(el, 'click', '[data-dl]', async (e, b) => { const u = await guard(() => signedUrl(b.dataset.dl)); window.open(u, '_blank', 'noopener'); });
   if ($('#xsub')) $('#xsub').onclick = async () => { const r = await guard(() => rpc('doc_submit', { p_doc: d.id })); toast(r && r.auto ? 'บันทึกแล้ว — กรรมการบริษัทไม่ต้องขออนุมัติ' : 'ส่งอนุมัติแล้ว', 'good'); docDetail(el, id, opt); };
   if ($('#xdel')) $('#xdel').onclick = async () => { if (await confirmDlg('ลบร่างเอกสารนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from('document_requests').delete().eq('id', d.id)), 'ลบแล้ว'); location.hash = '#/docs'; } };
+  if ($('#xretype') && S.payFix === undefined) S.payFix = await rpc('is_pay_fix_team').catch(() => false);
+  if ($('#xretype') && !S.payFix) $('#xretype').remove();
   if ($('#xretype')) $('#xretype').onclick = () => formModal({ title: 'เปลี่ยนประเภทการลา — ' + d.document_no, fields: [{ k: 't', label: 'ประเภทใหม่', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.id !== d.leave_type_id).map(x => [x.leave_code, x.leave_name]) }, { k: 'r', label: 'เหตุผล', req: true, full: true }],
     intro: '<div class="tiny muted" style="margin-bottom:8px">ใช้เมื่อพนักงานขอแก้ไขประเภทการลา · HR แก้ใบของตนเองไม่ได้ · ถ้าเปลี่ยนเป็นประเภทที่ได้รับค่าจ้าง จะไม่ถูกหักเงิน</div>',
     onSubmit: async v => { await rpc('hr_leave_retype', { p_doc: d.id, p_leave_code: v.t, p_reason: v.r }); toast('เปลี่ยนประเภทแล้ว', 'good'); docDetail(el, id, opt); } });
@@ -4600,6 +4603,7 @@ PAGES.paycheck = async (el, id) => {
     const rows = await q(sb.from('payroll_checks').select('id,status,is_test,sent_at,responded_at,viewed_at,response_note,employee_id,data,payroll_period_id').neq('status', 'CANCELLED').order('sent_at', { ascending: false }).limit(300));
     const mine = rows.filter(r => r.employee_id === me().id), others = can.hr() ? rows.filter(r => r.employee_id !== me().id) : [];
     const item = r => `<a class="it card" href="#/paycheck/${r.id}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;text-decoration:none;color:inherit">${ic('money')}<div class="grow"><div style="font-weight:500">${esc((r.data.emp || {}).code || '')} ${esc((r.data.emp || {}).name || '')}</div><div class="small muted">${esc(r.data.period || '')}${r.is_test ? ' · ฉบับทดสอบ' : ''} · ส่ง ${fDT(r.sent_at)}${r.viewed_at && r.status === 'SENT' ? ' · เปิดดูแล้ว' : ''}${r.response_note ? ' · ' + esc(r.response_note) : ''}</div></div>${badge(PC_ST, r.status)}${ic('chev')}</a>`;
+    others.sort((a, b) => (b.status === 'FIX_REQUESTED') - (a.status === 'FIX_REQUESTED'));
     const cnt = s => others.filter(r => r.status === s).length;
     el.innerHTML = pageHead('ตรวจสอบก่อนจ่ายเงินเดือน', '', '', 'money') +
       `<div style="max-width:820px">${mine.length ? `<h3 style="margin:6px 0 10px">ของฉัน</h3>${mine.map(item).join('')}` : (others.length ? '' : emptyBox('ยังไม่มีใบตรวจสอบ', 'money'))}
@@ -4611,7 +4615,8 @@ PAGES.paycheck = async (el, id) => {
   const own = r.employee_id === me().id;
   if (own && !r.viewed_at) { try { await rpc('pay_check_viewed', { p_id: id }); } catch (e) { } }
   const canAct = own && ['SENT', 'CONFIRMED', 'FIX_REQUESTED'].includes(r.status);
-  const canFix = !own && (can.hr() || (S.ctx.roles || []).includes('PAYROLL_ADMIN')) && r.status === 'FIX_REQUESTED' && !(me().linked_employee_id && me().linked_employee_id === r.employee_id);
+  if (S.payFix === undefined) S.payFix = await rpc('is_pay_fix_team').catch(() => false);
+  const canFix = !own && S.payFix && r.status === 'FIX_REQUESTED';
   const st = r.status === 'CONFIRMED' ? `<div class="notice good">${ic('check')}<div>ยืนยันว่าข้อมูลถูกต้องแล้ว เมื่อ ${fDT(r.responded_at)}</div></div>`
     : r.status === 'FIX_REQUESTED' ? `<div class="notice bad">${ic('alert')}<div>ขอแก้ไขแล้ว เมื่อ ${fDT(r.responded_at)}<div class="small">${esc(r.response_note || '')}</div><div class="small muted">HR จะตรวจสอบและส่งใบใหม่ให้</div></div></div>`
     : r.status === 'FIXED' ? `<div class="notice info">${ic('check')}<div>HR แก้ไขแล้ว เมื่อ ${fDT(r.resolved_at)}<div class="small">${esc(r.resolution_note || '')}</div><div class="small muted">ใบตรวจสอบฉบับใหม่จะส่งให้อีกครั้ง</div></div></div>`
