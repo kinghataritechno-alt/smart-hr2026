@@ -1821,7 +1821,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.21.5</div>
+      <div class="sbver">Smart Terminal HR<br>v1.21.6</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -4358,6 +4358,7 @@ async function docDetail(el, id, opt = {}) {
       ${!mine && can.hr() && code === 'LEAVE' && d.status === 'APPROVED' ? `<button class="btn" id="xretype">${ic('edit')} เปลี่ยนประเภทการลา</button>` : ''}
       ${(mine && ['PENDING', 'RETURNED'].includes(d.status)) || (can.hr() && ['PENDING', 'APPROVED', 'RETURNED'].includes(d.status)) ? `<button class="btn bad" id="xcan">${ic('x')} ยกเลิกเอกสาร</button>` : ''}
      </div>
+     ${!mine && can.hr() && code === 'LEAVE' && d.status === 'APPROVED' ? '<div id="xfixbox"></div>' : ''}
      ${iAmApprover ? `<div class="card" style="margin-top:16px;background:var(--brand-3);border-color:transparent"><b>ขั้นที่ ${inst.current_step}: ${esc(stepName(curStep, inst.current_step))}</b>${curStep.backup === me().id && !(curStep.approvers || []).includes(me().id) ? ' <span class="badge b-warn">ในฐานะผู้อนุมัติสำรอง</span>' : ''}
        <textarea class="inp" id="xcm" placeholder="${ackNow ? 'หมายเหตุ (จำเป็นเมื่อส่งกลับ/ไม่รับ)' : 'ความเห็น (จำเป็นเมื่อไม่อนุมัติ/ส่งกลับ)'}" style="margin:10px 0"></textarea>
        <div class="row"><button class="btn good" data-a="APPROVE">${ic('check')} ${ackNow ? 'รับทราบ' : 'อนุมัติ'}</button><button class="btn" data-a="RETURN">${ic('back')} ส่งกลับแก้ไข</button><button class="btn bad" data-a="REJECT">${ic('x')} ไม่อนุมัติ</button></div></div>` : ''}</div>
@@ -4369,7 +4370,10 @@ async function docDetail(el, id, opt = {}) {
   if ($('#xdel')) $('#xdel').onclick = async () => { if (await confirmDlg('ลบร่างเอกสารนี้?', { danger: true, okText: 'ลบ' })) { await guard(() => q(sb.from('document_requests').delete().eq('id', d.id)), 'ลบแล้ว'); location.hash = '#/docs'; } };
   if ($('#xretype') && S.payFix === undefined) S.payFix = await rpc('is_pay_fix_team').catch(() => false);
   if ($('#xretype') && !S.payFix) $('#xretype').remove();
-  if ($('#xretype')) $('#xretype').onclick = () => formModal({ title: 'เปลี่ยนประเภทการลา — ' + d.document_no, fields: [{ k: 't', label: 'ประเภทใหม่', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.id !== d.leave_type_id).map(x => [x.leave_code, x.leave_name]) }, { k: 'r', label: 'เหตุผล', req: true, full: true }],
+  if ($('#xfixbox')) { if (!S.payFix) $('#xfixbox').remove(); else { const ck = (await q(sb.from('payroll_checks').select('id,status').eq('employee_id', d.requester_employee_id).neq('status', 'CANCELLED').order('sent_at', { ascending: false }).limit(1)))[0];
+    if (!ck) $('#xfixbox').remove(); else { $('#xfixbox').innerHTML = `<div class="small muted" style="margin:14px 0 8px">หรือแก้ด้วยวิธีอื่น (เช่น ไม่ได้ขาดงานจริง):</div>${pcFixBtns()}`;
+      on($('#xfixbox'), 'click', '[data-pcfix]', (e, b) => pcFixModal(b.dataset.pcfix, ck.id, empName(d.requester_employee_id), { date: d.date_from }, () => docDetail(el, id, opt))); } } }
+  if ($('#xretype')) $('#xretype').onclick = () => formModal({ title: 'เปลี่ยนประเภทการลา — ' + d.document_no, fields: [{ k: 't', label: 'ประเภทใหม่', type: 'select', req: true, opts: S.L.leaveTypes.filter(x => x.id !== d.leave_type_id && x.status !== 'INACTIVE').map(x => [x.leave_code, x.leave_name]) }, { k: 'r', label: 'เหตุผล', req: true, full: true }],
     intro: '<div class="tiny muted" style="margin-bottom:8px">ใช้เมื่อพนักงานขอแก้ไขประเภทการลา · HR แก้ใบของตนเองไม่ได้ · ถ้าเปลี่ยนเป็นประเภทที่ได้รับค่าจ้าง จะไม่ถูกหักเงิน</div>',
     onSubmit: async v => { await rpc('hr_leave_retype', { p_doc: d.id, p_leave_code: v.t, p_reason: v.r }); toast('เปลี่ยนประเภทแล้ว', 'good'); docDetail(el, id, opt); } });
   if ($('#xcan')) $('#xcan').onclick = async () => { const r = await confirmDlg(d.status === 'APPROVED' ? 'ยกเลิกเอกสารที่อนุมัติแล้ว — ระบบจะกลับรายการที่เกี่ยวข้อง (เช่น คืนวันลา)' : 'ยกเลิกเอกสารนี้?', { danger: true, okText: 'ยกเลิกเอกสาร', input: { label: 'เหตุผล', required: true } }); if (r) { await guard(() => rpc('doc_cancel', { p_doc: d.id, p_reason: r }), 'ยกเลิกแล้ว'); docDetail(el, id, opt); } };
@@ -4623,7 +4627,7 @@ PAGES.paycheck = async (el, id) => {
     : `<div class="notice info">${ic('clock')}<div>โปรดตรวจสอบเวลาทำงาน การลา OT และยอดเงิน แล้วกด "ข้อมูลถูกต้อง" หรือ "ขอแก้ไข"</div></div>`;
   el.innerHTML = pageHead('ตรวจสอบก่อนจ่ายเงินเดือน', `<button class="btn sm" id="pcpdf">${ic('download')} ดู / บันทึก PDF</button>`, '#/paycheck', 'money') +
     `<div style="max-width:820px;display:flex;flex-direction:column;gap:12px">${st}
-      ${canFix ? `<div class="card"><b>${ic('edit')} คำขอแก้ไขจาก ${esc((r.data.emp || {}).name || '')}</b><div class="small" style="margin:6px 0 10px">${esc(r.response_note || '')}</div><div class="small muted" style="margin-bottom:10px">1) เลือกวิธีแก้: <b>เพิ่ม/แก้เวลา</b> (ลืมสแกน ไปทำงานนอกสถานที่ — ระบบยกเลิกขาดงานของวันนั้นให้เมื่อใส่เวลาเข้า-ออกครบ) หรือกดใบลา/ขาดงาน/OT ด้านล่าง → <b>เปลี่ยนประเภทการลา</b> / <b>ยกเลิกเอกสาร</b> · 2) กดปุ่ม "แก้ไขแล้ว — แจ้งเจ้าของ"</div><button class="btn" id="pcfixtime" style="margin-bottom:10px">${ic('clock')} เพิ่ม/แก้เวลา</button><div id="pcdocs" style="margin-bottom:12px"><div class="spin"></div></div><button class="btn pri" id="pcresolve">${ic('check')} แก้ไขแล้ว — แจ้งเจ้าของ</button></div>` : ''}
+      ${canFix ? `<div class="card"><b>${ic('edit')} คำขอแก้ไขจาก ${esc((r.data.emp || {}).name || '')}</b><div class="small" style="margin:6px 0 10px">${esc(r.response_note || '')}</div><div class="small muted" style="margin-bottom:10px">1) เลือกวิธีแก้ตามคำขอ: <b>เพิ่ม/แก้เวลา</b> · <b>ทำงานนอกสถานที่</b> · <b>สลับวันหยุด</b> · <b>เพิ่มค่าล่วงเวลา</b> · <b>สลับกะ</b> — หรือกดใบลา/ขาดงาน/OT ด้านล่าง → <b>เปลี่ยนประเภทการลา</b> / <b>ยกเลิกเอกสาร</b> · 2) กดปุ่ม "แก้ไขแล้ว — แจ้งเจ้าของ"</div>${pcFixBtns()}<div id="pcdocs" style="margin-bottom:12px"><div class="spin"></div></div><button class="btn pri" id="pcresolve">${ic('check')} แก้ไขแล้ว — แจ้งเจ้าของ</button></div>` : ''}
       <div class="pc-wrap" style="width:100%;overflow:hidden;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.18);background:#fff">${pcSlipHtml(r.data)}</div>
       ${canAct ? `<div class="row" style="gap:10px;flex-wrap:wrap"><button class="btn" id="pcfix" style="flex:1;min-height:48px">${ic('edit')} ขอแก้ไข</button><button class="btn pri" id="pcok" style="flex:1.4;min-height:48px">${ic('check')} ข้อมูลถูกต้อง</button></div>
       <div class="small muted" style="text-align:center">เปลี่ยนคำตอบได้จนกว่า HR จะปิดงวด</div>` : ''}
@@ -4635,15 +4639,37 @@ PAGES.paycheck = async (el, id) => {
     const lt = id => (S.L.leaveTypes.find(x => x.id === id) || {}).leave_name || '';
     const rows = ds.filter(d => ['LEAVE', 'OT'].includes(dtCode(d.document_type_id)));
     $('#pcdocs').innerHTML = rows.length ? rows.map(d => `<a class="it" href="#/approve/${d.id}" style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;text-decoration:none;color:inherit">${ic(dtCode(d.document_type_id) === 'OT' ? 'clock' : 'leave')}<div class="grow"><b>${fD(d.date_from)}</b> · ${esc(dtCode(d.document_type_id) === 'OT' ? 'OT/ทำงานวันหยุด ' + (d.hours || '') + ' ชม.' : lt(d.leave_type_id) + ' ' + (d.units >= 1 ? d.units + ' วัน' : Math.round(d.units * 8 * 100) / 100 + ' ชม.'))}<div class="tiny muted">${esc(d.document_no)}</div></div>${ic('chev')}</a>`).join('') : '<div class="small muted">ไม่มีใบลา/OT ที่อนุมัติในงวดนี้</div>'; }
-  if ($('#pcfixtime')) $('#pcfixtime').onclick = () => formModal({ title: 'เพิ่ม/แก้เวลา — ' + ((r.data.emp || {}).name || ''), fields: [{ k: 'd', label: 'วันที่ทำงาน', type: 'date', req: true }, { k: 'in', label: 'เวลาเข้า', type: 'time' }, { k: 'out', label: 'เวลาออก', type: 'time' }, { k: 'r', label: 'เหตุผล', req: true, full: true }],
-    values: { r: r.response_note || '' },
-    intro: '<div class="tiny muted" style="margin-bottom:8px">บันทึกเป็นรายการแก้เวลาพร้อม Audit Log · ถ้าใส่ทั้งเวลาเข้าและออก ระบบจะยกเลิกใบ "ขาดงาน" ของวันนั้นให้อัตโนมัติ (ไม่หักเงิน) · HR แก้ของตนเองไม่ได้</div>',
-    onSubmit: async v => { if (!v.in && !v.out) throw new Error('กรุณาระบุเวลาเข้าหรือออก'); const x = await rpc('pay_fix_time', { p_check: id, p_date: v.d, p_in: v.in || null, p_out: v.out || null, p_reason: v.r }); toast(x && x.absent_cancelled ? `บันทึกเวลาแล้ว · ยกเลิกขาดงาน ${x.absent_cancelled} รายการ` : 'บันทึกเวลาแล้ว', 'good'); route(); } });
+  on(el, 'click', '[data-pcfix]', (e, b) => pcFixModal(b.dataset.pcfix, id, (r.data.emp || {}).name, { reason: r.response_note || '' }));
   if ($('#pcresolve')) $('#pcresolve').onclick = async () => { const n = await confirmDlg('สรุปสิ่งที่แก้ไขให้เจ้าของใบทราบ', { okText: 'แจ้งเจ้าของ', input: { label: 'สิ่งที่แก้ไข', required: true } }); if (!n) return; await guard(() => rpc('pay_check_resolve', { p_id: id, p_note: n }), 'แจ้งเจ้าของแล้ว'); route(); };
   if ($('#pcok')) $('#pcok').onclick = async () => { if (!await confirmDlg('ยืนยันว่าข้อมูลในใบตรวจสอบนี้ถูกต้อง?', { okText: 'ข้อมูลถูกต้อง' })) return; await guard(() => rpc('pay_check_respond', { p_id: id, p_status: 'CONFIRMED' }), 'ยืนยันแล้ว — ขอบคุณค่ะ'); route(); };
   if ($('#pcfix')) $('#pcfix').onclick = async () => { const n = await confirmDlg('ระบุวันที่และรายการที่ไม่ถูกต้อง HR จะตรวจสอบและส่งใบใหม่ให้', { okText: 'ส่งคำขอแก้ไข', input: { label: 'รายการที่ต้องแก้ไข', required: true } }); if (!n) return; await guard(() => rpc('pay_check_respond', { p_id: id, p_status: 'FIX_REQUESTED', p_note: n }), 'ส่งคำขอแก้ไขให้ HR แล้ว'); route(); };
 };
 
+
+const PC_FIX_KINDS = [['TIME', 'clock', 'เพิ่ม/แก้เวลา'], ['OFFSITE', 'pin', 'ทำงานนอกสถานที่'], ['DAYOFF_SWAP', 'cal', 'สลับวันหยุด'], ['OT', 'ot', 'เพิ่มค่าล่วงเวลา'], ['SHIFT_SWAP', 'swap', 'สลับกะ']];
+const pcFixBtns = () => `<div class="row" style="flex-wrap:wrap;gap:8px;margin-bottom:10px">${PC_FIX_KINDS.map(k => `<button class="btn sm" data-pcfix="${k[0]}">${ic(k[1])} ${k[2]}</button>`).join('')}</div>`;
+function pcFixModal(kind, checkId, name, dflt = {}, after = () => route()) {
+  const d0 = dflt.date || '', r0 = dflt.reason || '', R = { k: 'r', label: 'เหตุผล / อ้างอิงคำขอ', req: true, full: true };
+  const done = x => { toast('บันทึกแล้ว' + (x && x.affected ? ` · ปรับใบขาดงาน ${x.affected} รายการ` : ''), 'good'); after(); };
+  const act = (p_kind, p) => rpc('pay_fix_action', { p_check: checkId, p_kind, p }).then(done);
+  const ttl = t => t + ' — ' + (name || '');
+  const note = t => `<div class="tiny muted" style="margin-bottom:8px">${t} · บันทึกเป็นเอกสารอนุมัติแล้ว (แหล่งที่มา: คำขอแก้ไขใบตรวจสอบ) พร้อม Audit Log · HR แก้ของตนเองไม่ได้</div>`;
+  if (kind === 'TIME') return formModal({ title: ttl('เพิ่ม/แก้เวลา'), values: { d: d0, r: r0 }, fields: [{ k: 'd', label: 'วันที่ทำงาน', type: 'date', req: true }, { k: 'in', label: 'เวลาเข้า', type: 'time' }, { k: 'out', label: 'เวลาออก', type: 'time' }, R],
+    intro: note('ลืมสแกน/สแกนไม่ติด · ถ้าใส่ทั้งเวลาเข้าและออก ระบบยกเลิกใบ "ขาดงาน" ของวันนั้นให้อัตโนมัติ'),
+    onSubmit: async v => { if (!v.in && !v.out) throw new Error('กรุณาระบุเวลาเข้าหรือออก'); const x = await rpc('pay_fix_time', { p_check: checkId, p_date: v.d, p_in: v.in || null, p_out: v.out || null, p_reason: v.r }); toast(x && x.absent_cancelled ? `บันทึกเวลาแล้ว · ยกเลิกขาดงาน ${x.absent_cancelled} รายการ` : 'บันทึกเวลาแล้ว', 'good'); after(); } });
+  if (kind === 'OFFSITE') return formModal({ title: ttl('ทำงานนอกสถานที่'), values: { d: d0, d2: d0, per: 'FULL', r: r0 }, fields: [{ k: 'd', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'd2', label: 'ถึงวันที่', type: 'date' }, { k: 'per', label: 'ช่วงเวลา', type: 'select', req: true, opts: [['FULL', 'ทั้งวัน'], ['AM', 'ครึ่งเช้า'], ['PM', 'ครึ่งบ่าย']] }, { k: 'loc', label: 'สถานที่ / งาน', req: true, full: true }, R],
+    intro: note('ไปปฏิบัติงานนอกสำนักงาน · ระบบยกเลิกใบขาดงานของวันนั้น (ครึ่งเช้า/บ่าย = ลดขาดงานครึ่งวัน)'),
+    onSubmit: v => act('OFFSITE', { date: v.d, date2: v.d2 || v.d, period: v.per, location: v.loc, reason: v.r }) });
+  if (kind === 'DAYOFF_SWAP') return formModal({ title: ttl('สลับวันหยุด'), values: { d: d0, r: r0 }, fields: [{ k: 'd', label: 'วันที่หยุดจริง (เดิมเป็นวันทำงาน)', type: 'date', req: true }, { k: 'd2', label: 'วันหยุดที่มาทำงานแทน', type: 'date', req: true }, R],
+    intro: note('วันแรกเปลี่ยนเป็นวันหยุด (ยกเลิกขาดงานของวันนั้น) · วันที่สองเป็นวันทำงานปกติ (ยกเลิกค่าทำงานวันหยุดของวันนั้นถ้ามี)'),
+    onSubmit: v => act('DAYOFF_SWAP', { date: v.d, date2: v.d2, reason: v.r }) });
+  if (kind === 'OT') return formModal({ title: ttl('เพิ่มค่าล่วงเวลา'), values: { d: d0, dt: 'WORKDAY', r: r0 }, fields: [{ k: 'd', label: 'วันที่', type: 'date', req: true }, { k: 'h', label: 'จำนวนชั่วโมง', type: 'number', step: '0.5', min: 0.5, req: true }, { k: 'dt', label: 'ประเภท', type: 'select', req: true, opts: [['WORKDAY', 'OT วันทำงาน (1.5 เท่า)'], ['HOLIDAY_WORK', 'ทำงานวันหยุด'], ['HOLIDAY_OT', 'OT วันหยุด']] }, R],
+    intro: note('เพิ่มรายการ OT ที่อนุมัติแล้ว · คิดเงินตามอัตราในระบบเมื่อคำนวณเงินเดือนใหม่'),
+    onSubmit: v => act('OT', { date: v.d, hours: Number(v.h), day_type: v.dt, reason: v.r }) });
+  if (kind === 'SHIFT_SWAP') return formModal({ title: ttl('สลับกะ'), values: { d: d0, d2: d0, ca: 'false', lr: 0, r: r0 }, fields: [{ k: 'd', label: 'ตั้งแต่วันที่', type: 'date', req: true }, { k: 'd2', label: 'ถึงวันที่', type: 'date' }, { k: 'sh', label: 'กะที่ทำงานจริง', type: 'select', req: true, opts: (S.L.shifts || []).filter(x => x.status !== 'INACTIVE').map(x => [x.id, `${x.shift_code} ${String(x.start_time || '').slice(0, 5)}–${String(x.end_time || '').slice(0, 5)}`]) }, { k: 'lr', label: 'ลดนาทีสายของงวด (ถ้ามี)', type: 'number', min: 0 }, { k: 'ca', label: 'ยกเลิกใบขาดงานของวันดังกล่าว', type: 'select', opts: [['false', 'ไม่'], ['true', 'ใช่']] }, R],
+    intro: note('เปลี่ยนตารางกะของวันนั้นเป็นกะที่ทำงานจริง · ใช้เมื่อถูกคิดสาย/ขาดงานเพราะตารางกะไม่ตรง'),
+    onSubmit: v => act('SHIFT_SWAP', { date: v.d, date2: v.d2 || v.d, shift_id: v.sh, late_reduce: Number(v.lr || 0), cancel_absent: v.ca === 'true', reason: v.r }) });
+}
 PAGES.payroll = async (el, a, b) => {
   if (a === 'slip') return payslipView(el, b);
   if (a === 'hub') return payHub(el);
