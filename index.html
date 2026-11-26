@@ -1494,7 +1494,7 @@ function modal({ title, body = '', foot = '', wide = false, onClose }) {
 }
 function confirmDlg(msg, { okText = 'ยืนยัน', danger = false, input = null } = {}) {
   return new Promise(res => {
-    const m = modal({ title: 'ยืนยัน', body: `<p style="margin:0 0 10px">${esc(msg)}</p>${input ? `<label class="f ${input.required ? 'req' : ''}">${esc(input.label)}<textarea class="inp" id="cfin"></textarea></label>` : ''}`,
+    const m = modal({ title: 'ยืนยัน', body: `<p style="margin:0 0 10px">${esc(msg)}</p>${input ? `<label class="f ${input.required ? 'req' : ''}">${esc(input.label)}<textarea class="inp" id="cfin">${esc(input.value || '')}</textarea></label>` : ''}`,
       foot: `<button class="btn" data-c>ยกเลิก</button><button class="btn ${danger ? 'bad' : 'pri'}" data-ok>${esc(okText)}</button>`, onClose: () => res(null) });
     $('[data-c]', m.el).onclick = () => m.close();
     $('[data-ok]', m.el).onclick = () => {
@@ -1821,7 +1821,7 @@ function renderShell() {
   setTod();
   document.body.innerHTML = `<div class="shell">
     <aside class="sb"><a class="sblogo" href="#/dashboard"><img class="lgcu" src="logo-white.png" alt="SMART TERMINAL"><span>SMART<br>TERMINAL</span></a><nav id="nav"></nav>
-      <div class="sbver">Smart Terminal HR<br>v1.21.6</div>
+      <div class="sbver">Smart Terminal HR<br>v1.21.7</div>
       <div class="me hidden">${avatar(e)}<div class="grow" style="min-width:0"><div class="n">${esc(e.first_name)} ${esc(e.last_name || '')}</div><div class="p">${esc(e.position_name || (S.ctx.roles || []).map(r => ROLE_NAMES[r]).join(', '))}</div></div>
       <button class="btn ghost icon" style="color:#fca5a5" data-act="logout" title="ออกจากระบบ">${ic('logout')}</button></div></aside>
     <div class="main">
@@ -4620,17 +4620,19 @@ PAGES.paycheck = async (el, id) => {
   if (own && !r.viewed_at) { try { await rpc('pay_check_viewed', { p_id: id }); } catch (e) { } }
   const canAct = own && ['SENT', 'CONFIRMED', 'FIX_REQUESTED'].includes(r.status);
   if (S.payFix === undefined) S.payFix = await rpc('is_pay_fix_team').catch(() => false);
-  const canFix = !own && S.payFix && r.status === 'FIX_REQUESTED';
+  const canFix = !own && S.payFix && ['FIX_REQUESTED', 'FIXED'].includes(r.status); const ver = r.version || 1, hist = r.history || [];
   const st = r.status === 'CONFIRMED' ? `<div class="notice good">${ic('check')}<div>ยืนยันว่าข้อมูลถูกต้องแล้ว เมื่อ ${fDT(r.responded_at)}</div></div>`
-    : r.status === 'FIX_REQUESTED' ? `<div class="notice bad">${ic('alert')}<div>ขอแก้ไขแล้ว เมื่อ ${fDT(r.responded_at)}<div class="small">${esc(r.response_note || '')}</div><div class="small muted">HR จะตรวจสอบและส่งใบใหม่ให้</div></div></div>`
-    : r.status === 'FIXED' ? `<div class="notice info">${ic('check')}<div>HR แก้ไขแล้ว เมื่อ ${fDT(r.resolved_at)}<div class="small">${esc(r.resolution_note || '')}</div><div class="small muted">ใบตรวจสอบฉบับใหม่จะส่งให้อีกครั้ง</div></div></div>`
-    : `<div class="notice info">${ic('clock')}<div>โปรดตรวจสอบเวลาทำงาน การลา OT และยอดเงิน แล้วกด "ข้อมูลถูกต้อง" หรือ "ขอแก้ไข"</div></div>`;
+    : r.status === 'FIX_REQUESTED' ? `<div class="notice bad">${ic('alert')}<div>ขอแก้ไขแล้ว เมื่อ ${fDT(r.responded_at)}<div class="small">${esc(r.response_note || '')}</div><div class="small muted">HR จะแก้ไขและส่งใบตรวจสอบฉบับใหม่ให้ตรวจอีกครั้ง · ถ้ามีรายการต้องแก้เพิ่ม กด "ขอแก้ไขเพิ่ม" ได้</div></div></div>`
+    : r.status === 'FIXED' ? `<div class="notice info">${ic('check')}<div>HR แก้ไขแล้ว เมื่อ ${fDT(r.resolved_at)}<div class="small">${esc(r.resolution_note || '')}</div><div class="small muted">รอ HR ออกใบตรวจสอบฉบับใหม่</div></div></div>`
+    : `<div class="notice info">${ic('clock')}<div>${ver > 1 ? `<b>ฉบับใหม่ (ฉบับที่ ${ver})</b> — HR แก้ไขแล้ว: ${esc(r.resolution_note || '')}<br>` : ''}โปรดตรวจสอบเวลาทำงาน การลา OT และยอดเงิน แล้วกด "ข้อมูลถูกต้อง" หรือ "ขอแก้ไข"</div></div>`;
+  const histHtml = hist.length ? `<div class="card"><b>${ic('history')} ประวัติฉบับก่อนหน้า</b>${hist.slice().reverse().map((h, i) => `<div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)"><div class="grow small"><b>ฉบับที่ ${h.version}</b> · ส่ง ${fDT(h.sent_at)} · สุทธิ ${num((h.data || {}).net, 2)}${h.response_note ? `<div>ขอแก้ไข: ${esc(h.response_note)}</div>` : ''}${h.resolution_note ? `<div class="muted">HR แก้ไข: ${esc(h.resolution_note)} · ${esc(empName(h.resolved_by))} ${fDT(h.resolved_at)}</div>` : ''}</div><button class="btn sm" data-pchist="${hist.length - 1 - i}">${ic('download')} ดู</button></div>`).join('')}</div>` : '';
   el.innerHTML = pageHead('ตรวจสอบก่อนจ่ายเงินเดือน', `<button class="btn sm" id="pcpdf">${ic('download')} ดู / บันทึก PDF</button>`, '#/paycheck', 'money') +
     `<div style="max-width:820px;display:flex;flex-direction:column;gap:12px">${st}
-      ${canFix ? `<div class="card"><b>${ic('edit')} คำขอแก้ไขจาก ${esc((r.data.emp || {}).name || '')}</b><div class="small" style="margin:6px 0 10px">${esc(r.response_note || '')}</div><div class="small muted" style="margin-bottom:10px">1) เลือกวิธีแก้ตามคำขอ: <b>เพิ่ม/แก้เวลา</b> · <b>ทำงานนอกสถานที่</b> · <b>สลับวันหยุด</b> · <b>เพิ่มค่าล่วงเวลา</b> · <b>สลับกะ</b> — หรือกดใบลา/ขาดงาน/OT ด้านล่าง → <b>เปลี่ยนประเภทการลา</b> / <b>ยกเลิกเอกสาร</b> · 2) กดปุ่ม "แก้ไขแล้ว — แจ้งเจ้าของ"</div>${pcFixBtns()}<div id="pcdocs" style="margin-bottom:12px"><div class="spin"></div></div><button class="btn pri" id="pcresolve">${ic('check')} แก้ไขแล้ว — แจ้งเจ้าของ</button></div>` : ''}
+      ${canFix ? `<div class="card"><b>${ic('edit')} คำขอแก้ไขจาก ${esc((r.data.emp || {}).name || '')}</b><div class="small" style="margin:6px 0 10px">${esc(r.response_note || '')}</div><div class="small muted" style="margin-bottom:10px">1) เลือกวิธีแก้ตามคำขอ: <b>เพิ่ม/แก้เวลา</b> · <b>ทำงานนอกสถานที่</b> · <b>สลับวันหยุด</b> · <b>เพิ่มค่าล่วงเวลา</b> · <b>สลับกะ</b> — หรือกดใบลา/ขาดงาน/OT ด้านล่าง → <b>เปลี่ยนประเภทการลา</b> / <b>ยกเลิกเอกสาร</b> · 2) กด "แก้ไขแล้ว — ออกใบใหม่" ระบบคำนวณยอดใหม่และส่งใบตรวจสอบฉบับใหม่ให้เจ้าของตรวจอีกครั้ง</div>${pcFixBtns()}<div id="pcdocs" style="margin-bottom:12px"><div class="spin"></div></div><button class="btn pri" id="pcresolve">${ic('check')} แก้ไขแล้ว — ออกใบใหม่ให้เจ้าของตรวจ</button></div>` : ''}
       <div class="pc-wrap" style="width:100%;overflow:hidden;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.18);background:#fff">${pcSlipHtml(r.data)}</div>
-      ${canAct ? `<div class="row" style="gap:10px;flex-wrap:wrap"><button class="btn" id="pcfix" style="flex:1;min-height:48px">${ic('edit')} ขอแก้ไข</button><button class="btn pri" id="pcok" style="flex:1.4;min-height:48px">${ic('check')} ข้อมูลถูกต้อง</button></div>
+      ${canAct ? `<div class="row" style="gap:10px;flex-wrap:wrap"><button class="btn" id="pcfix" style="flex:1;min-height:48px">${ic('edit')} ${r.status === 'FIX_REQUESTED' ? 'ขอแก้ไขเพิ่ม' : 'ขอแก้ไข'}</button><button class="btn pri" id="pcok" style="flex:1.4;min-height:48px">${ic('check')} ข้อมูลถูกต้อง</button></div>
       <div class="small muted" style="text-align:center">เปลี่ยนคำตอบได้จนกว่า HR จะปิดงวด</div>` : ''}
+      ${histHtml}
 </div>`;
   pcFit(); setTimeout(pcFit, 300);
   $('#pcpdf').onclick = () => pcPrint(r.data);
@@ -4640,7 +4642,9 @@ PAGES.paycheck = async (el, id) => {
     const rows = ds.filter(d => ['LEAVE', 'OT'].includes(dtCode(d.document_type_id)));
     $('#pcdocs').innerHTML = rows.length ? rows.map(d => `<a class="it" href="#/approve/${d.id}" style="display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;text-decoration:none;color:inherit">${ic(dtCode(d.document_type_id) === 'OT' ? 'clock' : 'leave')}<div class="grow"><b>${fD(d.date_from)}</b> · ${esc(dtCode(d.document_type_id) === 'OT' ? 'OT/ทำงานวันหยุด ' + (d.hours || '') + ' ชม.' : lt(d.leave_type_id) + ' ' + (d.units >= 1 ? d.units + ' วัน' : Math.round(d.units * 8 * 100) / 100 + ' ชม.'))}<div class="tiny muted">${esc(d.document_no)}</div></div>${ic('chev')}</a>`).join('') : '<div class="small muted">ไม่มีใบลา/OT ที่อนุมัติในงวดนี้</div>'; }
   on(el, 'click', '[data-pcfix]', (e, b) => pcFixModal(b.dataset.pcfix, id, (r.data.emp || {}).name, { reason: r.response_note || '' }));
-  if ($('#pcresolve')) $('#pcresolve').onclick = async () => { const n = await confirmDlg('สรุปสิ่งที่แก้ไขให้เจ้าของใบทราบ', { okText: 'แจ้งเจ้าของ', input: { label: 'สิ่งที่แก้ไข', required: true } }); if (!n) return; await guard(() => rpc('pay_check_resolve', { p_id: id, p_note: n }), 'แจ้งเจ้าของแล้ว'); route(); };
+  if ($('#pcresolve')) $('#pcresolve').onclick = async () => { const n = await confirmDlg('สรุปสิ่งที่แก้ไขให้เจ้าของใบทราบ — ระบบจะคำนวณยอดใหม่และส่งใบตรวจสอบฉบับใหม่ให้ตรวจอีกครั้ง', { okText: 'ออกใบใหม่', input: { label: 'สิ่งที่แก้ไข', required: true, value: r.status === 'FIXED' ? (r.resolution_note || '') : '' } }); if (!n) return;
+    const x = await guard(() => rpc('pay_check_resolve', { p_id: id, p_note: n })); if (!x) return; toast(`ส่งฉบับที่ ${x.version} แล้ว · สุทธิ ${num(x.net_before, 2)} → ${num(x.net_after, 2)}`, 'good'); route(); };
+  on(el, 'click', '[data-pchist]', (e, b) => pcPrint(hist[+b.dataset.pchist].data));
   if ($('#pcok')) $('#pcok').onclick = async () => { if (!await confirmDlg('ยืนยันว่าข้อมูลในใบตรวจสอบนี้ถูกต้อง?', { okText: 'ข้อมูลถูกต้อง' })) return; await guard(() => rpc('pay_check_respond', { p_id: id, p_status: 'CONFIRMED' }), 'ยืนยันแล้ว — ขอบคุณค่ะ'); route(); };
   if ($('#pcfix')) $('#pcfix').onclick = async () => { const n = await confirmDlg('ระบุวันที่และรายการที่ไม่ถูกต้อง HR จะตรวจสอบและส่งใบใหม่ให้', { okText: 'ส่งคำขอแก้ไข', input: { label: 'รายการที่ต้องแก้ไข', required: true } }); if (!n) return; await guard(() => rpc('pay_check_respond', { p_id: id, p_status: 'FIX_REQUESTED', p_note: n }), 'ส่งคำขอแก้ไขให้ HR แล้ว'); route(); };
 };
